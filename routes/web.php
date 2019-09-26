@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::resource('orders', 'OrderController');
+
+Route::resource('photos', 'PhotoController');

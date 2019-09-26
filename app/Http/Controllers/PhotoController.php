@@ -69,7 +69,9 @@ class PhotoController extends Controller
      */
     public function update(Request $request, Photo $photo)
     {
-        //
+        $request->has('status') ? $photo->approve() : $photo->reject();
+
+        return back();
     }
 
     /**
