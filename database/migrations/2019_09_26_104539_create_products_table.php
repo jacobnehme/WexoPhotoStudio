@@ -19,6 +19,8 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->timestamps();
+
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 
