@@ -9,6 +9,16 @@
 </head>
 <body>
 
+<nav class="navigation">
+    <nav>
+        <ul>
+            <li>
+                <a href="{{asset('/')}}">Home</a>
+            </li>
+        </ul>
+    </nav>
+</nav>
+
 @yield('content')
 
 <script src="{{asset('/js/app.js')}}"></script>
