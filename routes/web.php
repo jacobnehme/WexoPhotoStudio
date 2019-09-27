@@ -18,3 +18,7 @@ Route::get('/', function () {
 Route::resource('orders', 'OrderController');
 
 Route::resource('photos', 'PhotoController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
