@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     /**
+     * OrderController constructor.
+     */
+    public function __construct()
+    {
+
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -46,6 +54,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        $this->authorize('view', $order);
+
         return view('orders/show', [
             'order' => $order
         ]);
