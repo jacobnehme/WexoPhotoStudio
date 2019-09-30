@@ -28,7 +28,7 @@
                             {{--                                </form>--}}
                             {{--                            </div>--}}
                             <div class="col-md-12">
-                                <a class="btn btn-primary" href="{{ action('OrderController@create')}}">
+                                <a class="btn btn-primary" href="{{ action('ProductController@create')}}">
                                     Create
                                 </a>
                             </div>
@@ -71,11 +71,6 @@
                         </table>
                     </div>
                 </div>
-
-                <a class="btn btn-primary" href="{{ action('ProductController@create')}}">
-                    Create
-                </a>
-
             </div>
         </div>
     </div>

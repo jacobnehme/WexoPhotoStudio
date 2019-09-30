@@ -6,6 +6,7 @@ use App\Order;
 use App\Product;
 use App\OrderLine;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -50,41 +51,56 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         //TODO transaction, file reader, clean up and more...
+
+        //Validation (goes here)
         $validated = $request->validate([
         ]);
         $validated['user_id'] = auth()->id();
 
-        //File Stuff
-        $products = array();
-        $filePath = $request->file('products')->store('products');
-        $filename = storage_path('/app/'.$filePath);
-        $all_data = array();
-        $file = fopen($filename, "r");
-        while ( ($data = fgetcsv($file, 200, ",")) !==FALSE ) {
-
-            $title = $data[0];
-//            $description = $data[1];
-            $all_data = $title;
-
-            array_push($products, $all_data);
-
-//            Product::create([
-//                'title' => $data[0],
-//                'description' => $data[1],
-//            ]);
-        }
-
-        dd($all_data);
-
+        //Persist Order
         $order = Order::create($validated);
 
-        $products = Product::all();
+        //Upload file
+        $fileName = $request->file('products')->store('products');
+
+        //Prepare array
+        $products = array();
+
+        //Read CSV to array
+        $filePath = storage_path('/app/'.$fileName);
+        $file = fopen($filePath, "r");
+        while ( ($data = fgetcsv($file, 200, ";")) !==FALSE ) {
+            $products[] = [
+                'title' => $data[0],
+                'description' => $data[1],
+            ];
+        }
+        fclose($file);
+        Storage::delete($filePath);
+
+        //Another array TODO refactor pls + only need id's
+        $products2 = array();
+
+        //Persist Products TODO check if exists (need barcode)
         foreach ($products as $product){
+            $id = Product::create([
+                'title' => $product['title'],
+                'description' => $product['description'],
+            ]);
+
+            $product['id'] = $id->id;
+            $products2[] = $product;
+        }
+
+        //Persist OrderLines
+        foreach ($products2 as $product){
             OrderLine::create([
                 'order_id' => $order->id,
-                'product_id' => $product->id,
+                'product_id' => $product['id'],
             ]);
         }
+
+        //Redirect to index TODO maybe created order?
         return redirect('/orders');
     }
 
