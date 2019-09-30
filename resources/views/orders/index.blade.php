@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        Dashboard - Products
+                        Dashboard - Orders
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -41,7 +41,7 @@
             <div class="col-md-8">
 
                 <div class="card">
-                    <div class="card-header">All Products (dev)</div>
+                    <div class="card-header">All Orders (dev)</div>
 
                     <div class="card-body">
 

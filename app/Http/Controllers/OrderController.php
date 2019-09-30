@@ -14,7 +14,7 @@ class OrderController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -49,10 +49,32 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //TODO transaction, products, clean up and more...
+        //TODO transaction, file reader, clean up and more...
         $validated = $request->validate([
         ]);
         $validated['user_id'] = auth()->id();
+
+        //File Stuff
+        $products = array();
+        $filePath = $request->file('products')->store('products');
+        $filename = storage_path('/app/'.$filePath);
+        $all_data = array();
+        $file = fopen($filename, "r");
+        while ( ($data = fgetcsv($file, 200, ",")) !==FALSE ) {
+
+            $title = $data[0];
+//            $description = $data[1];
+            $all_data = $title;
+
+            array_push($products, $all_data);
+
+//            Product::create([
+//                'title' => $data[0],
+//                'description' => $data[1],
+//            ]);
+        }
+
+        dd($all_data);
 
         $order = Order::create($validated);
 
