@@ -11,6 +11,12 @@ class Photo extends Model
         'status'
     ];
 
+    //TODO should be photographer
+//    public function user()
+//    {
+//        return $this->hasOne(User::class);
+//    }
+
     public function Product()
     {
         return $this->belongsTo(Product::class);
