@@ -12,13 +12,17 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
-Route::resource('orders', 'OrderController');
-
-Route::resource('photos', 'PhotoController');
+Route::get('/test', function () {
+    return view('test');
+});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Resources
+Route::resource('orders', 'OrderController');
+Route::resource('photos', 'PhotoController');
