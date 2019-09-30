@@ -54,6 +54,7 @@ class OrderController extends Controller
 
         //Validation (goes here)
         $validated = $request->validate([
+            'products' => 'required|mimes:txt'
         ]);
         $validated['user_id'] = auth()->id();
 
