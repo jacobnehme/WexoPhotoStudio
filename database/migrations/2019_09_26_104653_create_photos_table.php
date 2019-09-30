@@ -18,6 +18,8 @@ class CreatePhotosTable extends Migration
             $table->unsignedInteger('product_id');
             $table->boolean('status')->default(false);
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

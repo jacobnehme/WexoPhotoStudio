@@ -1,45 +1,56 @@
-@extends('layout')
-
-@section('title', "Order")
+@extends('layouts/app')
 
 @section('content')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
 
-    <h1>Order: #{{$order->id}}</h1>
+                <div class="card">
+                    <div class="card-header">Order: #{{$order->id}}</div>
 
-    @if($order->products->count())
-        <div>
-            <table>
-                <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Photos</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($order->products as $product)
-                    <tr>
-                        <td>{{$product->title}}</td>
-                        <td class="flex">
-                            @if($product->photos->count())
-                                @foreach($product->photos as $photo)
-                                    <img src="https://place-hold.it/200x200" alt="">
+                    <div class="card-body">
 
-                                    <form action="{{ action('PhotoController@update', $photo->id)}}" method="POST">
-                                        @method('PATCH')
-                                        @Csrf
-                                        <label for="checkbox">
-                                            <input type="checkbox" name="status"
-                                                   onchange="this.form.submit()" {{$photo->status ? 'checked' : ''}}>
-                                        </label>
-                                    </form>
-                                @endforeach
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+                        @if($order->orderLines->count())
+                            <div>
+                                <table class="container-fluid">
+                                    <thead>
+                                    <tr class="row">
+                                        <th class="col-md-4">Product</th>
+                                        <th class="col-md-4">Photos</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($order->orderLines as $orderLine)
+                                        <tr class="row">
+                                            <td class="col-md-4">{{$orderLine->product->title}}</td>
+                                            <td class="col-md-4">
+                                                @if($orderLine->product->photos->count())
+                                                    @foreach($orderLine->product->photos as $photo)
+                                                        <img src="https://place-hold.it/200x200" alt="">
+
+                                                        <form action="{{ action('PhotoController@update', $photo->id)}}"
+                                                              method="POST">
+                                                            @method('PATCH')
+                                                            @Csrf
+                                                            <label for="checkbox">
+                                                                <input type="checkbox" name="status"
+                                                                       onchange="this.form.submit()" {{$photo->status ? 'checked' : ''}}>
+                                                            </label>
+                                                        </form>
+                                                    @endforeach
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
-    @endif
+    </div>
+    </div>
 
 @endsection

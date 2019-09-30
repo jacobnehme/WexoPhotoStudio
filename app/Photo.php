@@ -7,8 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Photo extends Model
 {
     protected $fillable = [
+        'product_id',
         'status'
     ];
+
+    //TODO should be photographer
+//    public function user()
+//    {
+//        return $this->hasOne(User::class);
+//    }
 
     public function Product()
     {
