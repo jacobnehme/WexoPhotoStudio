@@ -2,20 +2,16 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
-@import 'variables';
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Variables
+@import 'variables';
 
 // Bootstrap Sass
 $icon-font-path: '../fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
-.test{
-    color: deeppink;
-}
+// Style
 
-.flex{
-    display: flex;
-}
+
