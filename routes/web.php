@@ -25,4 +25,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // Resources
 Route::resource('orders', 'OrderController');
+Route::resource('products', 'ProductController');
 Route::resource('photos', 'PhotoController');

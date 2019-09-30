@@ -8,13 +8,25 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     /**
+     * ProductController constructor.
+     */
+    public function __construct()
+    {
+        //$this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $products = Product::all();
+
+        return view('products/index', [
+            'products' => $products
+        ]);
     }
 
     /**
@@ -24,7 +36,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products/create');
     }
 
     /**
@@ -35,7 +47,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => ['required', 'min:3', 'max:255'],
+            'description' => ['required', 'min:3', 'max:255']
+        ]);
+
+        Product::create($validated);
+
+        return redirect('/products');
     }
 
     /**

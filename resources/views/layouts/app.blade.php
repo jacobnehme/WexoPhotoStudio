@@ -34,6 +34,37 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
 
+                        <li class="nav-item dropdown">
+
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Orders (dev)
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ action('OrderController@index')}}">
+                                    All Orders
+                                </a>
+                                <a class="dropdown-item" href="{{ action('OrderController@create')}}">
+                                    Create Order
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Products (dev)
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ action('ProductController@index')}}">
+                                    All Products
+                                </a>
+                                <a class="dropdown-item" href="{{ action('ProductController@create')}}">
+                                    Create Product
+                                </a>
+                            </div>
+                        </li>
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->

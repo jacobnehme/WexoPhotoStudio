@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <h1>Order: #{{$order->id}}</h1>
 
-                @if($order->products->count())
+                @if($order->orderLines->count())
                     <div>
                         <table>
                             <thead>
@@ -16,12 +16,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($order->products as $product)
+                            @foreach($order->orderLines as $orderLine)
                                 <tr>
-                                    <td>{{$product->title}}</td>
+                                    <td>{{$orderLine->product->title}}</td>
                                     <td>
-                                        @if($product->photos->count())
-                                            @foreach($product->photos as $photo)
+                                        @if($orderLine->product->photos->count())
+                                            @foreach($orderLine->product->photos as $photo)
                                                 <img src="https://place-hold.it/200x200" alt="">
 
                                                 <form action="{{ action('PhotoController@update', $photo->id)}}"
