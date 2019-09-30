@@ -83,22 +83,22 @@ class OrderController extends Controller
         $products2 = array();
 
         //Persist Products TODO check if exists (need barcode)
-        foreach ($products as $product){
+        foreach ($products as $p){
 
             //If not exists persist product
-            $existingProduct = Product::where('title', $product['title'])->first();
+            $existingProduct = Product::where('title', $p['title'])->first();
             if ($existingProduct == null) {
-                $id = Product::create([
-                    'title' => $product['title'],
-                    'description' => $product['description'],
+                $product = Product::create([
+                    'title' => $p['title'],
+                    'description' => $p['description'],
                 ]);
             }
             else
             {
-                $id = $existingProduct;
+                $product = $existingProduct;
             }
 
-            $product['id'] = $id->id;
+            $product['id'] = $product->id;
             $products2[] = $product;
         }
 
