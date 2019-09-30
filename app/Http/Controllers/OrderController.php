@@ -73,7 +73,10 @@ class OrderController extends Controller
             ];
         }
         fclose($file);
-        Storage::delete($filePath);
+
+        //Delete file after use?
+        //$fileInfo = explode('/', $fileName);
+        Storage::delete($fileName);
 
         //Another array TODO refactor pls + only need id's
         $products2 = array();
