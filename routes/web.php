@@ -11,17 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-
-Route::get('/test', function () {
-    return view('test');
-});
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 // Resources
 Route::resource('orders', 'OrderController');

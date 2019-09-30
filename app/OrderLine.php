@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderLine extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'order_id',
+        'product_id',
+    ];
+
     public function order()
     {
         return $this->belongsTo(Order::class);
@@ -13,6 +23,6 @@ class OrderLine extends Model
 
     public function product()
     {
-        return $this->hasOne(Product::class);
+        return $this->belongsTo(Product::class);
     }
 }

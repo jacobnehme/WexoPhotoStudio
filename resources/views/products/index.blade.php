@@ -36,6 +36,11 @@
                         </table>
                     </div>
                 </div>
+
+                <a class="btn btn-primary" href="{{ action('ProductController@create')}}">
+                    Create
+                </a>
+
             </div>
         </div>
     </div>
