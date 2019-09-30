@@ -57,7 +57,7 @@
                             @foreach($orders as $order)
                                 <tr class="row">
                                     <td class="col-md-4">
-                                        {{$order->user->name}}
+                                        {{$order->user->email}}
                                     </td>
                                     <td class="col-md-4">
                                         {{date('j F, Y', strtotime($order->created_at))}}

@@ -57,9 +57,6 @@ class OrderController extends Controller
         ]);
         $validated['user_id'] = auth()->id();
 
-        //Persist Order
-        $order = Order::create($validated);
-
         //Upload file
         $fileName = $request->file('products')->store('products');
 
@@ -83,14 +80,26 @@ class OrderController extends Controller
 
         //Persist Products TODO check if exists (need barcode)
         foreach ($products as $product){
-            $id = Product::create([
-                'title' => $product['title'],
-                'description' => $product['description'],
-            ]);
+
+            //If not exists persist product
+            $existingProduct = Product::where('title', $product['title'])->first();
+            if ($existingProduct == null) {
+                $id = Product::create([
+                    'title' => $product['title'],
+                    'description' => $product['description'],
+                ]);
+            }
+            else
+            {
+                $id = $existingProduct;
+            }
 
             $product['id'] = $id->id;
             $products2[] = $product;
         }
+
+        //Persist Order
+        $order = Order::create($validated);
 
         //Persist OrderLines
         foreach ($products2 as $product){
