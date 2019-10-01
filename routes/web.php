@@ -20,3 +20,4 @@ Auth::routes();
 Route::resource('orders', 'OrderController');
 Route::resource('products', 'ProductController');
 Route::resource('photos', 'PhotoController');
+Route::resource('photoLines', 'PhotoLineController');

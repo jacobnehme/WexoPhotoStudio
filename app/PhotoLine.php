@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PhotoLine extends Model
 {
     protected $fillable = [
-        'order_id',
+        'order_line_id',
         'photo_id',
         'status'
     ];
@@ -15,5 +15,15 @@ class PhotoLine extends Model
     public function photo()
     {
         return $this->belongsTo(Photo::class);
+    }
+
+    public function approve($status = true)
+    {
+        $this->update(['status' => $status]);
+    }
+
+    public function reject()
+    {
+        $this->approve(false);
     }
 }

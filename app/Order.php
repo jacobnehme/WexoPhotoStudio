@@ -26,10 +26,5 @@ class Order extends Model
         return $this->hasMany(OrderLine::class);
     }
 
-    public function photoLines()
-    {
-        return $this->hasMany(PhotoLine::class);
-    }
-
     //TODO hasManyThrough Product, OrderLine
 }

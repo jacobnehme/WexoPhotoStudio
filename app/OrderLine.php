@@ -25,4 +25,9 @@ class OrderLine extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function photoLines()
+    {
+        return $this->hasMany(PhotoLine::class);
+    }
 }

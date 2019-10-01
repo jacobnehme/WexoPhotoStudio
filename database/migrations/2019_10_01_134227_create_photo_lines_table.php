@@ -15,10 +15,13 @@ class CreatePhotoLinesTable extends Migration
     {
         Schema::create('photo_lines', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('order_id');
+            $table->unsignedInteger('order_line_id');
             $table->unsignedInteger('photo_id');
             $table->boolean('status')->default(false);
             $table->timestamps();
+
+            $table->foreign('orderLine_id')->references('id')->on('order_lines');
+            $table->foreign('photo_id')->references('id')->on('photos');
         });
     }
 

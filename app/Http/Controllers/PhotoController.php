@@ -39,7 +39,7 @@ class PhotoController extends Controller
         //TODO mime validation gives me errors
         //Validation
         $validated = $request->validate([
-            'order_id' => 'required',
+            'orderLine_id' => 'required',
             'product_id' => 'required',
             'photo' => 'required',
         ]);
@@ -56,7 +56,7 @@ class PhotoController extends Controller
 
         //Persist photoLine
         PhotoLine::create([
-            'order_id' => (int) $validated['order_id'],
+            'order_line_id' => (int) $validated['orderLine_id'],
             'photo_id' => $Photo->id,
         ]);
 

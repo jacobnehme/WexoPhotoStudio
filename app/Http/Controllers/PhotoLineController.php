@@ -69,7 +69,10 @@ class PhotoLineController extends Controller
      */
     public function update(Request $request, PhotoLine $photoLine)
     {
-        //
+        //TODO move to
+        $request->has('status') ? $photoLine->approve() : $photoLine->reject();
+
+        return back();
     }
 
     /**

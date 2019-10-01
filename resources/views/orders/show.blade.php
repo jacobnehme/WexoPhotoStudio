@@ -29,9 +29,9 @@
                                                 {{$orderLine->product->description}} <br>
                                             </td>
                                             <td class="col-md-6">
-                                                @if($order->photoLines->count())
+                                                @if($orderLine->photoLines->count())
                                                     <div class="row">
-                                                        @foreach($order->photoLines as $photoLine)
+                                                        @foreach($orderLine->photoLines as $photoLine)
                                                             <div class="col-md-4">
                                                                 <img class="img-fluid"
                                                                      src="{{asset('../storage/app/public/'.$photoLine->photo->path)}}"
@@ -40,10 +40,10 @@
                                                         @endforeach
                                                     </div>
                                                     <div class="row">
-                                                        @foreach($order->photoLines as $photoLine)
+                                                        @foreach($orderLine->photoLines as $photoLine)
                                                             <div class="col-md-4">
                                                                 <form
-                                                                    action="{{ action('PhotoController@update', $photoLine->id)}}"
+                                                                    action="{{ action('PhotoLineController@update', $photoLine->id)}}"
                                                                     method="POST">
                                                                     @method('PATCH')
                                                                     @Csrf
@@ -64,8 +64,8 @@
                                                       enctype="multipart/form-data">
                                                     @csrf
 
-                                                    <input type="hidden" name="order_id"
-                                                           value={{ $order->id }}>
+                                                    <input type="hidden" name="orderLine_id"
+                                                           value={{ $orderLine->id }}>
                                                     <input type="hidden" name="product_id"
                                                            value={{ $orderLine->product->id }}>
 

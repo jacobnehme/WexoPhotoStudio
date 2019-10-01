@@ -10,7 +10,6 @@ class Photo extends Model
         'user_id',
         'product_id',
         'path',
-        'status'
     ];
 
     //TODO should be photographer
@@ -27,15 +26,5 @@ class Photo extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function approve($status = true)
-    {
-        $this->update(['status' => $status]);
-    }
-
-    public function reject()
-    {
-        $this->approve(false);
     }
 }
