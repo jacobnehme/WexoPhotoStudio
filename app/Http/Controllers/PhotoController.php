@@ -51,7 +51,7 @@ class PhotoController extends Controller
             'photo' => $fileName,
         ]);
 
-        return redirect('/products');
+        return redirect('/products/'.(int) $validated['product_id']);
     }
 
     /**

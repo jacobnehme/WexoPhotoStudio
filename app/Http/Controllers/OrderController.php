@@ -116,7 +116,7 @@ class OrderController extends Controller
         }
 
         //Redirect to index TODO maybe created order?
-        return redirect('/orders');
+        return redirect('/orders/'.$order->id);
     }
 
     /**
