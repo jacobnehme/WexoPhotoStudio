@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Photo extends Model
 {
     protected $fillable = [
+        'user_id',
         'product_id',
+        'photo',
         'status'
     ];
 
@@ -17,9 +19,14 @@ class Photo extends Model
 //        return $this->hasOne(User::class);
 //    }
 
-    public function Product()
+    public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function approve($status = true)

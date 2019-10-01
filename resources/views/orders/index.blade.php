@@ -64,7 +64,7 @@
                                     </td>
                                     <td class="col-md-4">
 {{--                                        TODO Add glyphicons--}}
-                                        <a href="{{ action('OrderController@show', $order->id)}}" class="glyphicon glyphicon-plus">Details</a>
+                                        <a href="{{ action('OrderController@show', $order->id)}}">Details</a>
 
 {{--                                        TODO Edit? Delete?--}}
 {{--                                        <a href="{{ action('OrderController@edit', $order->id)}}"></a>--}}

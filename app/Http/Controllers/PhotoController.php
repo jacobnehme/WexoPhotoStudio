@@ -35,7 +35,23 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validation
+        $validated = $request->validate([
+            'product_id' => 'required',
+            'photo' => 'required',
+        ]);
+
+        //Upload photo
+        $fileName = $request->file('photo')->store('photos', 'public');
+
+        // Persist Photo
+        Photo::create([
+            'user_id' => auth()->id(),
+            'product_id' => (int) $validated['product_id'],
+            'photo' => $fileName,
+        ]);
+
+        return redirect('/products');
     }
 
     /**

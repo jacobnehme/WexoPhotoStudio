@@ -17,12 +17,12 @@ class Product extends Model
         'description',
     ];
 
-    public function OrderLine()
+    public function orderLine()
     {
         return $this->belongsTo(OrderLine::class);
     }
 
-    public function Photos()
+    public function photos()
     {
         return $this->hasMany(Photo::class);
     }

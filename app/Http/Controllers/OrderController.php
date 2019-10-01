@@ -50,7 +50,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //TODO transaction, file reader, clean up and more...
+        //TODO transaction, encapsulation, clean up and more...
 
         //Validation (goes here)
         $validated = $request->validate([
@@ -83,7 +83,7 @@ class OrderController extends Controller
         //Another array TODO refactor pls + only need id's
         $products2 = array();
 
-        //Persist Products TODO check if exists (need barcode)
+        //Persist Products
         foreach ($products as $p){
 
             //If not exists persist product

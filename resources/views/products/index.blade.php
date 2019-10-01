@@ -48,26 +48,22 @@
                         <table class="container-fluid">
                             <thead>
                             <tr class="row">
-                                <th class="col-md-3">Barcode</th>
-                                <th class="col-md-3">Title</th>
-                                <th class="col-md-3">Description</th>
-                                <th class="col-md-3">Created</th>
+                                <th class="col-md-4">Barcode</th>
+                                <th class="col-md-4">Title</th>
+                                <th class="col-md-4">Options</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($products as $product)
                                 <tr class="row">
-                                    <td class="col-md-3">
+                                    <td class="col-md-4">
                                         {{$product->barcode}}
                                     </td>
-                                    <td class="col-md-3">
+                                    <td class="col-md-4">
                                         {{$product->title}}
                                     </td>
-                                    <td class="col-md-3">
-                                        {{$product->description}}
-                                    </td>
-                                    <td class="col-md-3">
-                                        {{date('j F, Y', strtotime($product->created_at))}}
+                                    <td class="col-md-4">
+                                        <a href="{{ action('ProductController@show', $product->id)}}">Details</a>
                                     </td>
                                 </tr>
                             @endforeach
