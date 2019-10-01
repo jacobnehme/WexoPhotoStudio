@@ -29,7 +29,7 @@
                                                         @foreach($orderLine->product->photos as $photo)
                                                             <div class="col-md-4">
                                                                 <img class="img-fluid"
-                                                                     src="{{asset('../storage/app/public/'.$photo->photo)}}"
+                                                                     src="{{asset('../storage/app/public/'.$photo->path)}}"
                                                                      alt="">
                                                             </div>
                                                         @endforeach
