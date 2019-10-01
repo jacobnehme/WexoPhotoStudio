@@ -12,7 +12,9 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description',
+        'barcode',
+        'title',
+        'description',
     ];
 
     public function OrderLine()

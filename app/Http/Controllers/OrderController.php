@@ -69,8 +69,9 @@ class OrderController extends Controller
         $file = fopen($filePath, "r");
         while ( ($data = fgetcsv($file, 200, ";")) !==FALSE ) {
             $products[] = [
-                'title' => $data[0],
-                'description' => $data[1],
+                'barcode' => $data[0],
+                'title' => $data[1],
+                'description' => $data[2],
             ];
         }
         fclose($file);
@@ -86,9 +87,10 @@ class OrderController extends Controller
         foreach ($products as $p){
 
             //If not exists persist product
-            $existingProduct = Product::where('title', $p['title'])->first();
+            $existingProduct = Product::where('barcode', $p['barcode'])->first();
             if ($existingProduct == null) {
                 $product = Product::create([
+                    'barcode' => $p['barcode'],
                     'title' => $p['title'],
                     'description' => $p['description'],
                 ]);

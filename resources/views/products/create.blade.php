@@ -13,6 +13,20 @@
                             @csrf
 
                             <div class="form-group row">
+                                <label for="barcode" class="col-md-4 col-form-label text-md-right">Barcode</label>
+
+                                    <div class="col-md-6">
+                                    <input id="barcode" type="text" class="form-control{{ $errors->has('barcode') ? ' is-invalid' : '' }}" name="barcode" value="{{ old('barcode') }}" required autofocus>
+
+                                    @if ($errors->has('barcode'))
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('barcode') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
 
                                 <div class="col-md-6">

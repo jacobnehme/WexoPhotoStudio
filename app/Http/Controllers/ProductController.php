@@ -48,6 +48,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'barcode' => ['required', 'min:1', 'max:255'],
             'title' => ['required', 'min:3', 'max:255'],
             'description' => ['required', 'min:3', 'max:255']
         ]);
