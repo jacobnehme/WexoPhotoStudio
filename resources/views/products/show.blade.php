@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center">
+        {{--<div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Upload Photo</div>
@@ -46,7 +46,7 @@
                         <form method="POST" action="{{ action('PhotoController@store')}}" enctype="multipart/form-data">
                             @csrf
 
-                            {{--                            {{ Form::hidden('product_id', $product->id) }}--}}
+                            --}}{{--                            {{ Form::hidden('product_id', $product->id) }}--}}{{--
                             <input type="hidden" name="product_id" value={{ $product->id }}>
 
                             <div class="form-group row">
@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--}}
 
         <div class="row justify-content-center">
             <div class="col-md-8">

@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
 
                 <div class="card">
                     <div class="card-header">Order: #{{$order->id}}</div>
@@ -16,14 +16,19 @@
                                     <thead>
                                     <tr class="row">
                                         <th class="col-md-3">Product</th>
-                                        <th class="col-md-9">Photos</th>
+                                        <th class="col-md-6">Photos</th>
+                                        <th class="col-md-3">Upload</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($order->orderLines as $orderLine)
                                         <tr class="row">
-                                            <td class="col-md-3">{{$orderLine->product->title}}</td>
-                                            <td class="col-md-9">
+                                            <td class="col-md-3">
+                                                {{$orderLine->product->barcode}} <br>
+                                                {{$orderLine->product->title}} <br>
+                                                {{$orderLine->product->description}} <br>
+                                            </td>
+                                            <td class="col-md-6">
                                                 @if($orderLine->product->photos->count())
                                                     <div class="row">
                                                         @foreach($orderLine->product->photos as $photo)
@@ -34,24 +39,50 @@
                                                             </div>
                                                         @endforeach
                                                     </div>
-                                                <div class="row">
-                                                    @foreach($orderLine->product->photos as $photo)
-                                                        <div class="col-md-4">
-                                                            <form
-                                                                action="{{ action('PhotoController@update', $photo->id)}}"
-                                                                method="POST">
-                                                                @method('PATCH')
-                                                                @Csrf
-                                                                <label for="checkbox" class="btn btn-primary" style="width: 100%;">
-                                                                    Approve
-                                                                    <input type="checkbox" name="status"
-                                                                           onchange="this.form.submit()" {{$photo->status ? 'checked' : ''}}>
-                                                                </label>
-                                                            </form>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
+                                                    <div class="row">
+                                                        @foreach($orderLine->product->photos as $photo)
+                                                            <div class="col-md-4">
+                                                                <form
+                                                                    action="{{ action('PhotoController@update', $photo->id)}}"
+                                                                    method="POST">
+                                                                    @method('PATCH')
+                                                                    @Csrf
+                                                                    <label for="checkbox" class="btn btn-primary"
+                                                                           style="width: 100%;">
+                                                                        <input type="checkbox" name="status"
+                                                                               onchange="this.form.submit()" {{$photo->status ? 'checked' : ''}}>
+                                                                    </label>
+                                                                </form>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
                                                 @endif
+                                            </td>
+
+                                            <td class="col-md-3">
+                                                <form method="POST" action="{{ action('PhotoController@store')}}"
+                                                      enctype="multipart/form-data">
+                                                    @csrf
+
+                                                    <input type="hidden" name="order_id"
+                                                           value={{ $order->id }}>
+                                                    <input type="hidden" name="product_id"
+                                                           value={{ $orderLine->product->id }}>
+
+                                                    <div class="form-group row">
+                                                        <input id="photo" type="file"
+                                                               class="form-control{{ $errors->has('photo') ? ' is-invalid' : '' }}"
+                                                               name="photo" value="{{ old('photo') }}"
+                                                               onchange="this.form.submit()"
+                                                               style="padding: 0; height: auto" required>
+
+                                                        @if ($errors->has('photo'))
+                                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('photo') }}</strong>
+                                    </span>
+                                                        @endif
+                                                    </div>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach

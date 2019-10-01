@@ -38,6 +38,7 @@ class PhotoController extends Controller
         //TODO mime validation gives me errors
         //Validation
         $validated = $request->validate([
+            'order_id' => 'required',
             'product_id' => 'required',
             'photo' => 'required',
         ]);
@@ -46,13 +47,20 @@ class PhotoController extends Controller
         $fileName = $request->file('photo')->store('photos', 'public');
 
         // Persist Photo
-        Photo::create([
+        $Photo = Photo::create([
             'user_id' => auth()->id(),
             'product_id' => (int) $validated['product_id'],
             'path' => $fileName,
         ]);
 
-        return redirect('/products/'.(int) $validated['product_id']);
+        //Persist photoLine
+        PhotoLine::create([
+            'order_id' => (int) $validated['order_id'],
+            'photo_id' => $Photo->id,
+        ]);
+
+        //return redirect('/products/'.(int) $validated['product_id']);
+        return back();
     }
 
     /**
