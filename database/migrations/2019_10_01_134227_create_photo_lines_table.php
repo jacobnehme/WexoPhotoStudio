@@ -20,7 +20,7 @@ class CreatePhotoLinesTable extends Migration
             $table->boolean('status')->default(false);
             $table->timestamps();
 
-            $table->foreign('orderLine_id')->references('id')->on('order_lines');
+            $table->foreign('order_line_id')->references('id')->on('order_lines');
             $table->foreign('photo_id')->references('id')->on('photos');
         });
     }
