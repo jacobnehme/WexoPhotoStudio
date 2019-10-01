@@ -35,6 +35,7 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
+        //TODO mime validation gives me errors
         //Validation
         $validated = $request->validate([
             'product_id' => 'required',
@@ -48,7 +49,7 @@ class PhotoController extends Controller
         Photo::create([
             'user_id' => auth()->id(),
             'product_id' => (int) $validated['product_id'],
-            'photo' => $fileName,
+            'path' => $fileName,
         ]);
 
         return redirect('/products/'.(int) $validated['product_id']);
@@ -85,6 +86,7 @@ class PhotoController extends Controller
      */
     public function update(Request $request, Photo $photo)
     {
+        //TODO move to
         $request->has('status') ? $photo->approve() : $photo->reject();
 
         return back();
