@@ -29,28 +29,28 @@
                                                 {{$orderLine->product->description}} <br>
                                             </td>
                                             <td class="col-md-6">
-                                                @if($orderLine->product->photos->count())
+                                                @if($order->photoLines->count())
                                                     <div class="row">
-                                                        @foreach($orderLine->product->photos as $photo)
+                                                        @foreach($order->photoLines as $photoLine)
                                                             <div class="col-md-4">
                                                                 <img class="img-fluid"
-                                                                     src="{{asset('../storage/app/public/'.$photo->path)}}"
+                                                                     src="{{asset('../storage/app/public/'.$photoLine->photo->path)}}"
                                                                      alt="">
                                                             </div>
                                                         @endforeach
                                                     </div>
                                                     <div class="row">
-                                                        @foreach($orderLine->product->photos as $photo)
+                                                        @foreach($order->photoLines as $photoLine)
                                                             <div class="col-md-4">
                                                                 <form
-                                                                    action="{{ action('PhotoController@update', $photo->id)}}"
+                                                                    action="{{ action('PhotoController@update', $photoLine->id)}}"
                                                                     method="POST">
                                                                     @method('PATCH')
                                                                     @Csrf
                                                                     <label for="checkbox" class="btn btn-primary"
                                                                            style="width: 100%;">
                                                                         <input type="checkbox" name="status"
-                                                                               onchange="this.form.submit()" {{$photo->status ? 'checked' : ''}}>
+                                                                               onchange="this.form.submit()" {{$photoLine->status ? 'checked' : ''}}>
                                                                     </label>
                                                                 </form>
                                                             </div>

@@ -18,7 +18,8 @@ class CreatePhotosTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('product_id');
             $table->string('path');
-            $table->boolean('status')->default(false);
+            //Moved to photoLine
+            //$table->boolean('status')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
