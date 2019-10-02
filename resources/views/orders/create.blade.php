@@ -6,7 +6,7 @@
             <div class="col-md-8">
 
                 <div class="card">
-                    <div class="card-header">Create Order (dev)</div>
+                    <div class="card-header">Create Order</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ action('OrderController@store')}}" enctype="multipart/form-data">

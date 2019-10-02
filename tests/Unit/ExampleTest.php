@@ -13,6 +13,8 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
+
+    //TODO tests needs refactoring
     public function testApprove()
     {
         $photo = Photo::Create([

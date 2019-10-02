@@ -15,16 +15,16 @@
                                 <tr class="row">
                                     <th class="col-md-3">Product</th>
                                     <th class="col-md-6">Photos</th>
-                                    <th class="col-md-3">Upload</th>
+                                    <th class="col-md-3">Upload (dev)</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($order->orderLines as $orderLine)
                                     <tr class="row">
                                         <td class="col-md-3">
-                                            {{$orderLine->product->barcode}} <br>
-                                            {{$orderLine->product->title}} <br>
-                                            {{$orderLine->product->description}} <br>
+                                            <strong>Order ID: </strong>#{{$orderLine->product->barcode}} <br>
+                                            <strong>Title: </strong>{{$orderLine->product->title}} <br>
+                                            <strong>Description: </strong>{{$orderLine->product->description}} <br>
                                         </td>
                                         <td class="col-md-6">
                                             @if($orderLine->photoLines->count())
@@ -45,8 +45,7 @@
                                                                 method="POST">
                                                                 @method('PATCH')
                                                                 @Csrf
-                                                                <label for="checkbox" class="btn btn-primary"
-                                                                       style="width: 100%;">
+                                                                <label for="checkbox" class="btn btn-primary">
                                                                     <input type="checkbox" name="status"
                                                                            onchange="this.form.submit()" {{$photoLine->status ? 'checked' : ''}}>
                                                                 </label>
@@ -56,6 +55,8 @@
                                                 </div>
                                             @endif
                                         </td>
+
+{{--                                        TODO only show for admin--}}
                                         <td class="col-md-3">
                                             <form method="POST" action="{{ action('PhotoController@store')}}"
                                                   enctype="multipart/form-data">
@@ -67,11 +68,10 @@
                                                        value={{ $orderLine->product->id }}>
 
                                                 <div class="form-group row">
-                                                    <input id="photo" type="file"
+                                                    <input type="file"
                                                            class="form-control{{ $errors->has('photo') ? ' is-invalid' : '' }}"
                                                            name="photo" value="{{ old('photo') }}"
-                                                           onchange="this.form.submit()"
-                                                           style="padding: 0; height: auto" required>
+                                                           onchange="this.form.submit()"  placeholder="" required>
 
                                                     @if ($errors->has('photo'))
                                                         <span class="invalid-feedback" role="alert">

@@ -10644,3 +10644,24 @@ a.text-dark:focus {
   }
 }
 
+thead tr {
+  border-bottom: 2px solid #F7F7F7;
+}
+
+tbody tr {
+  padding: 10px 0;
+}
+
+tbody tr:nth-of-type(even) {
+  background: #F7F7F7;
+}
+
+label.btn {
+  width: 100%;
+}
+
+input[name=photo] {
+  height: auto;
+  width: 100%;
+}
+

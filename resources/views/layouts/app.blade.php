@@ -35,54 +35,25 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
 
-
                 <ul class="navbar-nav mr-auto">
-
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ action('ProductController@index')}}">
                             Products
                         </a>
-
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ action('ProductController@index')}}">
-                                All Products
-                            </a>
-
-                            @guest
-                            @else
-                                <a class="dropdown-item" href="{{ action('ProductController@create')}}">
-                                    Create Product (dev)
-                                </a>
-                            @endguest
-                        </div>
                     </li>
 
-                    @guest
-                    @else
-                        <li class="nav-item dropdown">
-
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Orders
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ action('OrderController@index')}}">
-                                    My Orders
-                                </a>
-                                <a class="dropdown-item" href="{{ action('OrderController@create')}}">
-                                    Create Order
-                                </a>
-                            </div>
-                        </li>
-                    @endguest
+                    @auth
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ action('OrderController@create')}}">
+                            Order
+                        </a>
+                    </li>
+                    @endauth
                 </ul>
-
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
-                    <!-- Authentication Links -->
+                    <!-- Authentication Links + more -->
                     @guest
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -98,8 +69,20 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->email }} <span class="caret"></span>
                             </a>
-
+                            
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
+                                {{--                                TODO Only show for admin--}}
+{{--                                @auth('admin')--}}
+                                <a class="dropdown-item" href="{{ action('ProductController@create')}}">
+                                    Create Product (dev)
+                                </a>
+{{--                                @endauth--}}
+
+                                <a class="dropdown-item" href="{{ action('OrderController@index')}}">
+                                    My Orders
+                                </a>
+
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -111,6 +94,32 @@
                                     @csrf
                                 </form>
                             </div>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
+                                {{--                                TODO Only show for admin--}}
+                                {{--                                @auth('admin')--}}
+                                <a class="dropdown-item" href="{{ action('ProductController@create')}}">
+                                    Create Product (dev)
+                                </a>
+                                {{--                                @endauth--}}
+
+                                <a class="dropdown-item" href="{{ action('OrderController@index')}}">
+                                    My Orders
+                                </a>
+
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                      style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+
                         </li>
                     @endguest
                 </ul>
