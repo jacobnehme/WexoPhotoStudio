@@ -10656,12 +10656,12 @@ tbody tr:nth-of-type(even) {
   background: #F7F7F7;
 }
 
-label.btn {
-  width: 100%;
-}
-
 input[name=photo] {
   height: auto;
+}
+
+label.btn {
+  cursor: pointer;
   width: 100%;
 }
 

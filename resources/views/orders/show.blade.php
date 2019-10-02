@@ -45,9 +45,11 @@
                                                                 method="POST">
                                                                 @method('PATCH')
                                                                 @Csrf
-                                                                <label for="checkbox" class="btn btn-primary">
-                                                                    <input type="checkbox" name="status"
-                                                                           onchange="this.form.submit()" {{$photoLine->status ? 'checked' : ''}}>
+                                                                <label for="status-{{$photoLine->id}}" class="btn btn-{{$photoLine->status ? 'danger' : 'success'}}">
+                                                                    {{$photoLine->status ? 'Reject' : 'Approve'}}
+                                                                    <input type="checkbox" name="status" id="status-{{$photoLine->id}}"
+                                                                           onchange="this.form.submit()" {{$photoLine->status ? 'checked' : ''}}
+                                                                            style="display: none">
                                                                 </label>
                                                             </form>
                                                         </div>

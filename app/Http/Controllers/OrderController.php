@@ -122,8 +122,9 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Order  $order
+     * @param \App\Order $order
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Order $order)
     {
