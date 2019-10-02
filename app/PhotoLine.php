@@ -17,6 +17,12 @@ class PhotoLine extends Model
         return $this->belongsTo(Photo::class);
     }
 
+    public function orderLine()
+    {
+        return $this->belongsTo(OrderLine::class);
+    }
+
+    //TODO more sophisticated status control needed
     public function approve($status = true)
     {
         $this->update(['status' => $status]);

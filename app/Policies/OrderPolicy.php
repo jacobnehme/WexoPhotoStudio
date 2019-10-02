@@ -30,7 +30,7 @@ class OrderPolicy
      */
     public function create(User $user)
     {
-        //
+        return auth()->check();
     }
 
     /**
@@ -42,7 +42,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order)
     {
-        //
+        return $order->user_id == $user->id;
     }
 
     /**
@@ -54,7 +54,7 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order)
     {
-        //
+        return $order->user_id == $user->id;
     }
 
     /**

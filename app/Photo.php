@@ -12,17 +12,12 @@ class Photo extends Model
         'path',
     ];
 
-    //TODO should be photographer
-//    public function user()
-//    {
-//        return $this->hasOne(User::class);
-//    }
-
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
+    //TODO should be photographer
     public function user()
     {
         return $this->belongsTo(User::class);

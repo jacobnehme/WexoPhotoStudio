@@ -60,7 +60,6 @@ class PhotoController extends Controller
             'photo_id' => $Photo->id,
         ]);
 
-        //return redirect('/products/'.(int) $validated['product_id']);
         return back();
     }
 
@@ -95,10 +94,7 @@ class PhotoController extends Controller
      */
     public function update(Request $request, Photo $photo)
     {
-        //TODO move to
-        $request->has('status') ? $photo->approve() : $photo->reject();
-
-        return back();
+        //
     }
 
     /**
