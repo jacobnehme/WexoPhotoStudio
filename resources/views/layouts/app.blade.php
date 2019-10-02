@@ -75,7 +75,7 @@
                                 {{--                                TODO Only show for admin--}}
 {{--                                @auth('admin')--}}
                                 <a class="dropdown-item" href="{{ action('ProductController@create')}}">
-                                    Create Product (dev)
+                                    Create Product
                                 </a>
 {{--                                @endauth--}}
 

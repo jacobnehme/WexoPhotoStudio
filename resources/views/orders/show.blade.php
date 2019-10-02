@@ -13,33 +13,27 @@
                             <table class="container-fluid">
                                 <thead>
                                 <tr class="row">
-                                    <th class="col-md-3">Product</th>
-                                    <th class="col-md-6">Photos</th>
-                                    <th class="col-md-3">Upload (dev)</th>
+                                    <th class="col-md-2">Product</th>
+                                    <th class="col-md-8">Photos</th>
+                                    <th class="col-md-2">Upload (dev)</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($order->orderLines as $orderLine)
                                     <tr class="row">
-                                        <td class="col-md-3">
+                                        <td class="col-md-2">
                                             <strong>Order ID: </strong>#{{$orderLine->product->barcode}} <br>
                                             <strong>Title: </strong>{{$orderLine->product->title}} <br>
                                             <strong>Description: </strong>{{$orderLine->product->description}} <br>
                                         </td>
-                                        <td class="col-md-6">
+                                        <td class="col-md-8">
                                             @if($orderLine->photoLines->count())
                                                 <div class="row">
                                                     @foreach($orderLine->photoLines as $photoLine)
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <img class="img-fluid"
                                                                  src="{{asset('../storage/app/public/'.$photoLine->photo->path)}}"
                                                                  alt="">
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                                <div class="row">
-                                                    @foreach($orderLine->photoLines as $photoLine)
-                                                        <div class="col-md-4">
                                                             <form
                                                                 action="{{ action('PhotoLineController@update', $photoLine->id)}}"
                                                                 method="POST">
@@ -49,7 +43,7 @@
                                                                     {{$photoLine->status ? 'Reject' : 'Approve'}}
                                                                     <input type="checkbox" name="status" id="status-{{$photoLine->id}}"
                                                                            onchange="this.form.submit()" {{$photoLine->status ? 'checked' : ''}}
-                                                                            style="display: none">
+                                                                           style="display: none">
                                                                 </label>
                                                             </form>
                                                         </div>
@@ -59,7 +53,7 @@
                                         </td>
 
 {{--                                        TODO only show for admin--}}
-                                        <td class="col-md-3">
+                                        <td class="col-md-2">
                                             <form method="POST" action="{{ action('PhotoController@store')}}"
                                                   enctype="multipart/form-data">
                                                 @csrf

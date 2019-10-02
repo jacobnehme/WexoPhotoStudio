@@ -41,7 +41,7 @@
             <div class="col-md-8">
 
                 <div class="card">
-                    <div class="card-header">All Orders (dev)</div>
+                    <div class="card-header">My Orders</div>
 
                     <div class="card-body">
 

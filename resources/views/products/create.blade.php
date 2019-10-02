@@ -6,7 +6,10 @@
             <div class="col-md-8">
 
                 <div class="card">
-                    <div class="card-header">Create Product (dev)</div>
+                    <div class="card-header">
+                        Create Product
+                        <i class="text-danger">(dev)</i>
+                    </div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ action('ProductController@store')}}">

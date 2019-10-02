@@ -41,7 +41,10 @@
             <div class="col-md-8">
 
                 <div class="card">
-                    <div class="card-header">All Products (dev)</div>
+                    <div class="card-header">
+                        All Products
+                        <i class="text-danger">(dev)</i>
+                    </div>
 
                     <div class="card-body">
 
