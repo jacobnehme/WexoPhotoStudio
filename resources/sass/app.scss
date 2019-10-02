@@ -2,13 +2,42 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
-@import 'variables';
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// Variables
+@import 'variables';
+
+// Bootstrap Sass
+//$icon-font-path: '../fonts/bootstrap/';
+//@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
+// Style
+
+thead tr{
+    border-bottom: 2px solid #F7F7F7;
 }
+tbody tr{
+    padding: 10px 0;
+
+    &:nth-of-type(even){
+        background: #F7F7F7;
+    }
+}
+
+input[name=photo]{
+    height: auto;
+}
+
+label{
+
+    &.btn {
+        cursor: pointer;
+        width: 100%;
+    }
+}
+
+img{
+    margin-bottom: 5px;
+}
+
