@@ -15,14 +15,16 @@
                                 <tr class="row">
                                     <th class="col-md-2">Product</th>
                                     <th class="col-md-8">Photos</th>
-                                    <th class="col-md-2">Upload (dev)</th>
+                                    <th class="col-md-2">Upload
+                                        <i class="text-danger">(dev)</i>
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($order->orderLines as $orderLine)
                                     <tr class="row">
                                         <td class="col-md-2">
-                                            <strong>Order ID: </strong>#{{$orderLine->product->barcode}} <br>
+                                            <strong>Barcode: </strong>#{{$orderLine->product->barcode}} <br>
                                             <strong>Title: </strong>{{$orderLine->product->title}} <br>
                                             <strong>Description: </strong>{{$orderLine->product->description}} <br>
                                         </td>
@@ -64,10 +66,15 @@
                                                        value={{ $orderLine->product->id }}>
 
                                                 <div class="form-group row">
+                                                    <label for="photo-{{$orderLine->id}}" class="btn btn-primary">
+                                                        Upload to {{$orderLine->product->title}}
+                                                    </label>
                                                     <input type="file"
+                                                           id="photo-{{$orderLine->id}}"
                                                            class="form-control{{ $errors->has('photo') ? ' is-invalid' : '' }}"
                                                            name="photo" value="{{ old('photo') }}"
-                                                           onchange="this.form.submit()"  placeholder="" required>
+                                                           onchange="this.form.submit()"  placeholder="" required
+                                                           style="display:none;">
 
                                                     @if ($errors->has('photo'))
                                                         <span class="invalid-feedback" role="alert">
