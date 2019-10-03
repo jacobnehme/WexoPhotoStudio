@@ -95,14 +95,14 @@
                                 </form>
                             </div>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            {{--<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-                                {{--                                TODO Only show for admin--}}
-                                {{--                                @auth('admin')--}}
+                                --}}{{--                                TODO Only show for admin--}}{{--
+                                --}}{{--                                @auth('admin')--}}{{--
                                 <a class="dropdown-item" href="{{ action('ProductController@create')}}">
                                     Create Product (dev)
                                 </a>
-                                {{--                                @endauth--}}
+                                --}}{{--                                @endauth--}}{{--
 
                                 <a class="dropdown-item" href="{{ action('OrderController@index')}}">
                                     My Orders
@@ -118,7 +118,7 @@
                                       style="display: none;">
                                     @csrf
                                 </form>
-                            </div>
+                            </div>--}}
 
                         </li>
                     @endguest
