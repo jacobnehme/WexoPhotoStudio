@@ -33,18 +33,82 @@
                                                 <div class="row">
                                                     @foreach($orderLine->photoLines as $photoLine)
                                                         <div class="col-md-3">
-                                                            <img class="img-fluid"
-                                                                 src="{{asset('../storage/app/public/'.$photoLine->photo->path)}}"
-                                                                 alt="">
+                                                            <div class="photo">
+                                                                <label
+                                                                    class="btn-@if($photoLine->is_approved === null){{'warning'}}
+                                                                    @else{{$photoLine->is_approved ? 'success' : 'danger'}}@endif">
+                                                                    @if($photoLine->is_approved === null)
+                                                                        Pending...
+                                                                    @else
+                                                                        {{$photoLine->is_approved ? 'Approved...' : 'Rejected...'}}
+                                                                    @endif
+                                                                </label>
+                                                                <img class="img-fluid"
+                                                                     src="{{asset('../storage/app/public/'.$photoLine->photo->path)}}"
+                                                                     alt="">
+                                                            </div>
+                                                            {{--@if($photoLine->is_approved === null)
+                                                                <div class="buttons row">
+                                                                    <form class="col-md-6 "
+                                                                          action="{{ action('PhotoLineController@update', $photoLine->id)}}"
+                                                                          method="POST">
+                                                                        @method('PATCH')
+                                                                        @Csrf
+                                                                        <label for="status-approve-{{$photoLine->id}}"
+                                                                               class="btn btn-success">
+                                                                            Approve
+                                                                            <input type="checkbox" name="status"
+                                                                                   id="status-approve-{{$photoLine->id}}"
+                                                                                   onchange="this.form.submit()"
+                                                                                   checked}
+                                                                                   style="display: none">
+                                                                        </label>
+                                                                    </form>
+                                                                    <form class="col-md-6"
+                                                                          action="{{ action('PhotoLineController@update', $photoLine->id)}}"
+                                                                          method="POST">
+                                                                        @method('PATCH')
+                                                                        @Csrf
+                                                                        <label for="status-reject-{{$photoLine->id}}"
+                                                                               class="btn btn-danger">
+                                                                            Reject
+                                                                            <input type="checkbox" name="status"
+                                                                                   id="status-reject-{{$photoLine->id}}"
+                                                                                   onchange="this.form.submit()" }
+                                                                                   style="display: none">
+                                                                        </label>
+                                                                    </form>
+                                                                </div>
+                                                            @else
+                                                                <form
+                                                                    action="{{ action('PhotoLineController@update', $photoLine->id)}}"
+                                                                    method="POST">
+                                                                    @method('PATCH')
+                                                                    @Csrf
+                                                                    <label for="status-{{$photoLine->id}}"
+                                                                           class="btn btn-{{$photoLine->is_approved ? 'danger' : 'success'}}">
+                                                                        {{$photoLine->is_approved ? 'Reject' : 'Approve'}}
+                                                                        <input type="checkbox" name="status"
+                                                                               id="status-{{$photoLine->id}}"
+                                                                               onchange="this.form.submit()"
+                                                                               {{$photoLine->is_approved ? 'checked' : ''}}
+                                                                               style="display: none">
+                                                                    </label>
+                                                                </form>
+                                                            @endif--}}
+
                                                             <form
                                                                 action="{{ action('PhotoLineController@update', $photoLine->id)}}"
                                                                 method="POST">
                                                                 @method('PATCH')
                                                                 @Csrf
-                                                                <label for="status-{{$photoLine->id}}" class="btn btn-{{$photoLine->status ? 'danger' : 'success'}}">
-                                                                    {{$photoLine->status ? 'Reject' : 'Approve'}}
-                                                                    <input type="checkbox" name="status" id="status-{{$photoLine->id}}"
-                                                                           onchange="this.form.submit()" {{$photoLine->status ? 'checked' : ''}}
+                                                                <label for="status-{{$photoLine->id}}"
+                                                                       class="btn btn-{{$photoLine->is_approved ? 'danger' : 'success'}}">
+                                                                    {{$photoLine->is_approved ? 'Reject' : 'Approve'}}
+                                                                    <input type="checkbox" name="status"
+                                                                           id="status-{{$photoLine->id}}"
+                                                                           onchange="this.form.submit()"
+                                                                           {{$photoLine->is_approved ? 'checked' : ''}}
                                                                            style="display: none">
                                                                 </label>
                                                             </form>
@@ -54,7 +118,7 @@
                                             @endif
                                         </td>
 
-{{--                                        TODO only show for admin--}}
+                                        {{--                                        TODO only show for admin--}}
                                         <td class="col-md-2">
                                             <form method="POST" action="{{ action('PhotoController@store')}}"
                                                   enctype="multipart/form-data">
@@ -73,7 +137,7 @@
                                                            id="photo-{{$orderLine->id}}"
                                                            class="form-control{{ $errors->has('photo') ? ' is-invalid' : '' }}"
                                                            name="photo" value="{{ old('photo') }}"
-                                                           onchange="this.form.submit()"  placeholder="" required
+                                                           onchange="this.form.submit()" placeholder="" required
                                                            style="display:none;">
 
                                                     @if ($errors->has('photo'))
@@ -93,7 +157,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
 @endsection

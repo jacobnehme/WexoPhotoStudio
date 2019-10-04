@@ -17,7 +17,7 @@ class CreatePhotoLinesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('order_line_id');
             $table->unsignedInteger('photo_id');
-            $table->boolean('status')->default(false);
+            $table->boolean('is_approved')->nullable(true)->default(null);
             $table->timestamps();
 
             $table->foreign('order_line_id')->references('id')->on('order_lines');

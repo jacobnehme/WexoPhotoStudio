@@ -10669,3 +10669,13 @@ img {
   margin-bottom: 5px;
 }
 
+.photo label {
+  position: absolute;
+  top: 15px;
+  width: 33%;
+  padding: 2px 5px;
+  font-size: 10px;
+  color: white;
+  box-shadow: black 2px 1px 2px;
+}
+
