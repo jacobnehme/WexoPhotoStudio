@@ -37,7 +37,7 @@
                                                                 <img class="image"
                                                                      src="{{ asset(Storage::url($photoLine->photo->path)) }}"
                                                                      alt="">
-                                                                <div class="newoverlay">
+                                                                <div class="{{ $photoLine->status ? 'approved_overlay' : 'rejected_overlay' }}">
                                                                 </div>
                                                             </div>
                                                             <form class="pt-2"

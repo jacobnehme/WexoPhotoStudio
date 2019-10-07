@@ -38,9 +38,13 @@ label {
 
 .image_wrapper{
   position: relative;
-  &:hover .newoverlay{
-    background-color: rgba(30, 126, 52, 0.46); /* Black background with opacity */
-
+  .approved_overlay{
+    @extend .image_overlay;
+    background-color: rgba(52, 255, 102, 0.4); /* Black background with opacity */
+  }
+  .rejected_overlay{
+    @extend .image_overlay;
+    background-color: rgba(255, 0, 2, 0.41); /* Black background with opacity */
 
   }
 }
@@ -48,15 +52,15 @@ label {
 .image{
   width: 100%;
 }
-.newoverlay {
-  border-radius: 0 0 5px 0;
+.image_overlay {
+
       position: absolute;
       top: 0;
       bottom: 0;
       left: 0;
       right: 0;
       width: 100%; /* Full width (cover the whole page) */
-      height: 100%; /* Full height (cover the whole page) */
+      height: 33%; /* Full height (cover the whole page) */
       //z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
       transition: .5s ease;
 }

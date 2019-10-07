@@ -10669,8 +10669,13 @@ label.btn {
   position: relative;
 }
 
-.image_wrapper:hover .newoverlay {
-  background-color: rgba(30, 126, 52, 0.46);
+.image_wrapper .approved_overlay {
+  background-color: rgba(52, 255, 102, 0.4);
+  /* Black background with opacity */
+}
+
+.image_wrapper .rejected_overlay {
+  background-color: rgba(255, 0, 2, 0.41);
   /* Black background with opacity */
 }
 
@@ -10678,8 +10683,9 @@ label.btn {
   width: 100%;
 }
 
-.newoverlay {
-  border-radius: 0 0 5px 0;
+.image_overlay,
+.image_wrapper .approved_overlay,
+.image_wrapper .rejected_overlay {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -10687,7 +10693,7 @@ label.btn {
   right: 0;
   width: 100%;
   /* Full width (cover the whole page) */
-  height: 100%;
+  height: 33%;
   /* Full height (cover the whole page) */
   transition: 0.5s ease;
 }
