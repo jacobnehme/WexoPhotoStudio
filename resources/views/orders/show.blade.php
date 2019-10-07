@@ -34,7 +34,7 @@
                                                     @foreach($orderLine->photoLines as $photoLine)
                                                         <div class="col-md-3">
                                                             <img class="img-fluid"
-                                                                 src="{{asset('../storage/app/public/'.$photoLine->photo->path)}}"
+                                                                 src="{{ asset(Storage::url($photoLine->photo->path)) }}"
                                                                  alt="">
                                                             <form
                                                                 action="{{ action('PhotoLineController@update', $photoLine->id)}}"
