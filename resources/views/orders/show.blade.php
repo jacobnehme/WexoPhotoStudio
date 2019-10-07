@@ -27,6 +27,7 @@
                                             <strong>Barcode: </strong>#{{$orderLine->product->barcode}} <br>
                                             <strong>Title: </strong>{{$orderLine->product->title}} <br>
                                             <strong>Description: </strong>{{$orderLine->product->description}} <br>
+                                            <strong>Completed: </strong>{{$orderLine->getCompleted()}} / {{$orderLine->photoLines->count()}}<br>
                                         </td>
                                         <td class="col-md-8">
                                             @if($orderLine->photoLines->count())
