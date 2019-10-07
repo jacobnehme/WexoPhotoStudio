@@ -10665,7 +10665,30 @@ label.btn {
   width: 100%;
 }
 
-img {
-  margin-bottom: 5px;
+.image_wrapper {
+  position: relative;
+}
+
+.image_wrapper:hover .newoverlay {
+  background-color: rgba(30, 126, 52, 0.46);
+  /* Black background with opacity */
+}
+
+.image {
+  width: 100%;
+}
+
+.newoverlay {
+  border-radius: 0 0 5px 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  /* Full width (cover the whole page) */
+  height: 100%;
+  /* Full height (cover the whole page) */
+  transition: 0.5s ease;
 }
 

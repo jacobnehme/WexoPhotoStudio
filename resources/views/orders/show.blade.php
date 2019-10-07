@@ -33,18 +33,25 @@
                                                 <div class="row">
                                                     @foreach($orderLine->photoLines as $photoLine)
                                                         <div class="col-md-3">
-                                                            <img class="img-fluid"
-                                                                 src="{{ asset(Storage::url($photoLine->photo->path)) }}"
-                                                                 alt="">
-                                                            <form
-                                                                action="{{ action('PhotoLineController@update', $photoLine->id)}}"
-                                                                method="POST">
+                                                            <div class="image_wrapper">
+                                                                <img class="image"
+                                                                     src="{{ asset(Storage::url($photoLine->photo->path)) }}"
+                                                                     alt="">
+                                                                <div class="newoverlay">
+                                                                </div>
+                                                            </div>
+                                                            <form class="pt-2"
+                                                                  action="{{ action('PhotoLineController@update', $photoLine->id)}}"
+                                                                  method="POST">
                                                                 @method('PATCH')
                                                                 @Csrf
-                                                                <label for="status-{{$photoLine->id}}" class="btn btn-{{$photoLine->status ? 'danger' : 'success'}}">
+                                                                <label for="status-{{$photoLine->id}}"
+                                                                       class="btn btn-{{$photoLine->status ? 'danger' : 'success'}}">
                                                                     {{$photoLine->status ? 'Reject' : 'Approve'}}
-                                                                    <input type="checkbox" name="status" id="status-{{$photoLine->id}}"
-                                                                           onchange="this.form.submit()" {{$photoLine->status ? 'checked' : ''}}
+                                                                    <input type="checkbox" name="status"
+                                                                           id="status-{{$photoLine->id}}"
+                                                                           onchange="this.form.submit()"
+                                                                           {{$photoLine->status ? 'checked' : ''}}
                                                                            style="display: none">
                                                                 </label>
                                                             </form>
@@ -54,7 +61,7 @@
                                             @endif
                                         </td>
 
-{{--                                        TODO only show for admin--}}
+                                        {{--                                        TODO only show for admin--}}
                                         <td class="col-md-2">
                                             <form method="POST" action="{{ action('PhotoController@store')}}"
                                                   enctype="multipart/form-data">
@@ -73,7 +80,7 @@
                                                            id="photo-{{$orderLine->id}}"
                                                            class="form-control{{ $errors->has('photo') ? ' is-invalid' : '' }}"
                                                            name="photo" value="{{ old('photo') }}"
-                                                           onchange="this.form.submit()"  placeholder="" required
+                                                           onchange="this.form.submit()" placeholder="" required
                                                            style="display:none;">
 
                                                     @if ($errors->has('photo'))

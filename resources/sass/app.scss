@@ -1,10 +1,7 @@
-
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
 // Variables
 @import 'variables';
 
@@ -14,30 +11,52 @@
 
 // Style
 
-thead tr{
-    border-bottom: 2px solid #F7F7F7;
-}
-tbody tr{
-    padding: 10px 0;
-
-    &:nth-of-type(even){
-        background: #F7F7F7;
-    }
+thead tr {
+  border-bottom: 2px solid #F7F7F7;
 }
 
-input[name=photo]{
-    height: auto;
+tbody tr {
+  padding: 10px 0;
+
+  &:nth-of-type(even) {
+    background: #F7F7F7;
+  }
 }
 
-label{
-
-    &.btn {
-        cursor: pointer;
-        width: 100%;
-    }
+input[name=photo] {
+  height: auto;
 }
 
-img{
-    margin-bottom: 5px;
+label {
+
+  &.btn {
+    cursor: pointer;
+    width: 100%;
+  }
+}
+
+
+.image_wrapper{
+  position: relative;
+  &:hover .newoverlay{
+    background-color: rgba(30, 126, 52, 0.46); /* Black background with opacity */
+
+  }
+}
+
+.image{
+  width: 100%;
+}
+.newoverlay {
+  border-radius: 0 0 5px 0;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%; /* Full width (cover the whole page) */
+      height: 100%; /* Full height (cover the whole page) */
+      //z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+      transition: .5s ease;
 }
 
