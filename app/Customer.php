@@ -12,6 +12,7 @@ class Customer extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id',
         'name_first',
         'name_last',
         'name_company',
@@ -19,4 +20,8 @@ class Customer extends Model
         'zip_code',
         'city',
     ];
+
+    public function zipCode(){
+        return $this->belongsTo(ZipCode::class);
+    }
 }

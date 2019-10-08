@@ -21,12 +21,12 @@ class CreateUsersTable extends Migration
             $table->string('password');
 
             //TODO Add Role
-            $table->unsignedInteger('role')->default(3);
+            $table->unsignedInteger('role');
 
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreign('role')->references('id')->on('roles');
+            //$table->foreign('role')->references('id')->on('roles');
         });
     }
 

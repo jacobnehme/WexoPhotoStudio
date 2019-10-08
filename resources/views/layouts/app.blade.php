@@ -79,6 +79,10 @@
                                 </a>
 {{--                                @endauth--}}
 
+                                <a class="dropdown-item" href="{{ action('CustomerController@index')}}">
+                                    My Account
+                                </a>
+
                                 <a class="dropdown-item" href="{{ action('OrderController@index')}}">
                                     My Orders
                                 </a>

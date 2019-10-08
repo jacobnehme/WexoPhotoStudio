@@ -15,7 +15,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        if ($customer = Customer::all()->where('user_id', '==', auth()->id())->first()){
+            return redirect('/customers/'.$customer->id.'/edit');
+        }
+        else{
+            return redirect('/customers/create');
+        }
     }
 
     /**
@@ -37,6 +42,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'user_id' => ['required'],
             'name_first' => ['required', 'min:1', 'max:255'],
             'name_last' => ['required', 'min:3', 'max:255'],
             'name_company' => ['required', 'min:3', 'max:255'],
@@ -62,7 +68,7 @@ class CustomerController extends Controller
 
         $customer = Customer::create($validated);
 
-        return redirect('/customers/'.$customer->id.'/edit');
+        return redirect('/customers/'.$customer->id);
     }
 
     /**
