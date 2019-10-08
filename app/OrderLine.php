@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use function Symfony\Component\VarDumper\Dumper\esc;
 
 class OrderLine extends Model
 {
@@ -30,4 +31,6 @@ class OrderLine extends Model
     {
         return $this->hasMany(PhotoLine::class);
     }
+
+
 }

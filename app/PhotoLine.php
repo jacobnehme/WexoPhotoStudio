@@ -32,4 +32,16 @@ class PhotoLine extends Model
     {
         $this->approve(false);
     }
+
+//    TODO make these functions inside orderline perhaps
+    public function getApproved_Count()
+    {
+        return $this->where('status', '!=', false)->count();
+    }
+
+    public function getRejected_Count()
+    {
+        return $this->where('status', '==', false)->count();
+    }
+
 }

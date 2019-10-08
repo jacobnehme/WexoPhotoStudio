@@ -8,6 +8,8 @@
                 <div class="card">
                     <div class="card-header">Order: #{{$order->id}}</div>
 
+                </div>
+
                     <div class="card-body">
                         @if($order->orderLines->count())
                             <table class="container-fluid">
@@ -19,6 +21,11 @@
                                         <i class="text-danger">(dev)</i>
                                     </th>
                                 </tr>
+                                {{--{{}}--}}
+                                {{-- *!* Refactor TODO Make relations between view and photoline go through order variable --}}
+
+                                <div class="pb-3 border-bottom">Total Approved: #{{ $photoLine->getApproved_Count()}}</div>
+                                <div class="pb-3 border-bottom">Total Rejected: #{{ $photoLine->getRejected_Count()}}</div>
                                 </thead>
                                 <tbody>
                                 @foreach($order->orderLines as $orderLine)
@@ -32,12 +39,14 @@
                                             @if($orderLine->photoLines->count())
                                                 <div class="row">
                                                     @foreach($orderLine->photoLines as $photoLine)
+
                                                         <div class="col-md-3">
                                                             <div class="image_wrapper">
                                                                 <img class="image"
                                                                      src="{{ asset(Storage::url($photoLine->photo->path)) }}"
                                                                      alt="">
-                                                                <div class="{{ $photoLine->status ? 'approved_overlay' : 'rejected_overlay' }}">
+                                                                {{-- !!!!!!!! Make some sort of approve and reject icon --- > REMOVE FA CLASSES !!!!!!!!! --}}
+                                                                <div class="{{ $photoLine->status ? 'approved_overlay ' : 'rejected_overlay' }}">
                                                                 </div>
                                                             </div>
                                                             <form class="pt-2"
@@ -54,19 +63,22 @@
                                                                            {{$photoLine->status ? 'checked' : ''}}
                                                                            style="display: none">
                                                                 </label>
+
                                                             </form>
                                                         </div>
+
                                                     @endforeach
+
                                                 </div>
                                             @endif
                                         </td>
+
 
                                         {{--                                        TODO only show for admin--}}
                                         <td class="col-md-2">
                                             <form method="POST" action="{{ action('PhotoController@store')}}"
                                                   enctype="multipart/form-data">
                                                 @csrf
-
                                                 <input type="hidden" name="orderLine_id"
                                                        value={{ $orderLine->id }}>
                                                 <input type="hidden" name="product_id"

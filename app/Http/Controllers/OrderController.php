@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\PhotoLine;
 use App\Product;
 use App\OrderLine;
 use Illuminate\Http\Request;
@@ -126,12 +127,13 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show(Order $order)
-    {
+//    Not sure if this is ok (photoline) REFACTOR
+    public function show(Order $order, PhotoLine $photoLine){
         $this->authorize('view', $order);
 
         return view('orders/show', [
-            'order' => $order
+            'order' => $order,
+            'photoLine' => $photoLine
         ]);
     }
 

@@ -36,24 +36,28 @@ label {
 }
 
 
-.image_wrapper{
-  position: relative;
-  .approved_overlay{
-    @extend .image_overlay;
-    background-color: rgba(52, 255, 102, 0.4); /* Black background with opacity */
-  }
-  .rejected_overlay{
-    @extend .image_overlay;
-    background-color: rgba(255, 0, 2, 0.41); /* Black background with opacity */
-
-  }
-}
+//.image_wrapper{
+//  position: relative;
+//
+//  .approved_overlay{
+//    @extend .image_overlay;
+//    background-color: rgba(52, 255, 102, 0.4); /* background with opacity */
+//  }
+//  .rejected_overlay{
+//    @extend .image_overlay;
+//    background-color: rgba(255, 0, 2, 0.41); /*  background with opacity */
+//
+//  }
+//}
 
 .image{
   width: 100%;
 }
 .image_overlay {
-
+  .fa{
+    text-align: right;
+    padding-right: 3px
+  }
       position: absolute;
       top: 0;
       bottom: 0;
