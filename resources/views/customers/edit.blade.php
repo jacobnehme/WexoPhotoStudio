@@ -16,7 +16,9 @@
                                 <label for="name-first" class="col-md-4 col-form-label text-md-right">First Name</label>
 
                                 <div class="col-md-6">
-                                    <input id="name-first" type="text" class="form-control{{ $errors->has('name_first') ? ' is-invalid' : '' }}" name="name_first" value="{{ $customer->name_first }}" required>
+                                    <input id="name-first" type="text"
+                                           class="form-control{{ $errors->has('name_first') ? ' is-invalid' : '' }}"
+                                           name="name_first" value="{{ $customer->name_first }}" required>
 
                                     @if ($errors->has('name_first'))
                                         <span class="invalid-feedback" role="alert">
@@ -29,7 +31,9 @@
                                 <label for="name-last" class="col-md-4 col-form-label text-md-right">Last Name</label>
 
                                 <div class="col-md-6">
-                                    <input id="name-last" type="text" class="form-control{{ $errors->has('name_last') ? ' is-invalid' : '' }}" name="name_last" value="{{ $customer->name_last }}" required>
+                                    <input id="name-last" type="text"
+                                           class="form-control{{ $errors->has('name_last') ? ' is-invalid' : '' }}"
+                                           name="name_last" value="{{ $customer->name_last }}" required>
 
                                     @if ($errors->has('name_last'))
                                         <span class="invalid-feedback" role="alert">
@@ -40,10 +44,13 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="name-company" class="col-md-4 col-form-label text-md-right">Company Name</label>
+                                <label for="name-company" class="col-md-4 col-form-label text-md-right">Company
+                                    Name</label>
 
                                 <div class="col-md-6">
-                                    <input id="name-company" type="text" class="form-control{{ $errors->has('name_company') ? ' is-invalid' : '' }}" name="name_company" value="{{ $customer->name_company }}" required>
+                                    <input id="name-company" type="text"
+                                           class="form-control{{ $errors->has('name_company') ? ' is-invalid' : '' }}"
+                                           name="name_company" value="{{ $customer->name_company }}" required>
 
                                     @if ($errors->has('name_company'))
                                         <span class="invalid-feedback" role="alert">
@@ -57,7 +64,9 @@
                                 <label for="address" class="col-md-4 col-form-label text-md-right">Address</label>
 
                                 <div class="col-md-6">
-                                    <input id="address" type="text" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" name="address" value="{{ $customer->address }}" required>
+                                    <input id="address" type="text"
+                                           class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}"
+                                           name="address" value="{{ $customer->address }}" required>
 
                                     @if ($errors->has('address'))
                                         <span class="invalid-feedback" role="alert">
@@ -66,12 +75,15 @@
                                     @endif
                                 </div>
                             </div>
+                            @dd($customer->zipCode)
 
                             <div class="form-group row">
                                 <label for="zip-code" class="col-md-4 col-form-label text-md-right">Zip Code</label>
 
                                 <div class="col-md-6">
-                                    <input id="zip-code" type="text" class="form-control{{ $errors->has('zip_code') ? ' is-invalid' : '' }}" name="zip_code" value="{{ $customer->zipCode->zip_code }}" required>
+                                    <input id="zip-code" type="text"
+                                           class="form-control{{ $errors->has('zip_code') ? ' is-invalid' : '' }}"
+                                           name="zip_code" value="{{ $customer->zipCode()->first()->zip_code }}" required>
 
                                     @if ($errors->has('zip_code'))
                                         <span class="invalid-feedback" role="alert">
@@ -85,7 +97,9 @@
                                 <label for="city" class="col-md-4 col-form-label text-md-right">City</label>
 
                                 <div class="col-md-6">
-                                    <input id="city" type="text" class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city" value="{{ $customer->zipCode->city }}" required>
+                                    <input id="city" type="text"
+                                           class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}"
+                                           name="city" value="{{ $customer->zipCode()->first()->city }}" required>
 
                                     @if ($errors->has('city'))
                                         <span class="invalid-feedback" role="alert">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Role;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -18,6 +19,17 @@ class CreateRolesTable extends Migration
             $table->string('title');
             $table->timestamps();
         });
+
+        Role::create([
+            'title' => 'Admin',
+        ]);
+        Role::create([
+            'title' => 'Employee',
+        ]);
+        Role::create([
+            'title' => 'Customer',
+        ]);
+
     }
 
     /**

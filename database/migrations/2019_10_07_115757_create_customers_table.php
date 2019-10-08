@@ -24,8 +24,8 @@ class CreateCustomersTable extends Migration
             $table->unsignedInteger('zip_code');
             $table->timestamps();
 
-            //$table->foreign('user_id')->references('id')->on('users');
-            //$table->foreign('zip_code')->references('id')->on('zip_codes');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('zip_code')->references('id')->on('zip_codes');
         });
     }
 
