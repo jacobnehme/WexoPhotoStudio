@@ -114,17 +114,15 @@
                                             <strong>Barcode: </strong>#{{$orderLine->product->barcode}} <br>
                                             <strong>Title: </strong>{{$orderLine->product->title}} <br>
                                             <strong>Description: </strong>{{$orderLine->product->description}} <br>
+                                            <strong>Approved: </strong>{{$orderLine->approvedCount()}} / {{$orderLine->photoLines->count()}} <br>
                                         </td>
                                         <td class="col-md-8">
                                             <div class="row">
-
-
                                                 @if($orderLine->product->photos->count())
                                                     @foreach($orderLine->product->photos as $photo)
                                                         @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
                                                             <div class="col-md-3">
-                                                                <div class="photo" data-toggle="modal"
-                                                                     data-target="#modal-{{$orderLine->id}}">
+                                                                <div class="photo">
                                                                     <label
                                                                         class="btn-primary">
                                                                         Pre-shot...

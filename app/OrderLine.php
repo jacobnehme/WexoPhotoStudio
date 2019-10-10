@@ -30,4 +30,8 @@ class OrderLine extends Model
     {
         return $this->hasMany(PhotoLine::class);
     }
+
+    public function approvedCount(){
+        return $this->photoLines()->where('is_approved', '==', true)->count();
+    }
 }
