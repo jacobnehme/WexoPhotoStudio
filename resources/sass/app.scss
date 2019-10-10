@@ -29,6 +29,12 @@ input[name=photo]{
     height: auto;
 }
 
+form{
+    button{
+        width: 100%;
+    }
+}
+
 label{
 
     &.btn {
@@ -47,7 +53,7 @@ img{
     label{
         position: absolute;
         top: 15px;
-        width: 75px;
+        width: 60px;
         padding: 2px 5px;
         font-size: 10px;
         color: white;

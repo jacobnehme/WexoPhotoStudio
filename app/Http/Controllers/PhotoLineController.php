@@ -35,7 +35,19 @@ class PhotoLineController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validation
+        $validated = $request->validate([
+            'orderLine_id' => 'required',
+            'photo_id' => 'required',
+        ]);
+
+        //Persist photoLine
+        PhotoLine::create([
+            'order_line_id' => (int) $validated['orderLine_id'],
+            'photo_id' => (int) $validated['photo_id'],
+        ]);
+
+        return back();
     }
 
     /**

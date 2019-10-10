@@ -40,16 +40,19 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <div id="carouselExampleIndicators" class="carousel slide"
-                                                         data-ride="carousel" data-interval="false" data-keyboard="false">
+                                                         data-ride="carousel" data-interval="false"
+                                                         data-keyboard="false">
                                                         <ol class="carousel-indicators">
                                                             @foreach($orderLine->photoLines as $photoLine)
                                                                 <li data-target="#carouselExampleIndicators"
-                                                                    data-slide-to="0" class="{{$loop->first ? 'active' : ''}}"></li>
+                                                                    data-slide-to="0"
+                                                                    class="{{$loop->first ? 'active' : ''}}"></li>
                                                             @endforeach
                                                         </ol>
                                                         <div class="carousel-inner">
                                                             @foreach($orderLine->photoLines as $photoLine)
-                                                                <div class="carousel-item {{$loop->first ? 'active' : ''}}">
+                                                                <div
+                                                                    class="carousel-item {{$loop->first ? 'active' : ''}}">
                                                                     <div class="photo">
                                                                         <label
                                                                             class="btn-@if($photoLine->is_approved === null){{'warning'}}
@@ -113,8 +116,42 @@
                                             <strong>Description: </strong>{{$orderLine->product->description}} <br>
                                         </td>
                                         <td class="col-md-8">
-                                            @if($orderLine->photoLines->count())
-                                                <div class="row">
+                                            <div class="row">
+
+
+                                                @if($orderLine->product->photos->count())
+                                                    @foreach($orderLine->product->photos as $photo)
+                                                        @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
+                                                            <div class="col-md-3">
+                                                                <div class="photo" data-toggle="modal"
+                                                                     data-target="#modal-{{$orderLine->id}}">
+                                                                    <label
+                                                                        class="btn-primary">
+                                                                        Pre-shot...
+                                                                    </label>
+                                                                    <img class="img-fluid"
+                                                                         src="{{asset('../storage/app/public/'.$photo->path)}}"
+                                                                         alt="">
+                                                                </div>
+                                                                <form
+                                                                    action="{{action('PhotoLineController@store')}}"
+                                                                    method="POST">
+                                                                    @Csrf
+                                                                    <input type="hidden" name="orderLine_id"
+                                                                           value="{{$orderLine->id}}">
+                                                                    <input type="hidden" name="photo_id"
+                                                                           value="{{$photo->id}}">
+                                                                    <button type="submit" class="btn btn-primary">
+                                                                        Add to order
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+
+                                                @if($orderLine->photoLines->count())
+
                                                     @foreach($orderLine->photoLines as $photoLine)
 
 
@@ -201,8 +238,8 @@
                                                             </form>
                                                         </div>
                                                     @endforeach
-                                                </div>
-                                            @endif
+                                                @endif
+                                            </div>
                                         </td>
 
                                         {{--                                        TODO only show for admin--}}
