@@ -22,6 +22,90 @@
                                 </thead>
                                 <tbody>
                                 @foreach($order->orderLines as $orderLine)
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal-{{$orderLine->id}}" tabindex="-1"
+                                         role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered"
+                                             role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="exampleModalLongTitle">{{$orderLine->product->title}}</h5>
+                                                    <button type="button" class="close"
+                                                            data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="carouselExampleIndicators" class="carousel slide"
+                                                         data-ride="carousel" data-interval="false" data-keyboard="false">
+                                                        <ol class="carousel-indicators">
+                                                            @foreach($orderLine->photoLines as $photoLine)
+                                                                <li data-target="#carouselExampleIndicators"
+                                                                    data-slide-to="0" class="{{$loop->first ? 'active' : ''}}"></li>
+                                                            @endforeach
+                                                        </ol>
+                                                        <div class="carousel-inner">
+                                                            @foreach($orderLine->photoLines as $photoLine)
+                                                                <div class="carousel-item {{$loop->first ? 'active' : ''}}">
+                                                                    <div class="photo">
+                                                                        <label
+                                                                            class="btn-@if($photoLine->is_approved === null){{'warning'}}
+                                                                            @else{{$photoLine->is_approved ? 'success' : 'danger'}}@endif">
+                                                                            @if($photoLine->is_approved === null)
+                                                                                Pending...
+                                                                            @else
+                                                                                {{$photoLine->is_approved ? 'Approved...' : 'Rejected...'}}
+                                                                            @endif
+                                                                        </label>
+                                                                        <img class="img-fluid"
+                                                                             src="{{asset('../storage/app/public/'.$photoLine->photo->path)}}"
+                                                                             alt="">
+                                                                    </div>
+
+                                                                    {{--<form
+                                                                        action="{{ action('PhotoLineController@update', $photoLine->id)}}"
+                                                                        method="POST">
+                                                                        @method('PATCH')
+                                                                        @Csrf
+                                                                        <label for="modal-status-{{$photoLine->id}}"
+                                                                               class="btn btn-{{$photoLine->is_approved ? 'danger' : 'success'}}">
+                                                                            {{$photoLine->is_approved ? 'Reject' : 'Approve'}}
+                                                                            <input type="checkbox" name="status"
+                                                                                   id="modal-status-{{$photoLine->id}}"
+                                                                                   onchange="this.form.submit()"
+                                                                                   {{$photoLine->is_approved ? 'checked' : ''}}
+                                                                                   style="display: none">
+                                                                        </label>
+                                                                    </form>--}}
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                        <a class="carousel-control-prev"
+                                                           href="#carouselExampleIndicators" role="button"
+                                                           data-slide="prev">
+                                                            <span class="carousel-control-prev-icon"
+                                                                  aria-hidden="true"></span>
+                                                            <span class="sr-only">Previous</span>
+                                                        </a>
+                                                        <a class="carousel-control-next"
+                                                           href="#carouselExampleIndicators" role="button"
+                                                           data-slide="next">
+                                                            <span class="carousel-control-next-icon"
+                                                                  aria-hidden="true"></span>
+                                                            <span class="sr-only">Next</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <tr class="row">
                                         <td class="col-md-2">
                                             <strong>Barcode: </strong>#{{$orderLine->product->barcode}} <br>
@@ -32,8 +116,11 @@
                                             @if($orderLine->photoLines->count())
                                                 <div class="row">
                                                     @foreach($orderLine->photoLines as $photoLine)
+
+
                                                         <div class="col-md-3">
-                                                            <div class="photo">
+                                                            <div class="photo" data-toggle="modal"
+                                                                 data-target="#modal-{{$orderLine->id}}">
                                                                 <label
                                                                     class="btn-@if($photoLine->is_approved === null){{'warning'}}
                                                                     @else{{$photoLine->is_approved ? 'success' : 'danger'}}@endif">

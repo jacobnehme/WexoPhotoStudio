@@ -42,11 +42,12 @@ img{
 }
 
 .photo{
+    cursor: pointer;
 
     label{
         position: absolute;
         top: 15px;
-        width: 33%;
+        width: 75px;
         padding: 2px 5px;
         font-size: 10px;
         color: white;
@@ -54,3 +55,6 @@ img{
     }
 }
 
+.carousel-indicators{
+    bottom: 50px;
+}

@@ -10669,13 +10669,21 @@ img {
   margin-bottom: 5px;
 }
 
+.photo {
+  cursor: pointer;
+}
+
 .photo label {
   position: absolute;
   top: 15px;
-  width: 33%;
+  width: 75px;
   padding: 2px 5px;
   font-size: 10px;
   color: white;
   box-shadow: black 2px 1px 2px;
+}
+
+.carousel-indicators {
+  bottom: 50px;
 }
 
