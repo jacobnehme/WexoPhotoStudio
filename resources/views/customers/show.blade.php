@@ -9,7 +9,7 @@
                     <div class="card-header">Edit Customer</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ action('CustomerController@update')}}">
+                        <form method="POST" action="{{ action('CustomerController@update', 1)}}">
                             @csrf
 
                             <div class="form-group row">
