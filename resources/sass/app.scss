@@ -1,10 +1,7 @@
-
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
 // Variables
 @import 'variables';
 
@@ -14,47 +11,52 @@
 
 // Style
 
-thead tr{
-    border-bottom: 2px solid #F7F7F7;
+.carousel-indicators {
+    bottom: 50px;
 }
-tbody tr{
-    padding: 10px 0;
 
-    &:nth-of-type(even){
-        background: #F7F7F7;
+table{
+    thead tr {
+        border-bottom: 2px solid #F7F7F7;
+    }
+
+    tbody tr {
+        padding: 10px 0;
+
+        &:nth-of-type(even) {
+            background: #F7F7F7;
+        }
     }
 }
 
-input[name=photo]{
-    height: auto;
-}
+form {
+    input[name=photo] {
+        height: auto;
+    }
 
-label{
-
-    &.btn {
-        cursor: pointer;
-        width: 100%;
+    &.form {
+        .btn {
+            cursor: pointer;
+            width: 100%;
+        }
     }
 }
 
-img{
-    margin-bottom: 5px;
-}
-
-.photo{
+.photo {
     cursor: pointer;
 
-    label{
+    label {
         position: absolute;
         top: 15px;
-        width: 60px;
+        width: 65px;
         padding: 2px 5px;
         font-size: 10px;
         color: white;
-        box-shadow: black 2px 1px 2px;
+        box-shadow: black 1px 2px 2px;
+        border-radius: 0;
     }
 }
 
-.carousel-indicators{
-    bottom: 50px;
+img {
+    margin-bottom: 5px;
 }

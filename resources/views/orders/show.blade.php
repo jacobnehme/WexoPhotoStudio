@@ -43,6 +43,13 @@
                                                          data-ride="carousel" data-interval="false"
                                                          data-keyboard="false">
                                                         <ol class="carousel-indicators">
+                                                            @foreach($orderLine->product->photos as $photo)
+                                                                @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
+                                                                    <li data-target="#carouselExampleIndicators"
+                                                                        data-slide-to="0"
+                                                                        class="{{$loop->first ? 'active' : ''}}"></li>
+                                                                @endif
+                                                            @endforeach
                                                             @foreach($orderLine->photoLines as $photoLine)
                                                                 <li data-target="#carouselExampleIndicators"
                                                                     data-slide-to="0"
@@ -50,39 +57,78 @@
                                                             @endforeach
                                                         </ol>
                                                         <div class="carousel-inner">
+                                                            @foreach($orderLine->product->photos as $photo)
+                                                                @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
+                                                                    <div
+                                                                        class="carousel-item {{$loop->first ? 'active' : ''}}">
+                                                                        @component('components/photo')
+                                                                            @slot('orderLineId')
+                                                                                {{null}}
+                                                                            @endslot
+                                                                            @slot('class')
+                                                                                {{'primary'}}
+                                                                            @endslot
+                                                                            @slot('labelText')
+                                                                                {{'Pre-shot...'}}
+                                                                            @endslot
+                                                                            @slot('path')
+                                                                                {{$photo->path}}
+                                                                            @endslot
+                                                                        @endcomponent
+                                                                        {{--@component('components.addForm')
+                                                                            @slot('orderLineId')
+                                                                                {{$orderLine->id}}
+                                                                            @endslot
+                                                                            @slot('photoId')
+                                                                                {{$photo->id}}
+                                                                            @endslot
+                                                                        @endcomponent--}}
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+
                                                             @foreach($orderLine->photoLines as $photoLine)
                                                                 <div
                                                                     class="carousel-item {{$loop->first ? 'active' : ''}}">
-                                                                    <div class="photo">
-                                                                        <label
-                                                                            class="btn-@if($photoLine->is_approved === null){{'warning'}}
-                                                                            @else{{$photoLine->is_approved ? 'success' : 'danger'}}@endif">
+                                                                    @component('components/photo')
+                                                                        @slot('orderLineId')
+                                                                            {{$orderLine->id}}
+                                                                        @endslot
+                                                                        @slot('class')
+                                                                            @if($photoLine->is_approved === null){{'warning'}}
+                                                                            @else{{$photoLine->is_approved ? 'success' : 'danger'}}@endif
+                                                                        @endslot
+                                                                        @slot('labelText')
                                                                             @if($photoLine->is_approved === null)
                                                                                 Pending...
                                                                             @else
                                                                                 {{$photoLine->is_approved ? 'Approved...' : 'Rejected...'}}
                                                                             @endif
-                                                                        </label>
-                                                                        <img class="img-fluid"
-                                                                             src="{{asset('../storage/app/public/'.$photoLine->photo->path)}}"
-                                                                             alt="">
-                                                                    </div>
-
-                                                                    {{--<form
-                                                                        action="{{ action('PhotoLineController@update', $photoLine->id)}}"
-                                                                        method="POST">
-                                                                        @method('PATCH')
-                                                                        @Csrf
-                                                                        <label for="modal-status-{{$photoLine->id}}"
-                                                                               class="btn btn-{{$photoLine->is_approved ? 'danger' : 'success'}}">
+                                                                        @endslot
+                                                                        @slot('path')
+                                                                            {{$photoLine->photo->path}}
+                                                                        @endslot
+                                                                    @endcomponent
+                                                                    {{--@component('components.statusForm')
+                                                                        @slot('action')
+                                                                            {{'PhotoLineController@update'}}
+                                                                        @endslot
+                                                                        @slot('photoLineId')
+                                                                            {{$photoLine->id}}
+                                                                        @endslot
+                                                                        @slot('class')
+                                                                            {{$photoLine->is_approved ? 'danger' : 'success'}}
+                                                                        @endslot
+                                                                        @slot('buttonText')
                                                                             {{$photoLine->is_approved ? 'Reject' : 'Approve'}}
-                                                                            <input type="checkbox" name="status"
-                                                                                   id="modal-status-{{$photoLine->id}}"
-                                                                                   onchange="this.form.submit()"
-                                                                                   {{$photoLine->is_approved ? 'checked' : ''}}
-                                                                                   style="display: none">
-                                                                        </label>
-                                                                    </form>--}}
+                                                                        @endslot
+                                                                        @slot('isChecked')
+                                                                            {{$photoLine->is_approved ? 'checked' : ''}}
+                                                                        @endslot
+                                                                        @slot('path')
+                                                                            {{$photoLine->photo->path}}
+                                                                        @endslot
+                                                                    @endcomponent--}}
                                                                 </div>
                                                             @endforeach
                                                         </div>
@@ -114,134 +160,87 @@
                                             <strong>Barcode: </strong>#{{$orderLine->product->barcode}} <br>
                                             <strong>Title: </strong>{{$orderLine->product->title}} <br>
                                             <strong>Description: </strong>{{$orderLine->product->description}} <br>
-                                            <strong>Approved: </strong>{{$orderLine->approvedCount()}} / {{$orderLine->photoLines->count()}} <br>
+                                            <strong>Approved: </strong>{{$orderLine->approvedCount()}}
+                                            / {{$orderLine->photoLines->count()}} <br>
                                         </td>
                                         <td class="col-md-8">
                                             <div class="row">
-                                                @if($orderLine->product->photos->count())
-                                                    @foreach($orderLine->product->photos as $photo)
-                                                        @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
-                                                            <div class="col-md-3">
-                                                                <div class="photo">
-                                                                    <label
-                                                                        class="btn-primary">
-                                                                        Pre-shot...
-                                                                    </label>
-                                                                    <img class="img-fluid"
-                                                                         src="{{asset('../storage/app/public/'.$photo->path)}}"
-                                                                         alt="">
-                                                                </div>
-                                                                <form
-                                                                    action="{{action('PhotoLineController@store')}}"
-                                                                    method="POST">
-                                                                    @Csrf
-                                                                    <input type="hidden" name="orderLine_id"
-                                                                           value="{{$orderLine->id}}">
-                                                                    <input type="hidden" name="photo_id"
-                                                                           value="{{$photo->id}}">
-                                                                    {{--TODO approved by default--}}
-                                                                    <button type="submit" class="btn btn-primary">
-                                                                        Add to order
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-
-                                                @if($orderLine->photoLines->count())
-
-                                                    @foreach($orderLine->photoLines as $photoLine)
-
+                                                @foreach($orderLine->product->photos as $photo)
+                                                    @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
 
                                                         <div class="col-md-3">
-                                                            <div class="photo" data-toggle="modal"
-                                                                 data-target="#modal-{{$orderLine->id}}">
-                                                                <label
-                                                                    class="btn-@if($photoLine->is_approved === null){{'warning'}}
-                                                                    @else{{$photoLine->is_approved ? 'success' : 'danger'}}@endif">
-                                                                    @if($photoLine->is_approved === null)
-                                                                        Pending...
-                                                                    @else
-                                                                        {{$photoLine->is_approved ? 'Approved...' : 'Rejected...'}}
-                                                                    @endif
-                                                                </label>
-                                                                <img class="img-fluid"
-                                                                     src="{{asset('../storage/app/public/'.$photoLine->photo->path)}}"
-                                                                     alt="">
-                                                            </div>
-                                                            {{--@if($photoLine->is_approved === null)
-                                                                <div class="buttons row">
-                                                                    <form class="col-md-6 "
-                                                                          action="{{ action('PhotoLineController@update', $photoLine->id)}}"
-                                                                          method="POST">
-                                                                        @method('PATCH')
-                                                                        @Csrf
-                                                                        <label for="status-approve-{{$photoLine->id}}"
-                                                                               class="btn btn-success">
-                                                                            Approve
-                                                                            <input type="checkbox" name="status"
-                                                                                   id="status-approve-{{$photoLine->id}}"
-                                                                                   onchange="this.form.submit()"
-                                                                                   checked}
-                                                                                   style="display: none">
-                                                                        </label>
-                                                                    </form>
-                                                                    <form class="col-md-6"
-                                                                          action="{{ action('PhotoLineController@update', $photoLine->id)}}"
-                                                                          method="POST">
-                                                                        @method('PATCH')
-                                                                        @Csrf
-                                                                        <label for="status-reject-{{$photoLine->id}}"
-                                                                               class="btn btn-danger">
-                                                                            Reject
-                                                                            <input type="checkbox" name="status"
-                                                                                   id="status-reject-{{$photoLine->id}}"
-                                                                                   onchange="this.form.submit()" }
-                                                                                   style="display: none">
-                                                                        </label>
-                                                                    </form>
-                                                                </div>
-                                                            @else
-                                                                <form
-                                                                    action="{{ action('PhotoLineController@update', $photoLine->id)}}"
-                                                                    method="POST">
-                                                                    @method('PATCH')
-                                                                    @Csrf
-                                                                    <label for="status-{{$photoLine->id}}"
-                                                                           class="btn btn-{{$photoLine->is_approved ? 'danger' : 'success'}}">
-                                                                        {{$photoLine->is_approved ? 'Reject' : 'Approve'}}
-                                                                        <input type="checkbox" name="status"
-                                                                               id="status-{{$photoLine->id}}"
-                                                                               onchange="this.form.submit()"
-                                                                               {{$photoLine->is_approved ? 'checked' : ''}}
-                                                                               style="display: none">
-                                                                    </label>
-                                                                </form>
-                                                            @endif--}}
-
-                                                            <form
-                                                                action="{{ action('PhotoLineController@update', $photoLine->id)}}"
-                                                                method="POST">
-                                                                @method('PATCH')
-                                                                @Csrf
-                                                                <label for="status-{{$photoLine->id}}"
-                                                                       class="btn btn-{{$photoLine->is_approved ? 'danger' : 'success'}}">
-                                                                    {{$photoLine->is_approved ? 'Reject' : 'Approve'}}
-                                                                    <input type="checkbox" name="status"
-                                                                           id="status-{{$photoLine->id}}"
-                                                                           onchange="this.form.submit()"
-                                                                           {{$photoLine->is_approved ? 'checked' : ''}}
-                                                                           style="display: none">
-                                                                </label>
-                                                            </form>
+                                                            @component('components/photo')
+                                                                @slot('orderLineId')
+                                                                    {{$orderLine->id}}
+                                                                @endslot
+                                                                @slot('class')
+                                                                    {{'primary'}}
+                                                                @endslot
+                                                                @slot('labelText')
+                                                                    {{'Pre-shot...'}}
+                                                                @endslot
+                                                                @slot('path')
+                                                                    {{$photo->path}}
+                                                                @endslot
+                                                            @endcomponent
+                                                            @component('components.addForm')
+                                                                @slot('orderLineId')
+                                                                    {{$orderLine->id}}
+                                                                @endslot
+                                                                @slot('photoId')
+                                                                    {{$photo->id}}
+                                                                @endslot
+                                                            @endcomponent
                                                         </div>
-                                                    @endforeach
-                                                @endif
+                                                    @endif
+                                                @endforeach
+
+                                                @foreach($orderLine->photoLines as $photoLine)
+
+                                                    <div class="col-md-3">
+                                                        @component('components/photo')
+                                                            @slot('orderLineId')
+                                                                {{$orderLine->id}}
+                                                            @endslot
+                                                            @slot('class')
+                                                                @if($photoLine->is_approved === null){{'warning'}}
+                                                                @else{{$photoLine->is_approved ? 'success' : 'danger'}}@endif
+                                                            @endslot
+                                                            @slot('labelText')
+                                                                @if($photoLine->is_approved === null)
+                                                                    Pending...
+                                                                @else
+                                                                    {{$photoLine->is_approved ? 'Approved...' : 'Rejected...'}}
+                                                                @endif
+                                                            @endslot
+                                                            @slot('path')
+                                                                {{$photoLine->photo->path}}
+                                                            @endslot
+                                                        @endcomponent
+                                                        @component('components.statusForm')
+                                                            @slot('action')
+                                                                {{'PhotoLineController@update'}}
+                                                            @endslot
+                                                            @slot('photoLineId')
+                                                                {{$photoLine->id}}
+                                                            @endslot
+                                                            @slot('class')
+                                                                {{$photoLine->is_approved ? 'danger' : 'success'}}
+                                                            @endslot
+                                                            @slot('buttonText')
+                                                                {{$photoLine->is_approved ? 'Reject' : 'Approve'}}
+                                                            @endslot
+                                                            @slot('isChecked')
+                                                                {{$photoLine->is_approved ? 'checked' : ''}}
+                                                            @endslot
+                                                            @slot('path')
+                                                                {{$photoLine->photo->path}}
+                                                            @endslot
+                                                        @endcomponent
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </td>
-
-                                        {{--                                        TODO only show for admin--}}
                                         <td class="col-md-2">
                                             <form method="POST" action="{{ action('PhotoController@store')}}"
                                                   enctype="multipart/form-data">

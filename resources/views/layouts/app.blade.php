@@ -72,13 +72,6 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-                                {{--                                TODO Only show for admin--}}
-{{--                                @auth('admin')--}}
-{{--                                <a class="dropdown-item" href="{{ action('ProductController@create')}}">--}}
-{{--                                    Create Product--}}
-{{--                                </a>--}}
-{{--                                @endauth--}}
-
                                 <a class="dropdown-item" href="{{ action('OrderController@index')}}">
                                     My Orders
                                 </a>
@@ -94,32 +87,6 @@
                                     @csrf
                                 </form>
                             </div>
-
-                            {{--<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-
-                                --}}{{--                                TODO Only show for admin--}}{{--
-                                --}}{{--                                @auth('admin')--}}{{--
-                                <a class="dropdown-item" href="{{ action('ProductController@create')}}">
-                                    Create Product (dev)
-                                </a>
-                                --}}{{--                                @endauth--}}{{--
-
-                                <a class="dropdown-item" href="{{ action('OrderController@index')}}">
-                                    My Orders
-                                </a>
-
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                      style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>--}}
-
                         </li>
                     @endguest
                 </ul>
