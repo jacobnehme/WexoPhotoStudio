@@ -139,6 +139,7 @@
                                                                            value="{{$orderLine->id}}">
                                                                     <input type="hidden" name="photo_id"
                                                                            value="{{$photo->id}}">
+                                                                    {{--TODO approved by default--}}
                                                                     <button type="submit" class="btn btn-primary">
                                                                         Add to order
                                                                     </button>

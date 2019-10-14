@@ -31,7 +31,19 @@ class OrderLine extends Model
         return $this->hasMany(PhotoLine::class);
     }
 
+    public function approveAll(){
+        foreach ($this->photoLines as $photoLine){
+            $photoLine->approve();
+        }
+    }
+
+    public function rejectAll(){
+        foreach ($this->photoLines as $photoLine){
+            $photoLine->reject();
+        }
+    }
+
     public function approvedCount(){
-        return $this->photoLines()->where('is_approved', '==', true)->count();
+        return $this->photoLines->where('is_approved', '==', true)->count();
     }
 }
