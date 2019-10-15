@@ -95,14 +95,14 @@
                                                                             {{$orderLine->id}}
                                                                         @endslot
                                                                         @slot('class')
-                                                                            @if($photoLine->is_approved === null){{'warning'}}
-                                                                            @else{{$photoLine->is_approved ? 'success' : 'danger'}}@endif
+                                                                            @if($photoLine->isPending()){{'warning'}}
+                                                                            @else{{$photoLine->isApproved() ? 'success' : 'danger'}}@endif
                                                                         @endslot
                                                                         @slot('labelText')
-                                                                            @if($photoLine->is_approved === null)
+                                                                            @if($photoLine->isPending())
                                                                                 Pending...
                                                                             @else
-                                                                                {{$photoLine->is_approved ? 'Approved...' : 'Rejected...'}}
+                                                                                {{$photoLine->isApproved() ? 'Approved...' : 'Rejected...'}}
                                                                             @endif
                                                                         @endslot
                                                                         @slot('path')
@@ -203,14 +203,14 @@
                                                                 {{$orderLine->id}}
                                                             @endslot
                                                             @slot('class')
-                                                                @if($photoLine->is_approved === null){{'warning'}}
-                                                                @else{{$photoLine->is_approved ? 'success' : 'danger'}}@endif
+                                                                @if($photoLine->isPending()){{'warning'}}
+                                                                @else{{$photoLine->isApproved() ? 'success' : 'danger'}}@endif
                                                             @endslot
                                                             @slot('labelText')
-                                                                @if($photoLine->is_approved === null)
+                                                                @if($photoLine->isPending())
                                                                     Pending...
                                                                 @else
-                                                                    {{$photoLine->is_approved ? 'Approved...' : 'Rejected...'}}
+                                                                    {{$photoLine->isApproved() ? 'Approved...' : 'Rejected...'}}
                                                                 @endif
                                                             @endslot
                                                             @slot('path')
@@ -225,13 +225,13 @@
                                                                 {{$photoLine->id}}
                                                             @endslot
                                                             @slot('class')
-                                                                {{$photoLine->is_approved ? 'danger' : 'success'}}
+                                                                {{$photoLine->isApproved() ? 'danger' : 'success'}}
                                                             @endslot
                                                             @slot('buttonText')
-                                                                {{$photoLine->is_approved ? 'Reject' : 'Approve'}}
+                                                                {{$photoLine->isApproved() ? 'Reject' : 'Approve'}}
                                                             @endslot
                                                             @slot('isChecked')
-                                                                {{$photoLine->is_approved ? 'checked' : ''}}
+                                                                {{$photoLine->isApproved() ? 'checked' : ''}}
                                                             @endslot
                                                             @slot('path')
                                                                 {{$photoLine->photo->path}}

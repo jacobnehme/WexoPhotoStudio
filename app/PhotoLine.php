@@ -9,7 +9,7 @@ class PhotoLine extends Model
     protected $fillable = [
         'order_line_id',
         'photo_id',
-        'is_approved',
+        'status_id',
     ];
 
     public function photo()
@@ -22,14 +22,25 @@ class PhotoLine extends Model
         return $this->belongsTo(OrderLine::class);
     }
 
-    //TODO more sophisticated status control needed
-    public function approve($status = true)
+    public function status(){
+        return $this->belongsTo(Status::class);
+    }
+
+    public function isPending(){
+        return $this->status->id == Status::pending();
+    }
+
+    public function isApproved(){
+        return $this->status->id == Status::approved();
+    }
+
+    public function approve()
     {
-        $this->update(['is_approved' => $status]);
+        $this->update(['status_id' => Status::approved()]);
     }
 
     public function reject()
     {
-        $this->approve(false);
+        $this->update(['status_id' => Status::rejected()]);
     }
 }
