@@ -45,6 +45,7 @@ class PhotoLineController extends Controller
         PhotoLine::create([
             'order_line_id' => (int) $validated['orderLine_id'],
             'photo_id' => (int) $validated['photo_id'],
+            'is_approved' => true,
         ]);
 
         return back();
