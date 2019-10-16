@@ -58,6 +58,7 @@ class PhotoController extends Controller
         PhotoLine::create([
             'order_line_id' => (int) $validated['orderLine_id'],
             'photo_id' => $Photo->id,
+            //'status_id' => Status::pending(),
         ]);
 
         return back();

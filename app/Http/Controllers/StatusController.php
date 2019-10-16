@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\PhotoLine;
 use App\Status;
 use Illuminate\Http\Request;
 
-class PhotoLineController extends Controller
+class StatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,29 +35,16 @@ class PhotoLineController extends Controller
      */
     public function store(Request $request)
     {
-        //Validation
-        $validated = $request->validate([
-            'orderLine_id' => 'required',
-            'photo_id' => 'required',
-        ]);
-
-        //Persist photoLine
-        PhotoLine::create([
-            'order_line_id' => (int) $validated['orderLine_id'],
-            'photo_id' => (int) $validated['photo_id'],
-            'status_id' => Status::approved(),
-        ]);
-
-        return back();
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\PhotoLine  $photoLine
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function show(PhotoLine $photoLine)
+    public function show(Status $status)
     {
         //
     }
@@ -66,10 +52,10 @@ class PhotoLineController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\PhotoLine  $photoLine
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function edit(PhotoLine $photoLine)
+    public function edit(Status $status)
     {
         //
     }
@@ -78,23 +64,21 @@ class PhotoLineController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PhotoLine  $photoLine
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PhotoLine $photoLine)
+    public function update(Request $request, Status $status)
     {
-        $request['status'] ? $photoLine->approve() : $photoLine->reject();
-
-        return back();
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\PhotoLine  $photoLine
+     * @param  \App\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PhotoLine $photoLine)
+    public function destroy(Status $status)
     {
         //
     }
