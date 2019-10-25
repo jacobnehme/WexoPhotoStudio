@@ -69,7 +69,9 @@ class OrderLineController extends Controller
      */
     public function update(Request $request, OrderLine $orderLine)
     {
-        //
+        $request['status'] ? $orderLine->approve() : $orderLine->reject();
+
+        return back();
     }
 
     /**
