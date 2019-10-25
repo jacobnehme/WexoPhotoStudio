@@ -18,6 +18,7 @@ Auth::routes();
 
 // Resources
 Route::resource('orders', 'OrderController');
+Route::resource('orderLines', 'OrderLineController');
 Route::resource('products', 'ProductController');
 Route::resource('photos', 'PhotoController');
 Route::resource('photoLines', 'PhotoLineController');
