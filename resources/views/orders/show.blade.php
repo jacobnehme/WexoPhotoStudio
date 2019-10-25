@@ -13,11 +13,11 @@
                             <table class="container-fluid">
                                 <thead>
                                 <tr class="row">
-                                    <th class="col-md-2">Product</th>
-                                    <th class="col-md-8">Photos</th>
-                                    <th class="col-md-2">Upload
+                                    <th class="col-md-3">Product</th>
+                                    <th class="col-md-9">Photos</th>
+{{--                                    <th class="col-md-2">Upload
                                         <i class="text-danger">(dev)</i>
-                                    </th>
+                                    </th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -156,14 +156,14 @@
                                     </div>
 
                                     <tr class="row">
-                                        <td class="col-md-2">
+                                        <td class="col-md-3">
                                             <strong>Barcode: </strong>#{{$orderLine->product->barcode}} <br>
                                             <strong>Title: </strong>{{$orderLine->product->title}} <br>
                                             <strong>Description: </strong>{{$orderLine->product->description}} <br>
                                             <strong>Approved: </strong>{{$orderLine->approvedCount()}}
                                             / {{$orderLine->photoLines->count()}} <br>
                                         </td>
-                                        <td class="col-md-8">
+                                        <td class="col-md-9">
                                             <div class="row">
                                                 @foreach($orderLine->product->photos as $photo)
                                                     @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
@@ -241,7 +241,7 @@
                                                 @endforeach
                                             </div>
                                         </td>
-                                        <td class="col-md-2">
+                                        {{--<td class="col-md-2">
                                             <form method="POST" action="{{ action('PhotoController@store')}}"
                                                   enctype="multipart/form-data">
                                                 @csrf
@@ -269,7 +269,7 @@
                                                     @endif
                                                 </div>
                                             </form>
-                                        </td>
+                                        </td>--}}
                                     </tr>
                                 @endforeach
                                 </tbody>

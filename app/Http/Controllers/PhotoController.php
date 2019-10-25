@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\OrderLine;
 use App\Photo;
 use App\PhotoLine;
 use Illuminate\Http\Request;
@@ -36,32 +37,23 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        //TODO mime validation gives me errors
-        //Validation
-        $validated = $request->validate([
-            'orderLine_id' => 'required',
-            'product_id' => 'required',
-            'photo' => 'required',
-        ]);
+        $orderLine = OrderLine::where('id', $request['orderLine_id'])->get()->first();
 
         //Upload photo
-        $fileName = $request->file('photo')->store('photos', 'public');
+        $fileName = $request->file('photo')->store('', 'images');
 
         // Persist Photo
         $Photo = Photo::create([
-            'user_id' => auth()->id(),
-            'product_id' => (int) $validated['product_id'],
+            'user_id' => 1,
+            'product_id' => $orderLine->product->id,
             'path' => $fileName,
         ]);
 
         //Persist photoLine
         PhotoLine::create([
-            'order_line_id' => (int) $validated['orderLine_id'],
+            'order_line_id' => (int) $request['orderLine_id'],
             'photo_id' => $Photo->id,
-            //'status_id' => Status::pending(),
         ]);
-
-        return back();
     }
 
     /**

@@ -4,6 +4,6 @@
         {{$labelText}}
     </label>
     <img class="img img-fluid"
-         src="{{asset('../storage/app/public/'.$path)}}"
+         src="{{asset('images/'.$path)}}"
          alt="">
 </div>
