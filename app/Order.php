@@ -17,9 +17,14 @@ class Order extends Model
     ];
 
     //TODO should be customer
-    public function user()
+    public function customer()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class)->get()->first()->customer();
+    }
+
+    public function photographer()
+    {
+        return $this->belongsTo(User::class)->get()->first()->photographer();
     }
 
     public function orderLines()

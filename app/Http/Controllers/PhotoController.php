@@ -44,7 +44,7 @@ class PhotoController extends Controller
 
         // Persist Photo
         $Photo = Photo::create([
-            'user_id' => 1,
+            'photographer_id' => $orderLine->order->photographer()->id,
             'product_id' => $orderLine->product->id,
             'path' => $fileName,
         ]);

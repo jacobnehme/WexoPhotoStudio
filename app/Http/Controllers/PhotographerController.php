@@ -57,7 +57,9 @@ class PhotographerController extends Controller
      */
     public function edit(Photographer $photographer)
     {
-        //
+        return view('photographers/edit', [
+            'photographer' => $photographer
+        ]);
     }
 
     /**
