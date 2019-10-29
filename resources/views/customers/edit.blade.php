@@ -6,7 +6,7 @@
             <div class="col-md-8">
 
                 <div class="card">
-                    <div class="card-header">Edit Customer</div>
+                    <div class="card-header">Customer</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ action('CustomerController@update', $customer->id)}}">
@@ -75,7 +75,6 @@
                                     @endif
                                 </div>
                             </div>
-                            @dd($customer->zipCode)
 
                             <div class="form-group row">
                                 <label for="zip-code" class="col-md-4 col-form-label text-md-right">Zip Code</label>
@@ -83,7 +82,7 @@
                                 <div class="col-md-6">
                                     <input id="zip-code" type="text"
                                            class="form-control{{ $errors->has('zip_code') ? ' is-invalid' : '' }}"
-                                           name="zip_code" value="{{ $customer->zipCode()->first()->zip_code }}" required>
+                                           name="zip_code" value="{{ $customer->zipCode() != null ? $customer->zipCode()->zip_code : '' }}" required>
 
                                     @if ($errors->has('zip_code'))
                                         <span class="invalid-feedback" role="alert">
@@ -99,7 +98,7 @@
                                 <div class="col-md-6">
                                     <input id="city" type="text"
                                            class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}"
-                                           name="city" value="{{ $customer->zipCode()->first()->city }}" required>
+                                           name="city" value="{{ $customer->zipCode() != null ? $customer->zipCode()->city : '' }}" required>
 
                                     @if ($errors->has('city'))
                                         <span class="invalid-feedback" role="alert">

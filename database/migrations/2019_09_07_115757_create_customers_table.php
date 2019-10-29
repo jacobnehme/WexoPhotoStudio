@@ -15,13 +15,12 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
-            //TODO unique - one user can have multiple customers?
             $table->unsignedInteger('user_id');
-            $table->string('name_first');
-            $table->string('name_last');
-            $table->string('name_company');
-            $table->string('address');
-            $table->unsignedInteger('zip_code');
+            $table->string('name_first')->nullable()->default(null);
+            $table->string('name_last')->nullable()->default(null);
+            $table->string('name_company')->nullable()->default(null);
+            $table->string('address')->nullable()->default(null);
+            $table->unsignedInteger('zip_code')->nullable()->default(null);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

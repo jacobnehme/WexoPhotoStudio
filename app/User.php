@@ -39,4 +39,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function role(){
+        return $this->belongsto(Role::class)->get()->first();
+    }
+
+    public function isCustomer(){
+        return $this->role_id == Role::customer();
+    }
+
+    public function customer(){
+        return $this->hasMany(Customer::class)->get()->first();
+    }
+
+    public function isPhotographer(){
+        return $this->role_id == Role::photographer();
+    }
+
+    public function photographer(){
+        return $this->hasMany(Photographer::class)->get()->first();
+    }
 }

@@ -12,7 +12,8 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'customer_id',
+        'photographer_id',
     ];
 
     //TODO should be customer

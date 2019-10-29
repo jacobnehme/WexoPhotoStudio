@@ -22,6 +22,6 @@ class Customer extends Model
     ];
 
     public function zipCode(){
-        return $this->belongsTo(ZipCode::class);
+        return $this->belongsTo(ZipCode::class)->get()->first();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Role;
 use App\User;
 use App\Order;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -19,7 +20,14 @@ class OrderPolicy
      */
     public function view(User $user, Order $order)
     {
-        return $order->user_id == $user->id;
+        switch ($user->role_id) {
+            case Role::customer():
+                return $order->customer_id == $user->customer()->id;
+                break;
+            case Role::photographer():
+                return $order->photographer_id == $user->photographer()->id;
+                break;
+        }
     }
 
     /**
