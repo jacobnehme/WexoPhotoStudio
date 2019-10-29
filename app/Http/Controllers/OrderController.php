@@ -44,9 +44,15 @@ class OrderController extends Controller
                 break;
         }
 
-        return view('orders/index', [
-            'orders' => $orders,
-        ]);
+        if ($orders->count() > 1){
+            return view('orders/index', [
+                'orders' => $orders,
+            ]);
+        }
+        else{
+            return redirect('/orders/' . $orders->first()->id);
+        }
+
     }
 
     /**
@@ -130,7 +136,6 @@ class OrderController extends Controller
             ]);
         }
 
-        //Redirect to index TODO maybe created order?
         return redirect('/orders/' . $order->id);
     }
 
@@ -171,7 +176,7 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $order->photographer_id = auth()->user()->photographer()->id;
-        $order->save();
+        $order->update();
 
         return back();
     }

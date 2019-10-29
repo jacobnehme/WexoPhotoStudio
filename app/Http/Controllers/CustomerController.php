@@ -114,7 +114,36 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+            //TODO fix
+/*        $validated = $request->validate([
+            'name_first' => ['required', 'min:1', 'max:255'],
+            'name_last' => ['required', 'min:3', 'max:255'],
+            'name_company' => ['required', 'min:3', 'max:255'],
+            'address' => ['required', 'min:3', 'max:255'],
+//            'zip_code' => ['required', 'min:3', 'max:255'],
+//            'city' => ['required', 'min:3', 'max:255'],
+        ]);*/
+
+        $existingZipCode = ZipCode::where('zip_code', $request['zip_code'])->first();
+        if ($existingZipCode == null) {
+            $zipCode = ZipCode::create([
+                'zip_code' => $request['zip_code'],
+                'city' => $request['city'],
+            ]);
+        }
+        else{
+            $zipCode =  $existingZipCode;
+        }
+
+        $customer->update([
+            'name_first' => $request['name_first'],
+            'name_last' => $request['name_last'],
+            'name_company' => $request['name_company'],
+            'address' => $request['address'],
+            'zip_code' => $zipCode->id,
+        ]);
+
+        return back();
     }
 
     /**

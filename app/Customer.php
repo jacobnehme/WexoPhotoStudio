@@ -21,7 +21,9 @@ class Customer extends Model
         'city',
     ];
 
-    public function zipCode(){
-        return $this->belongsTo(ZipCode::class)->get()->first();
+    public function zipCode($id){
+        //TODO fix
+        //return $this->belongsTo(ZipCode::class);
+        return ZipCode::where('id', $id)->get()->first();
     }
 }

@@ -10,6 +10,7 @@
 
                     <div class="card-body">
                         <form method="POST" action="{{ action('CustomerController@update', $customer->id)}}">
+                            @method('PATCH')
                             @csrf
 
                             <div class="form-group row">
@@ -18,7 +19,7 @@
                                 <div class="col-md-6">
                                     <input id="name-first" type="text"
                                            class="form-control{{ $errors->has('name_first') ? ' is-invalid' : '' }}"
-                                           name="name_first" value="{{ $customer->name_first }}" required>
+                                           name="name_first" value="{{ $customer->name_first }}" >
 
                                     @if ($errors->has('name_first'))
                                         <span class="invalid-feedback" role="alert">
@@ -33,7 +34,7 @@
                                 <div class="col-md-6">
                                     <input id="name-last" type="text"
                                            class="form-control{{ $errors->has('name_last') ? ' is-invalid' : '' }}"
-                                           name="name_last" value="{{ $customer->name_last }}" required>
+                                           name="name_last" value="{{ $customer->name_last }}" >
 
                                     @if ($errors->has('name_last'))
                                         <span class="invalid-feedback" role="alert">
@@ -50,7 +51,7 @@
                                 <div class="col-md-6">
                                     <input id="name-company" type="text"
                                            class="form-control{{ $errors->has('name_company') ? ' is-invalid' : '' }}"
-                                           name="name_company" value="{{ $customer->name_company }}" required>
+                                           name="name_company" value="{{ $customer->name_company }}" >
 
                                     @if ($errors->has('name_company'))
                                         <span class="invalid-feedback" role="alert">
@@ -66,7 +67,7 @@
                                 <div class="col-md-6">
                                     <input id="address" type="text"
                                            class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}"
-                                           name="address" value="{{ $customer->address }}" required>
+                                           name="address" value="{{ $customer->address }}" >
 
                                     @if ($errors->has('address'))
                                         <span class="invalid-feedback" role="alert">
@@ -78,11 +79,10 @@
 
                             <div class="form-group row">
                                 <label for="zip-code" class="col-md-4 col-form-label text-md-right">Zip Code</label>
-
                                 <div class="col-md-6">
                                     <input id="zip-code" type="text"
                                            class="form-control{{ $errors->has('zip_code') ? ' is-invalid' : '' }}"
-                                           name="zip_code" value="{{ $customer->zipCode() != null ? $customer->zipCode()->zip_code : '' }}" required>
+                                           name="zip_code" value="{{ $customer->zipCode($customer->zip_code) != null ? $customer->zipCode($customer->zip_code)->zip_code : '' }}" >
 
                                     @if ($errors->has('zip_code'))
                                         <span class="invalid-feedback" role="alert">
@@ -98,7 +98,7 @@
                                 <div class="col-md-6">
                                     <input id="city" type="text"
                                            class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}"
-                                           name="city" value="{{ $customer->zipCode() != null ? $customer->zipCode()->city : '' }}" required>
+                                           name="city" value="{{ $customer->zipCode($customer->zip_code) != null ? $customer->zipCode($customer->zip_code)->city : '' }}" >
 
                                     @if ($errors->has('city'))
                                         <span class="invalid-feedback" role="alert">
