@@ -22,3 +22,4 @@ Route::resource('orderLines', 'OrderLineController');
 Route::resource('products', 'ProductController');
 Route::resource('photos', 'PhotoController');
 Route::resource('photoLines', 'PhotoLineController');
+Route::resource('customers', 'CustomerController');

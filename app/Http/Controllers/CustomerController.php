@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\ZipCode;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    /**
+     * CustomerController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        if ($customer = Customer::all()->where('user_id', '==', auth()->id())->first()){
+            return redirect('/customers/'.$customer->id.'/edit');
+        }
+        else{
+            return redirect('/customers/create');
+        }
     }
 
     /**
@@ -24,7 +38,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('customers/create');
     }
 
     /**
@@ -35,7 +49,34 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'user_id' => ['required'],
+            'name_first' => ['required', 'min:1', 'max:255'],
+            'name_last' => ['required', 'min:3', 'max:255'],
+            'name_company' => ['required', 'min:3', 'max:255'],
+            'address' => ['required', 'min:3', 'max:255'],
+            'zip_code' => ['required', 'min:3', 'max:255'],
+            'city' => ['required', 'min:3', 'max:255'],
+        ]);
+
+
+        $existingZipCode = ZipCode::where('zip_code', $validated['zip_code'])->first();
+        if ($existingZipCode == null) {
+            $zipCode = ZipCode::create([
+                'zip_code' => $validated['zip_code'],
+                'city' => $validated['city'],
+            ]);
+        }
+        else{
+              $zipCode =  $existingZipCode;
+        }
+
+        $validated['zip_code'] = $zipCode->id;
+        unset($validated['city']);
+
+        $customer = Customer::create($validated);
+
+        return redirect('/customers/'.$customer->id);
     }
 
     /**
@@ -46,7 +87,9 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        return view('customers/show', [
+            'customer' => $customer
+        ]);
     }
 
     /**
@@ -57,7 +100,9 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return view('customers/edit', [
+            'customer' => $customer
+        ]);
     }
 
     /**
