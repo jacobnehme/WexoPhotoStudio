@@ -81,34 +81,37 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
 
-                                @if(auth()->user()->isCustomer())
+                                @switch(auth()->user()->role()->id)
+                                    @case(\App\Role::customer())
                                     <a class="dropdown-item"
                                        href="{{ action('CustomerController@edit',  auth()->user()->customer()->id)}}">
                                         My Account
                                     </a>
-                                @else
+                                    @break
+
+                                    @case(\App\Role::customer())
                                     <a class="dropdown-item"
                                        href="{{ action('PhotographerController@edit',  auth()->user()->photographer()->id)}}">
                                         My Account
                                     </a>
-                                @endif
+                                    @break
+                                    @default
+                                @endswitch
 
+                                    <a class="dropdown-item" href="{{ action('OrderController@index')}}">
+                                        My Orders
+                                    </a>
 
-
-                                <a class="dropdown-item" href="{{ action('OrderController@index')}}">
-                                    My Orders
-                                </a>
-
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
+                                        {{ __('Logout') }}
+                                    </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                      style="display: none;">
-                                    @csrf
-                                </form>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                          style="display: none;">
+                                        @csrf
+                                    </form>
                             </div>
                         </li>
                     @endguest

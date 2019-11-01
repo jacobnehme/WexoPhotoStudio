@@ -22,7 +22,7 @@ class Customer extends Model
     ];
 
     public function zipCode($id){
-        //TODO fix
+        //TODO fix: probably because "zip_code" is not "zip_code_id"
         //return $this->belongsTo(ZipCode::class);
         return ZipCode::where('id', $id)->get()->first();
     }

@@ -21,6 +21,9 @@ class CreateRolesTable extends Migration
         });
 
         Role::create([
+            'title' => 'admin',
+        ]);
+        Role::create([
             'title' => 'customer',
         ]);
         Role::create([
