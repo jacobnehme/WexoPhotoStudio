@@ -14,6 +14,7 @@ class OrderLine extends Model
     protected $fillable = [
         'order_id',
         'product_id',
+        'status_id',
     ];
 
     public function order()
@@ -45,5 +46,28 @@ class OrderLine extends Model
 
     public function approvedCount(){
         return $this->photoLines->where('is_approved', '==', true)->count();
+    }
+
+    //"New" Status on OrderLine instead of PhotoLine
+    public function status(){
+        return $this->belongsTo(Status::class);
+    }
+
+    public function isPending(){
+        return $this->status->id == Status::pending();
+    }
+
+    public function isApproved(){
+        return $this->status->id == Status::approved();
+    }
+
+    public function approve()
+    {
+        $this->update(['status_id' => Status::approved()]);
+    }
+
+    public function reject()
+    {
+        $this->update(['status_id' => Status::rejected()]);
     }
 }

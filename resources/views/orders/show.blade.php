@@ -13,11 +13,11 @@
                             <table class="container-fluid">
                                 <thead>
                                 <tr class="row">
-                                    <th class="col-md-2">Product</th>
-                                    <th class="col-md-8">Photos</th>
-                                    <th class="col-md-2">Upload
-                                        <i class="text-danger">(dev)</i>
-                                    </th>
+                                    <th class="col-md-3">Product</th>
+                                    <th class="col-md-9">Photos</th>
+                                    {{--                                    <th class="col-md-2">Upload
+                                                                            <i class="text-danger">(dev)</i>
+                                                                        </th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -156,14 +156,47 @@
                                     </div>
 
                                     <tr class="row">
-                                        <td class="col-md-2">
+                                        <td class="col-md-3">
+
+                                            <label class="btn btn-@if($orderLine->isPending()){{'warning'}}
+                                            @else{{$orderLine->isApproved() ? 'success' : 'danger'}}@endif
+                                                }}">
+                                                @if($orderLine->isPending())
+                                                    Pending...
+                                                @else
+                                                    {{$orderLine->isApproved() ? 'Approved...' : 'Rejected...'}}
+                                                @endif
+                                            </label> <br>
+
+                                            <strong>OrderLine: </strong>#{{$orderLine->id}} <br>
                                             <strong>Barcode: </strong>#{{$orderLine->product->barcode}} <br>
                                             <strong>Title: </strong>{{$orderLine->product->title}} <br>
-                                            <strong>Description: </strong>{{$orderLine->product->description}} <br>
-                                            <strong>Approved: </strong>{{$orderLine->approvedCount()}}
-                                            / {{$orderLine->photoLines->count()}} <br>
+                                            {{--<strong>Description: </strong>{{$orderLine->product->description}} <br>--}}
+                                            {{--<strong>Approved: </strong>{{$orderLine->approvedCount()}}
+                                            / {{$orderLine->photoLines->count()}} <br>--}}
+
+                                            @if($orderLine->photoLines->count() > 0)
+                                                @component('components.statusForm')
+                                                    @slot('action')
+                                                        {{'OrderLineController@update'}}
+                                                    @endslot
+                                                    @slot('photoLineId')
+                                                        {{$orderLine->id}}
+                                                    @endslot
+                                                    @slot('class')
+                                                        {{$orderLine->isApproved() ? 'danger' : 'success'}}
+                                                    @endslot
+                                                    @slot('buttonText')
+                                                        {{$orderLine->isApproved() ? 'Reject' : 'Approve'}}
+                                                    @endslot
+                                                    @slot('isChecked')
+                                                        {{$orderLine->isApproved() ? 'checked' : ''}}
+                                                    @endslot
+                                                @endcomponent
+                                            @endif
+
                                         </td>
-                                        <td class="col-md-8">
+                                        <td class="col-md-9">
                                             <div class="row">
                                                 @foreach($orderLine->product->photos as $photo)
                                                     @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
@@ -217,7 +250,7 @@
                                                                 {{$photoLine->photo->path}}
                                                             @endslot
                                                         @endcomponent
-                                                        @component('components.statusForm')
+                                                        {{--@component('components.statusForm')
                                                             @slot('action')
                                                                 {{'PhotoLineController@update'}}
                                                             @endslot
@@ -236,12 +269,12 @@
                                                             @slot('path')
                                                                 {{$photoLine->photo->path}}
                                                             @endslot
-                                                        @endcomponent
+                                                        @endcomponent--}}
                                                     </div>
                                                 @endforeach
                                             </div>
                                         </td>
-                                        <td class="col-md-2">
+                                        {{--<td class="col-md-2">
                                             <form method="POST" action="{{ action('PhotoController@store')}}"
                                                   enctype="multipart/form-data">
                                                 @csrf
@@ -269,7 +302,7 @@
                                                     @endif
                                                 </div>
                                             </form>
-                                        </td>
+                                        </td>--}}
                                     </tr>
                                 @endforeach
                                 </tbody>

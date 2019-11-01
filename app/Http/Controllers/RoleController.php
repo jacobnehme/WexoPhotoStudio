@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\OrderLine;
+use App\Role;
 use Illuminate\Http\Request;
 
-class OrderLineController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class OrderLineController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\OrderLine  $orderLine
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(OrderLine $orderLine)
+    public function show(Role $role)
     {
         //
     }
@@ -52,10 +52,10 @@ class OrderLineController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\OrderLine  $orderLine
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(OrderLine $orderLine)
+    public function edit(Role $role)
     {
         //
     }
@@ -64,23 +64,21 @@ class OrderLineController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\OrderLine  $orderLine
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OrderLine $orderLine)
+    public function update(Request $request, Role $role)
     {
-        $request['status'] ? $orderLine->approve() : $orderLine->reject();
-
-        return back();
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\OrderLine  $orderLine
+     * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OrderLine $orderLine)
+    public function destroy(Role $role)
     {
         //
     }
