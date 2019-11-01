@@ -27,7 +27,7 @@ class OrderLineStatusTest extends TestCase
 
     public function testIsPending()
     {
-        // Makes objects
+        // Makes object
         $this->setAttributes();
         $this->status = $this->orderline->isPending();
 

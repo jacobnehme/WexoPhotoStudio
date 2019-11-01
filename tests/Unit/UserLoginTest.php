@@ -20,7 +20,7 @@ class UserLoginTest extends TestCase
     public function testUserLoginView()
     {
         //Get login controller
-        $result = $this->get('/login');
+        $result = $this->get('/login'); 
 
         //Assert that the result has a successful status code
         $result->assertSuccessful();
