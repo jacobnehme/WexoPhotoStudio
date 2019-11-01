@@ -17,16 +17,16 @@ class Role extends Model
 
     public static function customer()
     {
-        return Status::where('title', 'customer')->first()->id;
+        return Role::where('title', 'customer')->first()->id;
     }
 
     public static function photographer()
     {
-        return Status::where('title', 'photographer')->first()->id;
+        return Role::where('title', 'photographer')->first()->id;
     }
 
     public static function getRoleId($role)
     {
-        return Status::where('title', $role)->first()->id;
+        return Role::where('title', $role)->first()->id;
     }
 }

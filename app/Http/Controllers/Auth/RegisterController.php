@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Customer;
+use App\Photographer;
+use App\Role;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -63,11 +67,35 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            //'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role_id' => $data['role'],
-        ]);
+        DB::beginTransaction();
+
+        try{
+            $user = User::create([
+                //'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'role_id' => $data['role'],
+            ]);
+
+            switch ($user->role_id) {
+                case Role::customer():
+                    $customer = Customer::create([
+                        'user_id' => $user->id,
+                    ]);
+                    break;
+                case Role::photographer():
+                    $photographer = Photographer::create([
+                        'user_id' => $user->id,
+                    ]);
+                    break;
+            }
+
+            DB::commit();
+
+            return $user;
+        }
+        catch (\Exception $e){
+            DB::rollback();
+        }
     }
 }

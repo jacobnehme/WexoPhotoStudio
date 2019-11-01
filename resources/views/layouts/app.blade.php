@@ -43,11 +43,17 @@
                     </li>
 
                     @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ action('OrderController@create')}}">
-                            Order
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            @if(auth()->user()->isCustomer())
+                                <a class="nav-link" href="{{ action('OrderController@create')}}">
+                                    Order
+                                </a>
+                            @else
+                                <a class="nav-link" href="{{ action('OrderController@all')}}">
+                                    Orders
+                                </a>
+                            @endif
+                        </li>
                     @endauth
                 </ul>
 
@@ -68,26 +74,44 @@
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->email .
-                                ' (' . ucfirst(\App\Role::where('id', Auth::user()->role_id)->first()->title) . ')' }}
+                                ' (' . ucfirst(Auth::user()->role()->title) . ')' }}
                                 <span class="caret"></span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-                                <a class="dropdown-item" href="{{ action('OrderController@index')}}">
-                                    My Orders
-                                </a>
 
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
+                                @switch(auth()->user()->role()->id)
+                                    @case(\App\Role::customer())
+                                    <a class="dropdown-item"
+                                       href="{{ action('CustomerController@edit',  auth()->user()->customer()->id)}}">
+                                        My Account
+                                    </a>
+                                    @break
+
+                                    @case(\App\Role::customer())
+                                    <a class="dropdown-item"
+                                       href="{{ action('PhotographerController@edit',  auth()->user()->photographer()->id)}}">
+                                        My Account
+                                    </a>
+                                    @break
+                                    @default
+                                @endswitch
+
+                                    <a class="dropdown-item" href="{{ action('OrderController@index')}}">
+                                        My Orders
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
+                                        {{ __('Logout') }}
+                                    </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                      style="display: none;">
-                                    @csrf
-                                </form>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                          style="display: none;">
+                                        @csrf
+                                    </form>
                             </div>
                         </li>
                     @endguest

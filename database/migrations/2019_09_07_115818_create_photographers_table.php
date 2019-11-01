@@ -1,11 +1,10 @@
 <?php
 
-use App\Role;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class CreatePhotographersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,21 +13,14 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('photographers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
+            $table->unsignedInteger('user_id');
+            $table->string('employee_no')->nullable()->default(null);
             $table->timestamps();
-        });
 
-        Role::create([
-            'title' => 'admin',
-        ]);
-        Role::create([
-            'title' => 'customer',
-        ]);
-        Role::create([
-            'title' => 'photographer',
-        ]);
+            $table->foreign('user_id')->references('id')->on('users');
+        });
     }
 
     /**
@@ -38,6 +30,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('photographers');
     }
 }

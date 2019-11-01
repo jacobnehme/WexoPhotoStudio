@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Photo extends Model
 {
     protected $fillable = [
-        'user_id',
+        'photographer_id',
         'product_id',
         'path',
     ];
@@ -17,9 +17,8 @@ class Photo extends Model
         return $this->belongsTo(Product::class);
     }
 
-    //TODO should be photographer
-    public function user()
+    public function photographer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Photographer::class)->get()->first();
     }
 }

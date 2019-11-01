@@ -12,13 +12,19 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'customer_id',
+        'photographer_id',
     ];
 
     //TODO should be customer
-    public function user()
+    public function customer()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class)->get()->first()->customer();
+    }
+
+    public function photographer()
+    {
+        return $this->belongsTo(User::class)->get()->first()->photographer();
     }
 
     public function orderLines()

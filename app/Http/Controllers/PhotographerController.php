@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\OrderLine;
-use App\Photo;
-use App\PhotoLine;
+use App\Photographer;
 use Illuminate\Http\Request;
 
-class PhotoController extends Controller
+class PhotographerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -37,32 +35,16 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        $orderLine = OrderLine::where('id', $request['orderLine_id'])->get()->first();
-
-        //Upload photo
-        $fileName = $request->file('photo')->store('', 'images');
-
-        // Persist Photo
-        $Photo = Photo::create([
-            'photographer_id' => $orderLine->order->photographer()->id,
-            'product_id' => $orderLine->product->id,
-            'path' => $fileName,
-        ]);
-
-        //Persist photoLine
-        PhotoLine::create([
-            'order_line_id' => (int) $request['orderLine_id'],
-            'photo_id' => $Photo->id,
-        ]);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Photo  $photo
+     * @param  \App\Photographer  $photographer
      * @return \Illuminate\Http\Response
      */
-    public function show(Photo $photo)
+    public function show(Photographer $photographer)
     {
         //
     }
@@ -70,22 +52,24 @@ class PhotoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Photo  $photo
+     * @param  \App\Photographer  $photographer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Photo $photo)
+    public function edit(Photographer $photographer)
     {
-        //
+        return view('photographers/edit', [
+            'photographer' => $photographer
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Photo  $photo
+     * @param  \App\Photographer  $photographer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Photo $photo)
+    public function update(Request $request, Photographer $photographer)
     {
         //
     }
@@ -93,10 +77,10 @@ class PhotoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Photo  $photo
+     * @param  \App\Photographer  $photographer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Photo $photo)
+    public function destroy(Photographer $photographer)
     {
         //
     }

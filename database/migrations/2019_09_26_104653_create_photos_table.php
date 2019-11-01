@@ -15,14 +15,14 @@ class CreatePhotosTable extends Migration
     {
         Schema::create('photos', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('photographer_id');
             $table->unsignedInteger('product_id');
             $table->string('path');
             //Moved to photoLine
             //$table->boolean('status')->default(false);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('photographer_id')->references('id')->on('photographers');
             $table->foreign('product_id')->references('id')->on('products');
         });
     }

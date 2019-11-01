@@ -2,41 +2,41 @@
 
 @section('content')
     <div class="container">
-{{--        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        Dashboard - Orders
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
---}}{{--                            TODO Add Search --}}{{--
---}}{{--                            <div class="col-md-8">--}}{{--
---}}{{--                                <form method="get" action="">--}}{{--
+        {{--        <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                Dashboard - Orders
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+        --}}{{--                            TODO Add Search --}}{{--
+        --}}{{--                            <div class="col-md-8">--}}{{--
+        --}}{{--                                <form method="get" action="">--}}{{--
 
---}}{{--                                    <div class="form-group row">--}}{{--
---}}{{--                                        <div class="col-md-6">--}}{{--
---}}{{--                                            <input id="search" type="number"--}}{{--
---}}{{--                                                   name="search" value="{{ old('search') }}" placeholder="Search by id" required autofocus>--}}{{--
---}}{{--                                        </div>--}}{{--
---}}{{--                                        <div class="col-md-6">--}}{{--
---}}{{--                                            <button type="submit" class="btn btn-primary">--}}{{--
---}}{{--                                                Search--}}{{--
---}}{{--                                            </button>--}}{{--
---}}{{--                                        </div>--}}{{--
---}}{{--                                    </div>--}}{{--
---}}{{--                                </form>--}}{{--
---}}{{--                            </div>--}}{{--
-                            <div class="col-md-12">
-                                <a class="btn btn-primary" href="{{ action('OrderController@create')}}">
-                                    Create
-                                </a>
+        --}}{{--                                    <div class="form-group row">--}}{{--
+        --}}{{--                                        <div class="col-md-6">--}}{{--
+        --}}{{--                                            <input id="search" type="number"--}}{{--
+        --}}{{--                                                   name="search" value="{{ old('search') }}" placeholder="Search by id" required autofocus>--}}{{--
+        --}}{{--                                        </div>--}}{{--
+        --}}{{--                                        <div class="col-md-6">--}}{{--
+        --}}{{--                                            <button type="submit" class="btn btn-primary">--}}{{--
+        --}}{{--                                                Search--}}{{--
+        --}}{{--                                            </button>--}}{{--
+        --}}{{--                                        </div>--}}{{--
+        --}}{{--                                    </div>--}}{{--
+        --}}{{--                                </form>--}}{{--
+        --}}{{--                            </div>--}}{{--
+                                    <div class="col-md-12">
+                                        <a class="btn btn-primary" href="{{ action('OrderController@create')}}">
+                                            Create
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>--}}
+                </div>--}}
         <div class="row justify-content-center">
             <div class="col-md-8">
 
@@ -71,11 +71,20 @@
                                         {{date('j F, Y', strtotime($order->created_at))}}
                                     </td>
                                     <td class="col-md-3">
-{{--                                        TODO Add glyphicons--}}
+                                        {{--                                        TODO Add glyphicons--}}
                                         <a href="{{ action('OrderController@show', $order->id)}}">Details</a>
-
-{{--                                        TODO Edit? Delete?--}}
-{{--                                        <a href="{{ action('OrderController@edit', $order->id)}}"></a>--}}
+                                        @if(auth()->user()->isPhotographer())
+                                            @if($order->photographer_id == null)
+                                                <form action="{{ action('OrderController@update', $order->id)}}"
+                                                      method="POST">
+                                                    @method('PATCH')
+                                                    @csrf
+{{--                                                    <input name="photographer_id" type="hidden"
+                                                           value="{{auth()->user()->photographer()->id}}">--}}
+                                                    <button type="submit">Take</button>
+                                                </form>
+                                            @endif
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
