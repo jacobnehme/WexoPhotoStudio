@@ -175,7 +175,8 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $order->photographer_id = auth()->user()->photographer()->id;
+        //$order->photographer_id = auth()->user()->photographer()->id;
+        $order->photographer_id = $request['photographer_id'];
         $order->update();
 
         return back();

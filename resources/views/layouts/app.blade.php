@@ -44,15 +44,20 @@
 
                     @auth
                         <li class="nav-item">
-                            @if(auth()->user()->isCustomer())
+
+                            @switch(auth()->user()->role()->id)
+                                @case(\App\Role::customer())
                                 <a class="nav-link" href="{{ action('OrderController@create')}}">
                                     Order
                                 </a>
-                            @else
+                                @break
+                                @case(\App\Role::admin())
                                 <a class="nav-link" href="{{ action('OrderController@all')}}">
                                     Orders
                                 </a>
-                            @endif
+                                @break
+                                @default
+                            @endswitch
                         </li>
                     @endauth
                 </ul>
@@ -80,7 +85,6 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-
                                 @switch(auth()->user()->role()->id)
                                     @case(\App\Role::customer())
                                     <a class="dropdown-item"
@@ -89,7 +93,7 @@
                                     </a>
                                     @break
 
-                                    @case(\App\Role::customer())
+                                    @case(\App\Role::photographer())
                                     <a class="dropdown-item"
                                        href="{{ action('PhotographerController@edit',  auth()->user()->photographer()->id)}}">
                                         My Account

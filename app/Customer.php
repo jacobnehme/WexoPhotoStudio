@@ -21,6 +21,10 @@ class Customer extends Model
         'city',
     ];
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
     public function zipCode($id){
         //TODO fix: probably because "zip_code" is not "zip_code_id"
         //return $this->belongsTo(ZipCode::class);

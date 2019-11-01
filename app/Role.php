@@ -15,6 +15,11 @@ class Role extends Model
         'title',
     ];
 
+    public static function admin()
+    {
+        return Role::where('title', 'admin')->first()->id;
+    }
+
     public static function customer()
     {
         return Role::where('title', 'customer')->first()->id;

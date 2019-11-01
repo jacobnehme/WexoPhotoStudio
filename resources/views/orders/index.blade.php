@@ -72,18 +72,28 @@
                                     </td>
                                     <td class="col-md-3">
                                         {{--                                        TODO Add glyphicons--}}
-                                        <a href="{{ action('OrderController@show', $order->id)}}">Details</a>
-                                        @if(auth()->user()->isPhotographer())
-                                            @if($order->photographer_id == null)
-                                                <form action="{{ action('OrderController@update', $order->id)}}"
-                                                      method="POST">
-                                                    @method('PATCH')
-                                                    @csrf
-{{--                                                    <input name="photographer_id" type="hidden"
-                                                           value="{{auth()->user()->photographer()->id}}">--}}
-                                                    <button type="submit">Take</button>
-                                                </form>
-                                            @endif
+                                        {{--                                        <a href="{{ action('OrderController@show', $order->id)}}">Details</a>--}}
+                                        @if(auth()->user()->role_id == \App\Role::admin())
+                                            <form action="{{ action('OrderController@update', $order->id)}}"
+                                                  method="POST">
+                                                @method('PATCH')
+                                                @csrf
+
+                                                <select name="photographer_id" required>
+                                                    <option disabled hidden selected>Choose...</option>
+                                                    {{--                                                        @foreach(\App\User::where('role_id', \App\Role::photographer()) as $user)--}}
+                                                    @foreach(\App\Photographer::all() as $photographer)
+                                                        <option
+                                                            value="{{$photographer->id}}"
+                                                            {{$photographer->id == $order->photographer_id ? 'selected' : ''}}
+                                                        >{{$photographer->user()->email}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                {{--                                                    <input name="photographer_id" type="hidden"
+                                                                                                           value="{{auth()->user()->photographer()->id}}">--}}
+                                                <button type="submit">Select</button>
+                                            </form>
                                         @endif
                                     </td>
                                 </tr>

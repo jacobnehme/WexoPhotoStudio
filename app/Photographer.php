@@ -15,4 +15,8 @@ class Photographer extends Model
         'user_id',
         'employee_no',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class)->get()->first();
+    }
 }
