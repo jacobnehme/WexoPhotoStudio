@@ -6,7 +6,8 @@
             <div class="col-md-12">
 
                 <div class="card">
-                    <div class="card-header">Order: #{{$order->id}}</div>
+                    <div class="card-header">Order: #{{$order->id}} <span class="float-right"><b>Price total:</b> {{$order->calcOrderLinePrice()}},- <i>incl. taxes</i></span></div>
+
 
                     <div class="card-body">
                         @if($order->orderLines->count())

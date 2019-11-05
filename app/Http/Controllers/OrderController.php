@@ -19,7 +19,9 @@ class OrderController extends Controller
         $this->middleware('auth');
     }
 
-    public function all(){
+
+    public function all()
+    {
 
         $orders = Order::all();
 
@@ -35,24 +37,34 @@ class OrderController extends Controller
      */
     public function index()
     {
+        // TODO Refactor code if if if
         switch (auth()->user()->role_id) {
             case Role::customer():
                 $orders = Order::where('customer_id', auth()->user()->customer()->id)->get();
+                if ($orders->count() > 1) {
+                    return view('orders/index', [
+                        'orders' => $orders,
+                    ]);
+                } else if ($orders->count() == 1) {
+                    return redirect('/orders/' . $orders->first()->id);
+                } else {
+                    return redirect('/orders/create');
+                }
                 break;
             case Role::photographer():
                 $orders = Order::where('photographer_id', auth()->user()->photographer()->id)->get();
+                if ($orders->count() > 1) {
+                    return view('orders/index', [
+                        'orders' => $orders,
+                    ]);
+                } else if ($orders->count() == 1) {
+                    return redirect('/orders/' . $orders->first()->id);
+                } else {
+                    return redirect('/orders/all');
+                }
                 break;
         }
-
-        if ($orders->count() > 1){
-            return view('orders/index', [
-                'orders' => $orders,
-            ]);
-        }
-        else{
-            return redirect('/orders/' . $orders->first()->id);
-        }
-
+        return redirect('/orders/all');
     }
 
     /**
@@ -76,7 +88,7 @@ class OrderController extends Controller
         //TODO transaction, encapsulation, clean up and more...
 
         //Validation (goes here)
-        $validated = $request->validate([
+        $validated                = $request->validate([
             'products' => 'required|mimes:txt'
         ]);
         $validated['customer_id'] = auth()->user()->customer()->id;
@@ -89,7 +101,7 @@ class OrderController extends Controller
 
         //Read CSV to array
         $filePath = storage_path('/app/' . $fileName);
-        $file = fopen($filePath, "r");
+        $file     = fopen($filePath, "r");
         while (($data = fgetcsv($file, 200, ";")) !== FALSE) {
             $products[] = [
                 'barcode' => $data[0],
@@ -122,7 +134,7 @@ class OrderController extends Controller
             }
 
             $product['id'] = $product->id;
-            $products2[] = $product;
+            $products2[]   = $product;
         }
 
         //Persist Order

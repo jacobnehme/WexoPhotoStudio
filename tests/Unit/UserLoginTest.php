@@ -3,7 +3,8 @@
 namespace Tests\Unit;
 
 
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Tests\TestCase;
 
 
@@ -40,7 +41,7 @@ class UserLoginTest extends TestCase
     {
         //        TODO  Make statements for deleting user if test is failed
         // Make a persitent user
-        $user      = User::Create([
+        $user = User::Create([
             "name" => "Test2",
             "email" => "test@testing.dk",
             // Hash the given value against the bcrypt algorithm.
@@ -66,9 +67,9 @@ class UserLoginTest extends TestCase
 
     public function testUserCantLogin()
     {
-//        TODO  Make statements for deleting user if test is failed
+//        TODO  Make statements for deleting user if test is failed refactor sprint maybe
         // Make a persitent user
-        $user      = User::Create([
+        $user = User::Create([
             "name" => "Test2",
             "email" => "test@testing.dk",
             // Hash the given value against the bcrypt algorithm.
@@ -94,6 +95,43 @@ class UserLoginTest extends TestCase
         $this->assertFalse(session()->hasOldInput('password'));
 
         // Delete test user from db
+        $user->delete();
+    }
+
+    public function testRememberMe()
+    {
+//        TODO Failing on remember me. Need to set remember me to on
+
+        $user = User::Create([
+            "email" => "test@testing2.dk",
+            'password' => bcrypt($password = 'test'),
+            "role_id" => 1
+        ]);
+
+        // Fill the login form set remember me.
+        $result = $this->post('/login', [
+            'email' => $user->email,
+            'password' => $password,
+            'remember' => true,
+        ]);
+
+        // Assert Redirect to home page
+        $result->assertRedirect('/home');
+
+        // Return array values as a formatted string according to format
+        // Constructing Values id|remember-token|user's-hashed-password
+        $value = vsprintf('%s|%s|%s', [
+            $user->id,
+            $user->getRememberToken(),
+            $user->password,
+        ]);
+
+        // Asserts that the response contains the given cookie and equals the optional value
+        $result->assertCookie(Auth::guard()->getRecallerName(), $value);
+
+        // Assert that the user is authenticated as the given user
+        $this->assertAuthenticatedAs($user);
+
         $user->delete();
     }
 

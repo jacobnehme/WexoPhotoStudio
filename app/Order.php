@@ -32,5 +32,19 @@ class Order extends Model
         return $this->hasMany(OrderLine::class);
     }
 
+    public function calcOrderLinePrice()
+    {
+        // TODO Refactor Or WHERE statement
+        $preApprovedPrice  = 50;
+        $defaultPrice      = 100;
+        $orderLines        = $this->orderLines()->get();
+        $pendingTotalPrice = $defaultPrice * $orderLines->where('status_id', '==', 1)->count();
+        $rejectTotalPrice  = $defaultPrice * $orderLines->where('status_id', '==', 2)->count();
+        $preTotalPrice     = $preApprovedPrice * $orderLines->where('status_id', '==', 3)->count();
+
+        return $pendingTotalPrice + $rejectTotalPrice + $preTotalPrice;
+
+
+    }
     //TODO hasManyThrough Product, OrderLine
 }
