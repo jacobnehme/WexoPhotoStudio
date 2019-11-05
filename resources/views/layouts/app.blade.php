@@ -43,22 +43,27 @@
                     </li>
 
                     @auth
-                        <li class="nav-item">
+                        @switch(auth()->user()->role_id)
+                            @case(\App\Role::admin())
+                            <li class="nav-item">
 
-                            @switch(auth()->user()->role()->id)
-                                @case(\App\Role::customer())
-                                <a class="nav-link" href="{{ action('OrderController@create')}}">
-                                    Order
-                                </a>
-                                @break
-                                @case(\App\Role::admin())
                                 <a class="nav-link" href="{{ action('OrderController@all')}}">
                                     Orders
                                 </a>
-                                @break
-                                @default
-                            @endswitch
-                        </li>
+                            </li>
+
+                            @break
+                            @case(\App\Role::customer())
+                            <li class="nav-item">
+
+                                <a class="nav-link" href="{{ action('OrderController@create')}}">
+                                    Order
+                                </a>
+                            </li>
+
+                            @break
+                            @default
+                        @endswitch
                     @endauth
                 </ul>
 
@@ -78,21 +83,20 @@
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->email .
-                                ' (' . ucfirst(Auth::user()->role()->title) . ')' }}
+                                {{ auth()->user()->email .
+                                ' (' . ucfirst(auth()->user()->role()->title) . ')' }}
                                 <span class="caret"></span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-                                @switch(auth()->user()->role()->id)
+                                @switch(auth()->user()->role_id)
                                     @case(\App\Role::customer())
                                     <a class="dropdown-item"
                                        href="{{ action('CustomerController@edit',  auth()->user()->customer()->id)}}">
                                         My Account
                                     </a>
                                     @break
-
                                     @case(\App\Role::photographer())
                                     <a class="dropdown-item"
                                        href="{{ action('PhotographerController@edit',  auth()->user()->photographer()->id)}}">
@@ -102,20 +106,22 @@
                                     @default
                                 @endswitch
 
+                                @if(auth()->user()->role_id == \App\Role::customer() or auth()->user()->role_id == \App\Role::photographer())
                                     <a class="dropdown-item" href="{{ action('OrderController@index')}}">
                                         My Orders
                                     </a>
+                                @endif
 
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                    {{ __('Logout') }}
+                                </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                          style="display: none;">
-                                        @csrf
-                                    </form>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                      style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </li>
                     @endguest

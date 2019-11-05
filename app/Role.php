@@ -30,7 +30,8 @@ class Role extends Model
         return Role::where('title', 'photographer')->first()->id;
     }
 
-    public static function getRoleId($role)
+    //Replace other methods?
+    public static function idOfRole($role)
     {
         return Role::where('title', $role)->first()->id;
     }
