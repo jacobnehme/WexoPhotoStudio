@@ -44,7 +44,6 @@ class Order extends Model
 
         return $pendingTotalPrice + $rejectTotalPrice + $preTotalPrice;
 
-
     }
     //TODO hasManyThrough Product, OrderLine
 }

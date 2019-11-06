@@ -13,6 +13,7 @@ use App\User;
 class UserLoginTest extends TestCase
 {
 
+    // Integration tests
     public function testUserLoginView()
     {
         //Get login controller
@@ -55,7 +56,7 @@ class UserLoginTest extends TestCase
             'password' => $password
         ]);
 
-        // Check if loggined you should redirect to home controller.
+        // Check if you redirectet to home controller.
         $result->assertRedirect('/home');
 
         // Assert that the user is authenticated as the given user
