@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PhotoUploaded;
 use App\OrderLine;
 use App\Photo;
 use App\PhotoLine;
@@ -54,6 +55,8 @@ class PhotoController extends Controller
             'order_line_id' => (int) $request['orderLine_id'],
             'photo_id' => $Photo->id,
         ]);
+
+        PhotoUploaded::dispatch();
     }
 
     /**

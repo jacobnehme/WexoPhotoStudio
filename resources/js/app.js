@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -31,3 +30,23 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app'
 });
+
+Echo.channel(`orders`)
+    .listen('OrderLineStatusUpdated', (e) => {
+        console.log(e['orderLine']);
+        console.log(e['orderLine']['id']);
+        console.log(e['orderLine']['status_id']);
+        let label = $('#order-line-' + e['orderLine']['id'] + ' .status');
+        switch (e['orderLine']['status_id']) {
+            case 2:
+                label.removeClass('btn-success').addClass('btn-danger').text('Rejected...');
+                break;
+            case 3:
+                label.removeClass('btn-danger').addClass('btn-success').text('Approved...');
+                break;
+        }
+    })
+    .listen('OrderLineStatusUpdated', (e) => {
+        console.log('PhotoUploaded');
+    });
+

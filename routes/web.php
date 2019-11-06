@@ -11,6 +11,9 @@
 |
 */
 
+use App\Events\OrderLineStatusUpdated;
+use App\Order;
+
 Route::get('/', 'OrderController@create');
 Route::get('/home', 'HomeController@index')->name('home');
 

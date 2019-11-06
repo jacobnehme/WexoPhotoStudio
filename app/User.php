@@ -57,7 +57,7 @@ class User extends Authenticatable
 
     //Get photographer subclass
     public function photographer(){
-        if ($this->isRole(Role::customer())){
+        if ($this->isRole(Role::photographer())){
             return $this->hasMany(Photographer::class)->get()->first();
         }
         else{

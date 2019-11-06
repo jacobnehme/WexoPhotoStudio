@@ -155,10 +155,10 @@
                                         </div>
                                     </div>
 
-                                    <tr class="row">
+                                    <tr class="row" id="order-line-{{$orderLine->id}}">
                                         <td class="col-md-3">
 
-                                            <label class="btn btn-@if($orderLine->isPending()){{'warning'}}
+                                            <label class="status btn btn-@if($orderLine->isPending()){{'warning'}}
                                             @else{{$orderLine->isApproved() ? 'success' : 'danger'}}@endif
                                                 }}">
                                                 @if($orderLine->isPending())
@@ -175,24 +175,26 @@
                                             {{--<strong>Approved: </strong>{{$orderLine->approvedCount()}}
                                             / {{$orderLine->photoLines->count()}} <br>--}}
 
-                                            @if($orderLine->photoLines->count() > 0)
-                                                @component('components.statusForm')
-                                                    @slot('action')
-                                                        {{'OrderLineController@update'}}
-                                                    @endslot
-                                                    @slot('photoLineId')
-                                                        {{$orderLine->id}}
-                                                    @endslot
-                                                    @slot('class')
-                                                        {{$orderLine->isApproved() ? 'danger' : 'success'}}
-                                                    @endslot
-                                                    @slot('buttonText')
-                                                        {{$orderLine->isApproved() ? 'Reject' : 'Approve'}}
-                                                    @endslot
-                                                    @slot('isChecked')
-                                                        {{$orderLine->isApproved() ? 'checked' : ''}}
-                                                    @endslot
-                                                @endcomponent
+                                            @if(auth()->user()->role_id == \App\Role::customer())
+                                                @if($orderLine->photoLines->count() > 0)
+                                                    @component('components.statusForm')
+                                                        @slot('action')
+                                                            {{'OrderLineController@update'}}
+                                                        @endslot
+                                                        @slot('photoLineId')
+                                                            {{$orderLine->id}}
+                                                        @endslot
+                                                        @slot('class')
+                                                            {{$orderLine->isApproved() ? 'danger' : 'success'}}
+                                                        @endslot
+                                                        @slot('buttonText')
+                                                            {{$orderLine->isApproved() ? 'Reject' : 'Approve'}}
+                                                        @endslot
+                                                        @slot('isChecked')
+                                                            {{$orderLine->isApproved() ? 'checked' : ''}}
+                                                        @endslot
+                                                    @endcomponent
+                                                @endif
                                             @endif
 
                                         </td>

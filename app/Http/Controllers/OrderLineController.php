@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderLineStatusUpdated;
 use App\OrderLine;
 use Illuminate\Http\Request;
 
@@ -70,6 +71,8 @@ class OrderLineController extends Controller
     public function update(Request $request, OrderLine $orderLine)
     {
         $request['status'] ? $orderLine->approve() : $orderLine->reject();
+
+        OrderLineStatusUpdated::dispatch($orderLine);
 
         return back();
     }
