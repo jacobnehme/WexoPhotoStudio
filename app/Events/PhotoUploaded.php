@@ -14,7 +14,7 @@ class PhotoUploaded implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $orderLine_id;
+    public $orderLine;
     public $path;
 
     /**
@@ -22,9 +22,9 @@ class PhotoUploaded implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($orderLine_id, $path)
+    public function __construct($orderLine, $path)
     {
-        $this->orderLine_id = $orderLine_id;
+        $this->orderLine = $orderLine;
         $this->path = $path;
     }
 

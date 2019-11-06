@@ -24,7 +24,7 @@ class Order extends Model
 
     public function photographer()
     {
-        return $this->belongsTo(User::class)->get()->first()->photographer();
+        return $this->belongsTo(Photographer::class)->get()->first();
     }
 
     public function orderLines()

@@ -41,46 +41,43 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function role(){
+    public function role()
+    {
         return $this->belongsto(Role::class)->get()->first();
     }
 
     //Get customer subclass
-    public function customer(){
-        if ($this->isRole(Role::customer())){
-            return $this->hasMany(Customer::class)->get()->first();
-        }
-        else{
-            throw new Exception('This User is not a Customer.');
-        }
+    public function customer()
+    {
+        return $this->hasMany(Customer::class)->get()->first();
     }
 
     //Get photographer subclass
-    public function photographer(){
-        if ($this->isRole(Role::photographer())){
-            return $this->hasMany(Photographer::class)->get()->first();
-        }
-        else{
-            throw new Exception('This User is not a Photographer.');
-        }
+    public function photographer()
+    {
+        return $this->hasMany(Photographer::class)->get()->first();
     }
 
     //TODO Replace specific role methods
-    public function isRole($role){
+    public function isRole($role)
+    {
         return $this->role_id == $role;
     }
 
-    public function isCustomer(){
+    public function isCustomer()
+    {
         return $this->role_id == Role::customer();
     }
 
-    public function isPhotographer(){
+    public function isPhotographer()
+    {
         return $this->role_id == Role::photographer();
 
     }
 
     //TODO possible get role class
-    public function getRoleClass(){
+    public function getRoleClass()
+    {
         //return $this->hasMany($this->Role())->get()->first();
     }
 }

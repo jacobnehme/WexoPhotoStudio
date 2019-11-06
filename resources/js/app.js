@@ -36,6 +36,7 @@ Echo.channel(`orders`)
         console.log(e['orderLine']);
         console.log(e['orderLine']['id']);
         console.log(e['orderLine']['status_id']);
+
         let label = $('#order-line-' + e['orderLine']['id'] + ' .status');
         switch (e['orderLine']['status_id']) {
             case 2:
@@ -52,12 +53,12 @@ Echo.channel(`orders`)
 Echo.channel(`orders`)
     .listen('PhotoUploaded', (e) => {
         console.log('Photo Uploaded');
-        console.log(e['orderLine_id']);
+        console.log(e['orderLine']['id']);
         console.log(e['path']);
-        let photos = $('#order-line-' + e['orderLine_id'] + ' .photos');
+        let photos = $('#order-line-' + e['orderLine']['id'] + ' .photos');
         photos.html(photos.html() +
             '<div class="col-md-3">' +
-            '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine_id'] + '">' +
+            '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine']['id'] + '">' +
             '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['path'] + '">' +
             '</div>' +
             '</div>'
