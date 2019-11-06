@@ -199,7 +199,7 @@
 
                                         </td>
                                         <td class="col-md-9">
-                                            <div class="row">
+                                            <div class="row photos">
                                                 @foreach($orderLine->product->photos as $photo)
                                                     @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
 

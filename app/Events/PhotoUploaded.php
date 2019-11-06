@@ -14,14 +14,18 @@ class PhotoUploaded implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $orderLine_id;
+    public $path;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($orderLine_id, $path)
     {
-        //
+        $this->orderLine_id = $orderLine_id;
+        $this->path = $path;
     }
 
     /**
