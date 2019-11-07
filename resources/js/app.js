@@ -64,5 +64,5 @@ Echo.channel(`orders`)
             '</div>' +
             '</div>'
         );
-        $('#status-form-' + e['orderLine']['id']).show();
+        $('#order-line-' + e['orderLine']['id'] + ' .status-form').show();
     });

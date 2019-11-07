@@ -10,12 +10,7 @@
 //@import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
 // Style
-
-//.carousel-indicators {
-//    bottom: 50px;
-//}
-
-table{
+table {
     thead tr {
         border-bottom: 2px solid #F7F7F7;
     }
@@ -29,34 +24,19 @@ table{
     }
 }
 
-form {
-    input[name=photo] {
-        height: auto;
-    }
-
-    &.form {
-        .btn {
-            cursor: pointer;
-            width: 100%;
-        }
-    }
-}
-
 .photo {
     cursor: pointer;
+    margin-bottom: 5px;
+}
 
-    label {
-        position: absolute;
-        top: 15px;
-        width: 65px;
-        padding: 2px 5px;
-        font-size: 10px;
-        color: white;
-        box-shadow: black 1px 2px 2px;
-        border-radius: 0;
+.status-label{
+    width: 100%;
+}
+
+.status-form {
+    .btn {
+        cursor: pointer;
+        width: 100%;
     }
 }
 
-img {
-    margin-bottom: 5px;
-}

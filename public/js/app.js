@@ -59080,7 +59080,7 @@ Echo.channel("orders").listen('PhotoUploaded', function (e) {
   console.log(e['path']);
   var photos = $('#order-line-' + e['orderLine']['id'] + ' .photos');
   photos.html(photos.html() + '<div class="col-md-3">' + '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine']['id'] + '">' + '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['path'] + '">' + '</div>' + '</div>');
-  $('#status-form-' + e['orderLine']['id']).show();
+  $('#order-line-' + e['orderLine']['id'] + ' .status-form').show();
 });
 
 /***/ }),

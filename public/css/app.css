@@ -10656,31 +10656,17 @@ table tbody tr:nth-of-type(even) {
   background: #F7F7F7;
 }
 
-form input[name=photo] {
-  height: auto;
+.photo {
+  cursor: pointer;
+  margin-bottom: 5px;
 }
 
-form.form .btn {
-  cursor: pointer;
+.status-label {
   width: 100%;
 }
 
-.photo {
+.status-form .btn {
   cursor: pointer;
-}
-
-.photo label {
-  position: absolute;
-  top: 15px;
-  width: 65px;
-  padding: 2px 5px;
-  font-size: 10px;
-  color: white;
-  box-shadow: black 1px 2px 2px;
-  border-radius: 0;
-}
-
-img {
-  margin-bottom: 5px;
+  width: 100%;
 }
 

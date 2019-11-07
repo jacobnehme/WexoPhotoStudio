@@ -21,8 +21,6 @@
 
                 {{-- Table Header --}}
                 @slot('head')
-                    <th class="col-md-3">Product</th>
-                    <th class="col-md-9">Photos</th>
                 @endslot
 
                 {{-- Modal and row for each OrderLine --}}
@@ -99,14 +97,18 @@
                         @endcomponent
                     @endcomponent
 
-                    {{-- Rows --}}
+                    <tr class="row">
+                        <td class="col-md-3"><strong>OrderLine: </strong>#{{$orderLine->id}}</td>
+                        <td class="col-md-3"><strong>Barcode: </strong>#{{$orderLine->product()->barcode}}</td>
+                        <td class="col-md-3"><strong>Title: </strong>{{$orderLine->product()->title}}</td>
+
+                    </tr>
+
+                    {{-- OrderLine Row --}}
                     <tr class="row" id="order-line-{{$orderLine->id}}">
 
                         {{-- First Column: OrderLine Info --}}
                         <td class="col-md-3">
-                            <strong>OrderLine: </strong>#{{$orderLine->id}} <br>
-                            <strong>Barcode: </strong>#{{$orderLine->product()->barcode}} <br>
-                            <strong>Title: </strong>{{$orderLine->product()->title}} <br>
 
                             {{-- Status of the OrderLine --}}
                             @component('components.statusLabel')
@@ -124,22 +126,14 @@
                                     @endswitch
                                 @endslot
                                 @slot('labelText')
-                                    @switch($orderLine->status_id)
-                                        @case(\App\Status::pending())
-                                        Pending...
-                                        @break
-                                        @case(\App\Status::rejected())
-                                        Rejected...
-                                        @break
-                                        @case(\App\Status::approved())
-                                        Approved...
-                                        @break
-                                    @endswitch
+                                    {{ucfirst($orderLine->status()->title)}}...
                                 @endslot
                             @endcomponent
 
                             {{-- Approve/Reject Button for Customers --}}
                             @if(auth()->user()->isRole('customer'))
+
+                                {{-- Approve/Reject TODO Refactor --}}
                                 @component('components.statusForm')
                                     @slot('visible')
                                         @if(!$orderLine->photoLines()->count() > 0)
@@ -158,8 +152,8 @@
                                     @slot('buttonText')
                                         {{$orderLine->isStatus('approved') ? 'Reject' : 'Approve'}}
                                     @endslot
-                                    @slot('isChecked')
-                                        {{$orderLine->isStatus('approved') ? 'checked' : ''}}
+                                    @slot('status')
+                                        {{$orderLine->isStatus('approved') ? \App\Status::rejected() : \App\Status::approved()}}
                                     @endslot
                                 @endcomponent
                             @endif
@@ -168,25 +162,6 @@
                         {{-- Second Column: Photos --}}
                         <td class="col-md-9">
                             <div class="row photos">
-
-                                {{-- Foreach photo not on order (Adv. approval) TODO Refactor --}}
-                                @foreach($orderLine->product()->photos() as $photo)
-                                    @if(!$orderLine->photoLines()->contains('photo_id', $photo->id))
-
-                                        {{-- Displays col divided by 12 number of photos on each row --}}
-                                        <div class="col-md-3">
-                                            @component('components/photo')
-                                                @slot('orderLineId')
-                                                    {{$orderLine->id}}
-                                                @endslot
-                                                @slot('path')
-                                                    {{$photo->path}}
-                                                @endslot
-                                            @endcomponent
-                                        </div>
-                                    @endif
-                                @endforeach
-
                                 {{-- Foreach photo on order TODO Refactor --}}
                                 @foreach($orderLine->photoLines() as $photoLine)
                                     <div class="col-md-3">
@@ -203,6 +178,108 @@
                             </div>
                         </td>
                     </tr>
+
+                    {{-- Rows for pre-approval --}}
+                    @foreach($orderLine->product()->orderLines() as $ol)
+                        @if($ol->photoLines()->count() > 0 and $orderLine->id != $ol->id)
+
+                            {{-- Modals (Contains Carousel) --}}
+                            @component('components.modal')
+                                @slot('id')
+                                    {{$ol->id}}
+                                @endslot
+                                @slot('title')
+                                    {{$ol->product()->id}}
+                                @endslot
+
+                                {{-- Carousel --}}
+                                @component('components.carousel')
+
+                                    @slot('id')
+                                        {{$ol->id}}
+                                    @endslot
+
+                                    {{-- Indicators for each photo on Carousel TODO Refactor --}}
+                                    @slot('indicators')
+
+                                        {{-- Foreach photo on order TODO Refactor --}}
+                                        @foreach($ol->photoLines() as $index => $photo)
+                                            <li data-target="carousel-{{$ol->id}}"
+                                                data-slide-to="{{$index}}"
+                                                class="{{$loop->first ? 'active' : ''}}"></li>
+                                        @endforeach
+                                    @endslot
+
+                                    {{-- Carousel Items for each photo TODO Refactor--}}
+                                    {{-- Foreach photo on order TODO Refactor --}}
+                                    @foreach($ol->photoLines() as $photoLine)
+                                        <div
+                                            class="carousel-item {{$loop->first ? 'active' : ''}}">
+                                            @component('components/photo')
+                                                @slot('orderLineId')
+                                                    {{$ol->id}}
+                                                @endslot
+                                                @slot('path')
+                                                    {{$photoLine->photo()->path}}
+                                                @endslot
+                                            @endcomponent
+                                        </div>
+                                    @endforeach
+                                @endcomponent
+                            @endcomponent
+
+                            <tr class="row" id="order-line-{{$ol->id}}">
+
+                                {{-- First Column: OrderLine Info --}}
+                                <td class="col-md-3">
+
+                                    {{-- Approve/Reject Button for Customers --}}
+                                    @if(auth()->user()->isRole('customer'))
+
+                                        {{-- Pre-Approve TODO Refactor --}}
+                                        @component('components.statusForm')
+                                            @slot('visible')
+                                            @endslot
+                                            @slot('action')
+                                                {{'OrderLineController@update'}}
+                                            @endslot
+                                            @slot('orderLineId')
+                                                {{$ol->id}}
+                                            @endslot
+                                            @slot('class')
+                                                primary
+                                            @endslot
+                                            @slot('buttonText')
+                                                Pre-Approve
+                                            @endslot
+                                            @slot('status')
+                                                {{\App\Status::approved()}}
+                                            @endslot
+                                        @endcomponent
+                                    @endif
+                                </td>
+
+                                {{-- Second Column: Photos --}}
+                                <td class="col-md-9">
+                                    <div class="row photos">
+
+                                        @foreach($ol->photoLines() as $photoLine)
+                                            <div class="col-md-3">
+                                                @component('components/photo')
+                                                    @slot('orderLineId')
+                                                        {{$ol->id}}
+                                                    @endslot
+                                                    @slot('path')
+                                                        {{$photoLine->photo()->path}}
+                                                    @endslot
+                                                @endcomponent
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
                 @endforeach
             @endcomponent
         @endcomponent

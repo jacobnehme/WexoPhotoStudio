@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\OrderLineStatusUpdated;
-use App\OrderLine;
-use App\Status;
+use App\PhotoLine;
 use Illuminate\Http\Request;
 
-class OrderLineController extends Controller
+class PhotoLineController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,7 +30,7 @@ class OrderLineController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -43,10 +41,10 @@ class OrderLineController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\OrderLine $orderLine
+     * @param  \App\PhotoLine  $photoLine
      * @return \Illuminate\Http\Response
      */
-    public function show(OrderLine $orderLine)
+    public function show(PhotoLine $photoLine)
     {
         //
     }
@@ -54,10 +52,10 @@ class OrderLineController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\OrderLine $orderLine
+     * @param  \App\PhotoLine  $photoLine
      * @return \Illuminate\Http\Response
      */
-    public function edit(OrderLine $orderLine)
+    public function edit(PhotoLine $photoLine)
     {
         //
     }
@@ -65,36 +63,22 @@ class OrderLineController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\OrderLine $orderLine
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PhotoLine  $photoLine
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OrderLine $orderLine)
+    public function update(Request $request, PhotoLine $photoLine)
     {
-        switch ($request['status_id']) {
-            case Status::approved():
-                $orderLine->approve();
-                break;
-            case Status::rejected():
-                $orderLine->reject();
-                break;
-            case Status::pending():
-                $orderLine->pending();
-                break;
-        }
-
-        OrderLineStatusUpdated::dispatch($orderLine);
-
-        return back();
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\OrderLine $orderLine
+     * @param  \App\PhotoLine  $photoLine
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OrderLine $orderLine)
+    public function destroy(PhotoLine $photoLine)
     {
         //
     }

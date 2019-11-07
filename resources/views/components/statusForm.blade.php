@@ -1,17 +1,13 @@
-<form id="status-form-{{$orderLineId}}"
-      class="form"
+<form class="status-form"
       style="{{$visible}}"
       action="{{ action($action, $orderLineId)}}"
       method="POST">
     @method('PATCH')
     @Csrf
-    <label for="status-{{$orderLineId}}"
-           class="btn btn-{{$class}}">
+    <input type="hidden" name="status_id" value="{{$status}}">
+    {{$slot}}
+    <button type="submit"
+            class="btn btn-{{$class}}">
         {{$buttonText}}
-        <input type="checkbox" name="status"
-               id="status-{{$orderLineId}}"
-               onchange="this.form.submit()"
-               {{$isChecked}}
-               style="display: none">
-    </label>
+    </button>
 </form>

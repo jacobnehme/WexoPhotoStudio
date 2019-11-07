@@ -1,3 +1,3 @@
-<label class="btn btn-{{$class}} status">
+<label class="status-label btn btn-{{$class}} status">
     {{$labelText}}
 </label>
