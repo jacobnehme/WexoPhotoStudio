@@ -17,48 +17,56 @@ class OrderLine extends Model
         'status_id',
     ];
 
-    public function order()
+    //Relations
+    public function _order()
     {
         return $this->belongsTo(Order::class);
     }
 
-    public function product()
+    public function _product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function photoLines()
-    {
-        return $this->hasMany(PhotoLine::class);
-    }
-
-    public function approveAll(){
-        foreach ($this->photoLines as $photoLine){
-            $photoLine->approve();
-        }
-    }
-
-    public function rejectAll(){
-        foreach ($this->photoLines as $photoLine){
-            $photoLine->reject();
-        }
-    }
-
-    public function approvedCount(){
-        return $this->photoLines->where('is_approved', '==', true)->count();
-    }
-
-    //"New" Status on OrderLine instead of PhotoLine
-    public function status(){
+    public function _status(){
         return $this->belongsTo(Status::class);
     }
 
-    public function isPending(){
-        return $this->status->id == Status::pending();
+    public function _photoLines(){
+        return $this->hasMany(PhotoLine::class);
     }
 
-    public function isApproved(){
-        return $this->status->id == Status::approved();
+    //Objects
+    public function order()
+    {
+        return $this->belongsTo(Order::class)->get()->first();
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class)->get()->first();
+    }
+
+    public function status(){
+        return $this->belongsTo(Status::class)->get()->first();
+    }
+
+    public function photoLines(){
+        return $this->hasMany(PhotoLine::class)->get();
+    }
+
+    //Methods
+    public function isStatus($status){
+        return $this->status_id == Status::statusId($status);
+    }
+
+    public function setStatus($status){
+        $this->update(['status_id' => Status::statusId($status)]);
+    }
+
+    public function pending()
+    {
+        $this->update(['status_id' => Status::pending()]);
     }
 
     public function approve()

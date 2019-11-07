@@ -16,6 +16,12 @@ class Photographer extends Model
         'employee_no',
     ];
 
+    //Relations
+    public function _user(){
+        return $this->belongsTo(User::class);
+    }
+
+    //Objects
     public function user(){
         return $this->belongsTo(User::class)->get()->first();
     }

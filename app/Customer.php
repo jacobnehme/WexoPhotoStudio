@@ -17,17 +17,25 @@ class Customer extends Model
         'name_last',
         'name_company',
         'address',
-        'zip_code',
-        'city',
+        'zip_code_id',
+        'city', //TODO check if needed
     ];
 
-    public function user(){
+    //Relations
+    public function _user(){
         return $this->belongsTo(User::class);
     }
 
-    public function zipCode($id){
-        //TODO fix: probably because "zip_code" is not "zip_code_id"
-        //return $this->belongsTo(ZipCode::class);
-        return ZipCode::where('id', $id)->get()->first();
+    public function _zipCode(){
+        return $this->belongsTo(ZipCode::class);
+    }
+
+    //Objects
+    public function user(){
+        return $this->belongsTo(User::class)->get()->first();
+    }
+
+    public function zipCode(){
+        return $this->belongsTo(ZipCode::class)->get()->first();
     }
 }

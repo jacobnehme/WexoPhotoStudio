@@ -1,319 +1,210 @@
-@extends('layouts/app')
+@component('components.layout')
 
-@section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
+    {{-- Content --}}
+    @component('components.content')
 
-                <div class="card">
-                    <div class="card-header">Order: #{{$order->id}}</div>
+        {{-- Width of content (1-12) --}}
+        @slot('col')
+            9
+        @endslot
 
-                    <div class="card-body">
-                        @if($order->orderLines->count())
-                            <table class="container-fluid">
-                                <thead>
-                                <tr class="row">
-                                    <th class="col-md-3">Product</th>
-                                    <th class="col-md-9">Photos</th>
-                                    {{--                                    <th class="col-md-2">Upload
-                                                                            <i class="text-danger">(dev)</i>
-                                                                        </th>--}}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($order->orderLines as $orderLine)
+        {{-- Card --}}
+        @component('components.card')
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="modal-{{$orderLine->id}}" tabindex="-1"
-                                         role="dialog" aria-labelledby="exampleModalCenterTitle"
-                                         aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered"
-                                             role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title"
-                                                        id="exampleModalLongTitle">{{$orderLine->product->title}}</h5>
-                                                    <button type="button" class="close"
-                                                            data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div id="carouselExampleIndicators" class="carousel slide"
-                                                         data-ride="carousel" data-interval="false"
-                                                         data-keyboard="false">
-                                                        <ol class="carousel-indicators">
-                                                            @foreach($orderLine->product->photos as $photo)
-                                                                @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
-                                                                    <li data-target="#carouselExampleIndicators"
-                                                                        data-slide-to="0"
-                                                                        class="{{$loop->first ? 'active' : ''}}"></li>
-                                                                @endif
-                                                            @endforeach
-                                                            @foreach($orderLine->photoLines as $photoLine)
-                                                                <li data-target="#carouselExampleIndicators"
-                                                                    data-slide-to="0"
-                                                                    class="{{$loop->first ? 'active' : ''}}"></li>
-                                                            @endforeach
-                                                        </ol>
-                                                        <div class="carousel-inner">
-                                                            @foreach($orderLine->product->photos as $photo)
-                                                                @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
-                                                                    <div
-                                                                        class="carousel-item {{$loop->first ? 'active' : ''}}">
-                                                                        @component('components/photo')
-                                                                            @slot('orderLineId')
-                                                                                {{null}}
-                                                                            @endslot
-                                                                            @slot('class')
-                                                                                {{'primary'}}
-                                                                            @endslot
-                                                                            @slot('labelText')
-                                                                                {{'Pre-shot...'}}
-                                                                            @endslot
-                                                                            @slot('path')
-                                                                                {{$photo->path}}
-                                                                            @endslot
-                                                                        @endcomponent
-                                                                        {{--@component('components.addForm')
-                                                                            @slot('orderLineId')
-                                                                                {{$orderLine->id}}
-                                                                            @endslot
-                                                                            @slot('photoId')
-                                                                                {{$photo->id}}
-                                                                            @endslot
-                                                                        @endcomponent--}}
-                                                                    </div>
-                                                                @endif
-                                                            @endforeach
+            {{-- Card Header --}}
+            @slot('cardHeader')
+                Order: #{{$order->id}}
+            @endslot
 
-                                                            @foreach($orderLine->photoLines as $photoLine)
-                                                                <div
-                                                                    class="carousel-item {{$loop->first ? 'active' : ''}}">
-                                                                    @component('components/photo')
-                                                                        @slot('orderLineId')
-                                                                            {{$orderLine->id}}
-                                                                        @endslot
-                                                                        @slot('class')
-                                                                            @if($photoLine->isPending()){{'warning'}}
-                                                                            @else{{$photoLine->isApproved() ? 'success' : 'danger'}}@endif
-                                                                        @endslot
-                                                                        @slot('labelText')
-                                                                            @if($photoLine->isPending())
-                                                                                Pending...
-                                                                            @else
-                                                                                {{$photoLine->isApproved() ? 'Approved...' : 'Rejected...'}}
-                                                                            @endif
-                                                                        @endslot
-                                                                        @slot('path')
-                                                                            {{$photoLine->photo->path}}
-                                                                        @endslot
-                                                                    @endcomponent
-                                                                    {{--@component('components.statusForm')
-                                                                        @slot('action')
-                                                                            {{'PhotoLineController@update'}}
-                                                                        @endslot
-                                                                        @slot('photoLineId')
-                                                                            {{$photoLine->id}}
-                                                                        @endslot
-                                                                        @slot('class')
-                                                                            {{$photoLine->is_approved ? 'danger' : 'success'}}
-                                                                        @endslot
-                                                                        @slot('buttonText')
-                                                                            {{$photoLine->is_approved ? 'Reject' : 'Approve'}}
-                                                                        @endslot
-                                                                        @slot('isChecked')
-                                                                            {{$photoLine->is_approved ? 'checked' : ''}}
-                                                                        @endslot
-                                                                        @slot('path')
-                                                                            {{$photoLine->photo->path}}
-                                                                        @endslot
-                                                                    @endcomponent--}}
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
-                                                        <a class="carousel-control-prev"
-                                                           href="#carouselExampleIndicators" role="button"
-                                                           data-slide="prev">
-                                                            <span class="carousel-control-prev-icon"
-                                                                  aria-hidden="true"></span>
-                                                            <span class="sr-only">Previous</span>
-                                                        </a>
-                                                        <a class="carousel-control-next"
-                                                           href="#carouselExampleIndicators" role="button"
-                                                           data-slide="next">
-                                                            <span class="carousel-control-next-icon"
-                                                                  aria-hidden="true"></span>
-                                                            <span class="sr-only">Next</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
+            {{-- Table --}}
+            @component('components.table')
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                {{-- Table Header --}}
+                @slot('head')
+                    <th class="col-md-3">Product</th>
+                    <th class="col-md-9">Photos</th>
+                @endslot
 
-                                    <tr class="row" id="order-line-{{$orderLine->id}}">
-                                        <td class="col-md-3">
+                {{-- Modal and row for each OrderLine --}}
+                @foreach($order->orderLines() as $orderLine)
 
-                                            <label class="status btn btn-@if($orderLine->isPending()){{ 'warning' }}
-                                            @else{{$orderLine->isApproved() ? 'success' : 'danger' }}@endif
-                                                }}">
-                                                @if($orderLine->isPending())
-                                                    Pending...
-                                                @else
-                                                    {{$orderLine->isApproved() ? 'Approved...' : 'Rejected...'}}
-                                                @endif
-                                            </label> <br>
+                    {{-- Modals (Contains Carousel) --}}
+                    @component('components.modal')
+                        @slot('id')
+                            {{$orderLine->id}}
+                        @endslot
+                        @slot('title')
+                            {{$orderLine->product()->id}}
+                        @endslot
 
-                                            <strong>OrderLine: </strong>#{{$orderLine->id}} <br>
-                                            <strong>Barcode: </strong>#{{$orderLine->product->barcode}} <br>
-                                            <strong>Title: </strong>{{$orderLine->product->title}} <br>
-                                            {{--<strong>Description: </strong>{{$orderLine->product->description}} <br>--}}
-                                            {{--<strong>Approved: </strong>{{$orderLine->approvedCount()}}
-                                            / {{$orderLine->photoLines->count()}} <br>--}}
+                        {{-- Carousel --}}
+                        @component('components.carousel')
 
-                                            @if(auth()->user()->role_id == \App\Role::customer())
-                                                @if($orderLine->photoLines->count() > 0)
-                                                    @component('components.statusForm')
-                                                        @slot('action')
-                                                            {{'OrderLineController@update'}}
-                                                        @endslot
-                                                        @slot('photoLineId')
-                                                            {{$orderLine->id}}
-                                                        @endslot
-                                                        @slot('class')
-                                                            {{$orderLine->isApproved() ? 'danger' : 'success'}}
-                                                        @endslot
-                                                        @slot('buttonText')
-                                                            {{$orderLine->isApproved() ? 'Reject' : 'Approve'}}
-                                                        @endslot
-                                                        @slot('isChecked')
-                                                            {{$orderLine->isApproved() ? 'checked' : ''}}
-                                                        @endslot
-                                                    @endcomponent
-                                                @endif
-                                            @endif
+                            @slot('id')
+                                {{$orderLine->id}}
+                            @endslot
 
-                                        </td>
-                                        <td class="col-md-9">
-                                            <div class="row photos">
-                                                @foreach($orderLine->product->photos as $photo)
-                                                    @if(!$orderLine->photoLines->contains('photo_id', $photo->id))
+                            {{-- Indicators for each photo on Carousel TODO Refactor --}}
+                            @slot('indicators')
 
-                                                        <div class="col-md-3">
-                                                            @component('components/photo')
-                                                                @slot('orderLineId')
-                                                                    {{$orderLine->id}}
-                                                                @endslot
-                                                                @slot('class')
-                                                                    {{'primary'}}
-                                                                @endslot
-                                                                @slot('labelText')
-                                                                    {{'Pre-shot...'}}
-                                                                @endslot
-                                                                @slot('path')
-                                                                    {{$photo->path}}
-                                                                @endslot
-                                                            @endcomponent
-                                                            @component('components.addForm')
-                                                                @slot('orderLineId')
-                                                                    {{$orderLine->id}}
-                                                                @endslot
-                                                                @slot('photoId')
-                                                                    {{$photo->id}}
-                                                                @endslot
-                                                            @endcomponent
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-
-                                                @foreach($orderLine->photoLines as $photoLine)
-
-                                                    <div class="col-md-3">
-                                                        @component('components/photo')
-                                                            @slot('orderLineId')
-                                                                {{$orderLine->id}}
-                                                            @endslot
-                                                            @slot('class')
-                                                                @if($photoLine->isPending()){{'warning'}}
-                                                                @else{{$photoLine->isApproved() ? 'success' : 'danger'}}@endif
-                                                            @endslot
-                                                            @slot('labelText')
-                                                                @if($photoLine->isPending())
-                                                                    Pending...
-                                                                @else
-                                                                    {{$photoLine->isApproved() ? 'Approved...' : 'Rejected...'}}
-                                                                @endif
-                                                            @endslot
-                                                            @slot('path')
-                                                                {{$photoLine->photo->path}}
-                                                            @endslot
-                                                        @endcomponent
-                                                        {{--@component('components.statusForm')
-                                                            @slot('action')
-                                                                {{'PhotoLineController@update'}}
-                                                            @endslot
-                                                            @slot('photoLineId')
-                                                                {{$photoLine->id}}
-                                                            @endslot
-                                                            @slot('class')
-                                                                {{$photoLine->isApproved() ? 'danger' : 'success'}}
-                                                            @endslot
-                                                            @slot('buttonText')
-                                                                {{$photoLine->isApproved() ? 'Reject' : 'Approve'}}
-                                                            @endslot
-                                                            @slot('isChecked')
-                                                                {{$photoLine->isApproved() ? 'checked' : ''}}
-                                                            @endslot
-                                                            @slot('path')
-                                                                {{$photoLine->photo->path}}
-                                                            @endslot
-                                                        @endcomponent--}}
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </td>
-                                        {{--<td class="col-md-2">
-                                            <form method="POST" action="{{ action('PhotoController@store')}}"
-                                                  enctype="multipart/form-data">
-                                                @csrf
-
-                                                <input type="hidden" name="orderLine_id"
-                                                       value={{ $orderLine->id }}>
-                                                <input type="hidden" name="product_id"
-                                                       value={{ $orderLine->product->id }}>
-
-                                                <div class="form-group row">
-                                                    <label for="photo-{{$orderLine->id}}" class="btn btn-primary">
-                                                        Upload to {{$orderLine->product->title}}
-                                                    </label>
-                                                    <input type="file"
-                                                           id="photo-{{$orderLine->id}}"
-                                                           class="form-control{{ $errors->has('photo') ? ' is-invalid' : '' }}"
-                                                           name="photo" value="{{ old('photo') }}"
-                                                           onchange="this.form.submit()" placeholder="" required
-                                                           style="display:none;">
-
-                                                    @if ($errors->has('photo'))
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $errors->first('photo') }}</strong>
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                            </form>
-                                        </td>--}}
-                                    </tr>
+                                {{-- Foreach photo not on order (Adv. approval) TODO Refactor --}}
+                                @foreach($orderLine->product()->photos() as $index => $photo)
+                                    @if(!$orderLine->photoLines()->contains('photo_id', $photo->id))
+                                        <li data-target="carousel-{{$orderLine->id}}"
+                                            data-slide-to="{{$index}}"
+                                            class="{{$loop->first ? 'active' : ''}}"></li>
+                                    @endif
                                 @endforeach
-                                </tbody>
-                            </table>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-@endsection
+                                {{-- Foreach photo on order TODO Refactor --}}
+                                @foreach($orderLine->photoLines() as $index => $photo)
+                                    <li data-target="carousel-{{$orderLine->id}}"
+                                        data-slide-to="{{$index}}"
+                                        class="{{$loop->first ? 'active' : ''}}"></li>
+                                @endforeach
+                            @endslot
+
+                            {{-- Carousel Items for each photo TODO Refactor--}}
+                            {{-- Foreach photo not on order (Adv. approval) TODO Refactor --}}
+                            @foreach($orderLine->product()->photos() as $photo)
+                                @if(!$orderLine->photoLines()->contains('photo_id', $photo->id))
+                                    <div
+                                        class="carousel-item {{$loop->first ? 'active' : ''}}">
+                                        @component('components/photo')
+                                            @slot('orderLineId')
+                                                {{null}}
+                                            @endslot
+                                            @slot('path')
+                                                {{$photo->path}}
+                                            @endslot
+                                        @endcomponent
+                                    </div>
+                                @endif
+                            @endforeach
+
+                            {{-- Foreach photo on order TODO Refactor --}}
+                            @foreach($orderLine->photoLines() as $photoLine)
+                                <div
+                                    class="carousel-item {{$loop->first ? 'active' : ''}}">
+                                    @component('components/photo')
+                                        @slot('orderLineId')
+                                            {{$orderLine->id}}
+                                        @endslot
+                                        @slot('path')
+                                            {{$photoLine->photo()->path}}
+                                        @endslot
+                                    @endcomponent
+                                </div>
+                            @endforeach
+                        @endcomponent
+                    @endcomponent
+
+                    {{-- Rows --}}
+                    <tr class="row" id="order-line-{{$orderLine->id}}">
+
+                        {{-- First Column: OrderLine Info --}}
+                        <td class="col-md-3">
+                            <strong>OrderLine: </strong>#{{$orderLine->id}} <br>
+                            <strong>Barcode: </strong>#{{$orderLine->product()->barcode}} <br>
+                            <strong>Title: </strong>{{$orderLine->product()->title}} <br>
+
+                            {{-- Status of the OrderLine --}}
+                            @component('components.statusLabel')
+                                @slot('class')
+                                    @switch($orderLine->status_id)
+                                        @case(\App\Status::pending())
+                                        warning
+                                        @break
+                                        @case(\App\Status::rejected())
+                                        danger
+                                        @break
+                                        @case(\App\Status::approved())
+                                        success
+                                        @break
+                                    @endswitch
+                                @endslot
+                                @slot('labelText')
+                                    @switch($orderLine->status_id)
+                                        @case(\App\Status::pending())
+                                        Pending...
+                                        @break
+                                        @case(\App\Status::rejected())
+                                        Rejected...
+                                        @break
+                                        @case(\App\Status::approved())
+                                        Approved...
+                                        @break
+                                    @endswitch
+                                @endslot
+                            @endcomponent
+
+                            {{-- Approve/Reject Button for Customers --}}
+                            @if(auth()->user()->isRole('customer'))
+                                @component('components.statusForm')
+                                    @slot('visible')
+                                        @if(!$orderLine->photoLines()->count() > 0)
+                                            display: none;
+                                        @endif
+                                    @endslot
+                                    @slot('action')
+                                        {{'OrderLineController@update'}}
+                                    @endslot
+                                    @slot('orderLineId')
+                                        {{$orderLine->id}}
+                                    @endslot
+                                    @slot('class')
+                                        {{$orderLine->isStatus('approved') ? 'danger' : 'success'}}
+                                    @endslot
+                                    @slot('buttonText')
+                                        {{$orderLine->isStatus('approved') ? 'Reject' : 'Approve'}}
+                                    @endslot
+                                    @slot('isChecked')
+                                        {{$orderLine->isStatus('approved') ? 'checked' : ''}}
+                                    @endslot
+                                @endcomponent
+                            @endif
+                        </td>
+
+                        {{-- Second Column: Photos --}}
+                        <td class="col-md-9">
+                            <div class="row photos">
+
+                                {{-- Foreach photo not on order (Adv. approval) TODO Refactor --}}
+                                @foreach($orderLine->product()->photos() as $photo)
+                                    @if(!$orderLine->photoLines()->contains('photo_id', $photo->id))
+
+                                        {{-- Displays col divided by 12 number of photos on each row --}}
+                                        <div class="col-md-3">
+                                            @component('components/photo')
+                                                @slot('orderLineId')
+                                                    {{$orderLine->id}}
+                                                @endslot
+                                                @slot('path')
+                                                    {{$photo->path}}
+                                                @endslot
+                                            @endcomponent
+                                        </div>
+                                    @endif
+                                @endforeach
+
+                                {{-- Foreach photo on order TODO Refactor --}}
+                                @foreach($orderLine->photoLines() as $photoLine)
+                                    <div class="col-md-3">
+                                        @component('components/photo')
+                                            @slot('orderLineId')
+                                                {{$orderLine->id}}
+                                            @endslot
+                                            @slot('path')
+                                                {{$photoLine->photo()->path}}
+                                            @endslot
+                                        @endcomponent
+                                    </div>
+                                @endforeach
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @endcomponent
+        @endcomponent
+    @endcomponent
+@endcomponent

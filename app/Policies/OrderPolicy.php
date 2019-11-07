@@ -22,10 +22,10 @@ class OrderPolicy
     {
         switch ($user->role_id) {
             case Role::customer():
-                return $order->customer_id == $user->customer()->id;
+                return $user->customer()->id == $order->customer_id;
                 break;
             case Role::photographer():
-                return $order->photographer_id == $user->photographer()->id;
+                return $user->photographer()->id == $order->photographer_id;
                 break;
         }
     }

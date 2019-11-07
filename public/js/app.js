@@ -59061,6 +59061,10 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
   var label = $('#order-line-' + e['orderLine']['id'] + ' .status');
 
   switch (e['orderLine']['status_id']) {
+    case 1:
+      label.removeClass('btn-warning').addClass('btn-success').text('Approved...');
+      break;
+
     case 2:
       label.removeClass('btn-success').addClass('btn-danger').text('Rejected...');
       break;
@@ -59068,9 +59072,6 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
     case 3:
       label.removeClass('btn-danger').addClass('btn-success').text('Approved...');
       break;
-
-    default:
-      label.removeClass('btn-warning').addClass('btn-success').text('Approved...');
   }
 });
 Echo.channel("orders").listen('PhotoUploaded', function (e) {
@@ -59079,6 +59080,7 @@ Echo.channel("orders").listen('PhotoUploaded', function (e) {
   console.log(e['path']);
   var photos = $('#order-line-' + e['orderLine']['id'] + ' .photos');
   photos.html(photos.html() + '<div class="col-md-3">' + '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine']['id'] + '">' + '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['path'] + '">' + '</div>' + '</div>');
+  $('#status-form-' + e['orderLine']['id']).show();
 });
 
 /***/ }),

@@ -15,6 +15,10 @@ class Status extends Model
         'title',
     ];
 
+    public static function statusId($title){
+        return Status::where('title', $title)->first()->id;
+    }
+
     public static function pending(){
         return Status::where('title', 'pending')->first()->id;
     }

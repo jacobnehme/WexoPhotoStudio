@@ -20,11 +20,11 @@ class CreateCustomersTable extends Migration
             $table->string('name_last')->nullable()->default(null);
             $table->string('name_company')->nullable()->default(null);
             $table->string('address')->nullable()->default(null);
-            $table->unsignedInteger('zip_code')->nullable()->default(null);
+            $table->unsignedInteger('zip_code_id')->nullable()->default(null);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('zip_code')->references('id')->on('zip_codes');
+            $table->foreign('zip_code_id')->references('id')->on('zip_codes');
         });
     }
 

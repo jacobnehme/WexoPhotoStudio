@@ -7,6 +7,7 @@ use App\Product;
 use App\OrderLine;
 use App\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
@@ -19,15 +20,6 @@ class OrderController extends Controller
         $this->middleware('auth');
     }
 
-    public function all(){
-
-        $orders = Order::all();
-
-        return view('orders/index', [
-            'orders' => $orders,
-        ]);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -35,16 +27,21 @@ class OrderController extends Controller
      */
     public function index()
     {
+        //Get Orders by Role
         switch (auth()->user()->role_id) {
-            case Role::customer():
-                $orders = Order::where('customer_id', auth()->user()->customer()->id)->get();
+            case Role::admin():
+                $orders = Order::all();
                 break;
             case Role::photographer():
                 $orders = Order::where('photographer_id', auth()->user()->photographer()->id)->get();
                 break;
+            case Role::customer():
+                $orders = Order::where('customer_id', auth()->user()->customer()->id)->get();
+                break;
         }
 
-        if ($orders->count() > 1){
+        //Shortcut of User only has 1 Order
+        if ($orders->count() > 1 or $orders->count() == null) {
             return view('orders/index', [
                 'orders' => $orders,
             ]);
@@ -52,7 +49,6 @@ class OrderController extends Controller
         else{
             return redirect('/orders/' . $orders->first()->id);
         }
-
     }
 
     /**
@@ -74,69 +70,77 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         //TODO transaction, encapsulation, clean up and more...
+        DB::beginTransaction();
 
-        //Validation (goes here)
-        $validated = $request->validate([
-            'products' => 'required|mimes:txt'
-        ]);
-        $validated['customer_id'] = auth()->user()->customer()->id;
+        try{
+            //Validation
+            $validated = $request->validate([
+                'products' => 'required|mimes:txt'
+            ]);
+            $validated['customer_id'] = auth()->user()->customer()->id;
 
-        //Upload file
-        $fileName = $request->file('products')->store('products');
+            //Upload file
+            $fileName = $request->file('products')->store('products');
 
-        //Prepare array
-        $products = array();
+            //Prepare array
+            $products = array();
 
-        //Read CSV to array
-        $filePath = storage_path('/app/' . $fileName);
-        $file = fopen($filePath, "r");
-        while (($data = fgetcsv($file, 200, ";")) !== FALSE) {
-            $products[] = [
-                'barcode' => $data[0],
-                'title' => $data[1],
-                'description' => $data[2],
-            ];
-        }
-        fclose($file);
+            //Read CSV to array
+            $filePath = storage_path('/app/' . $fileName);
+            $file = fopen($filePath, "r");
+            while (($data = fgetcsv($file, 200, ";")) !== FALSE) {
+                $products[] = [
+                    'barcode' => $data[0],
+                    'title' => $data[1],
+                    'description' => $data[2],
+                ];
+            }
+            fclose($file);
 
-        //Delete file after use?
-        //$fileInfo = explode('/', $fileName);
-        Storage::delete($fileName);
+            //Delete file after use
+            Storage::delete($fileName);
 
-        //Another array TODO refactor pls + only need id's
-        $products2 = array();
+            //Prepare array
+            $orderLines = array();
 
-        //Persist Products
-        foreach ($products as $p) {
+            //Persist Products
+            foreach ($products as $p) {
 
-            //If not exists persist product
-            $existingProduct = Product::where('barcode', $p['barcode'])->first();
-            if ($existingProduct == null) {
-                $product = Product::create([
-                    'barcode' => $p['barcode'],
-                    'title' => $p['title'],
-                    'description' => $p['description'],
-                ]);
-            } else {
-                $product = $existingProduct;
+                //If not exists persist product
+                $existingProduct = Product::where('barcode', $p['barcode'])->first();
+                if ($existingProduct == null) {
+                    $product = Product::create([
+                        'barcode' => $p['barcode'],
+                        'title' => $p['title'],
+                        'description' => $p['description'],
+                    ]);
+                } else {
+                    $product = $existingProduct;
+                }
+
+                $product['id'] = $product->id;
+                $orderLines[] = $product;
             }
 
-            $product['id'] = $product->id;
-            $products2[] = $product;
+            //Persist Order
+            $order = Order::create($validated);
+
+            //Persist OrderLines
+            foreach ($orderLines as $product) {
+                OrderLine::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product['id'],
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect('/orders/' . $order->id);
         }
-
-        //Persist Order
-        $order = Order::create($validated);
-
-        //Persist OrderLines
-        foreach ($products2 as $product) {
-            OrderLine::create([
-                'order_id' => $order->id,
-                'product_id' => $product['id'],
-            ]);
+        catch (\Exception $e){
+            DB::rollback();
+            return back();
         }
-
-        return redirect('/orders/' . $order->id);
     }
 
     /**
@@ -175,7 +179,6 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //$order->photographer_id = auth()->user()->photographer()->id;
         $order->photographer_id = $request['photographer_id'];
         $order->update();
 

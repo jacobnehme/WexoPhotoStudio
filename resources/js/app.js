@@ -39,14 +39,15 @@ Echo.channel(`orders`)
 
         let label = $('#order-line-' + e['orderLine']['id'] + ' .status');
         switch (e['orderLine']['status_id']) {
+            case 1:
+                label.removeClass('btn-warning').addClass('btn-success').text('Approved...');
+                break;
             case 2:
                 label.removeClass('btn-success').addClass('btn-danger').text('Rejected...');
                 break;
             case 3:
                 label.removeClass('btn-danger').addClass('btn-success').text('Approved...');
                 break;
-            default:
-                label.removeClass('btn-warning').addClass('btn-success').text('Approved...');
         }
     });
 
@@ -63,4 +64,5 @@ Echo.channel(`orders`)
             '</div>' +
             '</div>'
         );
+        $('#status-form-' + e['orderLine']['id']).show();
     });

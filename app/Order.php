@@ -16,10 +16,26 @@ class Order extends Model
         'photographer_id',
     ];
 
-    //TODO should be customer
-    public function customer()
+    //Relations
+    public function _orderLines()
     {
-        return $this->hasMany(User::class)->get()->first()->customer();
+        return $this->hasMany(OrderLine::class);
+    }
+
+    public function _photographer()
+    {
+        return $this->belongsTo(Photographer::class);
+    }
+
+    public function _customer()
+    {
+        return $this->hasMany(Customer::class);
+    }
+
+    //Object
+    public function orderLines()
+    {
+        return $this->hasMany(OrderLine::class)->get();
     }
 
     public function photographer()
@@ -27,10 +43,8 @@ class Order extends Model
         return $this->belongsTo(Photographer::class)->get()->first();
     }
 
-    public function orderLines()
+    public function customer()
     {
-        return $this->hasMany(OrderLine::class);
+        return $this->belongsTo(Customer::class)->get()->first();
     }
-
-    //TODO hasManyThrough Product, OrderLine
 }

@@ -15,14 +15,14 @@ class Role extends Model
         'title',
     ];
 
+    public static function roleId($role)
+    {
+        return Role::where('title', $role)->first()->id;
+    }
+
     public static function admin()
     {
         return Role::where('title', 'admin')->first()->id;
-    }
-
-    public static function customer()
-    {
-        return Role::where('title', 'customer')->first()->id;
     }
 
     public static function photographer()
@@ -30,9 +30,8 @@ class Role extends Model
         return Role::where('title', 'photographer')->first()->id;
     }
 
-    //Replace other methods?
-    public static function idOfRole($role)
+    public static function customer()
     {
-        return Role::where('title', $role)->first()->id;
+        return Role::where('title', 'customer')->first()->id;
     }
 }

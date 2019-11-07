@@ -18,8 +18,6 @@ class CreatePhotosTable extends Migration
             $table->unsignedInteger('photographer_id');
             $table->unsignedInteger('product_id');
             $table->string('path');
-            //Moved to photoLine
-            //$table->boolean('status')->default(false);
             $table->timestamps();
 
             $table->foreign('photographer_id')->references('id')->on('photographers');

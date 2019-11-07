@@ -82,7 +82,7 @@
                                 <div class="col-md-6">
                                     <input id="zip-code" type="text"
                                            class="form-control{{ $errors->has('zip_code') ? ' is-invalid' : '' }}"
-                                           name="zip_code" value="{{ $customer->zipCode($customer->zip_code) != null ? $customer->zipCode($customer->zip_code)->zip_code : '' }}" >
+                                           name="zip_code" value="{{ $customer->zipCode() != null ? $customer->zipCode()->zip_code : '' }}" >
 
                                     @if ($errors->has('zip_code'))
                                         <span class="invalid-feedback" role="alert">

@@ -12,35 +12,25 @@ class PhotoLine extends Model
         'status_id',
     ];
 
-    public function photo()
+    //Relations
+    public function _photo()
     {
         return $this->belongsTo(Photo::class);
     }
 
-    public function orderLine()
+    public function _orderLine()
     {
         return $this->belongsTo(OrderLine::class);
     }
 
-    public function status(){
-        return $this->belongsTo(Status::class);
-    }
-
-    public function isPending(){
-        return $this->status->id == Status::pending();
-    }
-
-    public function isApproved(){
-        return $this->status->id == Status::approved();
-    }
-
-    public function approve()
+    //Objects
+    public function photo()
     {
-        $this->update(['status_id' => Status::approved()]);
+        return $this->belongsTo(Photo::class)->get()->first();
     }
 
-    public function reject()
+    public function orderLine()
     {
-        $this->update(['status_id' => Status::rejected()]);
+        return $this->belongsTo(OrderLine::class)->get()->first();
     }
 }

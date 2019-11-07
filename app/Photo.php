@@ -12,9 +12,21 @@ class Photo extends Model
         'path',
     ];
 
-    public function product()
+    //Relations
+    public function _product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function _photographer()
+    {
+        return $this->belongsTo(Photographer::class);
+    }
+
+    //Objects
+    public function product()
+    {
+        return $this->belongsTo(Product::class)->get()->first();
     }
 
     public function photographer()

@@ -1,23 +1,22 @@
-@extends('layouts/app')
+@component('components.layout')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+    {{-- Content --}}
+    @component('components.content')
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+        {{-- Width of content (1-12) --}}
+        @slot('col')
+            9
+        @endslot
 
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+        {{-- Card --}}
+        @component('components.card')
+
+            {{-- Card Header --}}
+            @slot('cardHeader')
+                Dashboard
+            @endslot
+
+            You are logged in!
+        @endcomponent
+    @endcomponent
+@endcomponent

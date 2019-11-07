@@ -14,7 +14,7 @@
 use App\Events\OrderLineStatusUpdated;
 use App\Order;
 
-Route::get('/', 'OrderController@create');
+Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
