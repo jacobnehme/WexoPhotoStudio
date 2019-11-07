@@ -44,9 +44,7 @@
                                     Products
                                 </a>
                             </li>
-
                             <li class="nav-item">
-
                                 <a class="nav-link" href="{{ action('OrderController@all')}}">
                                     Orders
                                 </a>
@@ -54,7 +52,6 @@
                             @break
                             @case(\App\Role::customer())
                             <li class="nav-item">
-
                                 <a class="nav-link" href="{{ action('OrderController@create')}}">
                                     Order
                                 </a>

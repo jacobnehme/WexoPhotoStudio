@@ -158,8 +158,8 @@
                                     <tr class="row" id="order-line-{{$orderLine->id}}">
                                         <td class="col-md-3">
 
-                                            <label class="status btn btn-@if($orderLine->isPending()){{'warning'}}
-                                            @else{{$orderLine->isApproved() ? 'success' : 'danger'}}@endif
+                                            <label class="status btn btn-@if($orderLine->isPending()){{ 'warning' }}
+                                            @else{{$orderLine->isApproved() ? 'success' : 'danger' }}@endif
                                                 }}">
                                                 @if($orderLine->isPending())
                                                     Pending...
