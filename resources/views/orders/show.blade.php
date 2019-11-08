@@ -25,7 +25,7 @@
                         <td class="col-md-3"><strong>Customer: </strong> <br>
                             {{$order->customer()->user()->email}}</td>
                         <td class="col-md-3"><strong>Photographer: </strong> <br>
-                            {{$order->photographer()->user()->email}}</td>
+                            {{$order->photographer_id != null ? $order->photographer()->user()->email : 'Pending...'}}</td>
                     </div>
                 @endslot
 
@@ -185,102 +185,46 @@
                     </tr>
 
                     {{-- Rows for pre-approval --}}
-                    @foreach($orderLine->product()->orderLines() as $ol)
+                    @if(auth()->user()->isRole('customer'))
+                        @foreach($orderLine->product()->orderLines() as $ol)
 
-                        {{-- Long If TODO Refactor --}}
-                        @if(
-                        !$orderLine->isStatus('approved') and
-                        $ol->id != $orderLine->id and
-                        $ol->isStatus('approved') and
-                        !$orderLine->photoLines()->contains('photo_id', $ol->photoLines()->first()->id)
-                        )
+                            {{-- Long If TODO Refactor --}}
+                            @if(
+                            !$orderLine->isStatus('approved') and
+                            $ol->isStatus('approved') and
+                            $ol->id != $orderLine->id and
+                            !$orderLine->photoLines()->contains('photo_id', $ol->photoLines()->first()->photo_id)
+                            )
 
-                            {{-- Modals (Contains Carousel) --}}
-                            @component('components.modal')
-                                @slot('id')
-                                    {{$ol->id}}
-                                @endslot
-                                @slot('title')
-                                    {{$ol->product()->id}}
-                                @endslot
-
-                                {{-- Carousel --}}
-                                @component('components.carousel')
-
+                                {{-- Modals (Contains Carousel) --}}
+                                @component('components.modal')
                                     @slot('id')
                                         {{$ol->id}}
                                     @endslot
-
-                                    {{-- Indicators for each photo on Carousel --}}
-                                    @slot('indicators')
-                                        @foreach($ol->photoLines() as $index => $photo)
-                                            <li data-target="carousel-{{$ol->id}}"
-                                                data-slide-to="{{$index}}"
-                                                class="{{$loop->first ? 'active' : ''}}"></li>
-                                        @endforeach
+                                    @slot('title')
+                                        {{$ol->product()->id}}
                                     @endslot
 
-                                    {{-- Carousel Items for each photo --}}
-                                    @foreach($ol->photoLines() as $photoLine)
-                                        <div
-                                            class="carousel-item {{$loop->first ? 'active' : ''}}">
-                                            @component('components/photo')
-                                                @slot('orderLineId')
-                                                    {{$ol->id}}
-                                                @endslot
-                                                @slot('path')
-                                                    {{$photoLine->photo()->path}}
-                                                @endslot
-                                            @endcomponent
-                                        </div>
-                                    @endforeach
-                                @endcomponent
-                            @endcomponent
+                                    {{-- Carousel --}}
+                                    @component('components.carousel')
 
-                            <tr class="row" id="order-line-{{$ol->id}}">
+                                        @slot('id')
+                                            {{$ol->id}}
+                                        @endslot
 
-                                {{-- First Column: OrderLine Info --}}
-                                <td class="col-md-3">
-
-                                    {{-- Approve/Reject Button for Customers --}}
-                                    @if(auth()->user()->isRole('customer'))
-
-                                        {{-- Pre-Approve TODO Refactor --}}
-                                        @component('components.statusForm')
-                                            @slot('visible')
-                                            @endslot
-                                            @slot('action')
-                                                {{'OrderLineController@update'}}
-                                            @endslot
-                                            @slot('orderLineId')
-                                                {{$orderLine->id}}
-                                            @endslot
-                                            @slot('class')
-                                                primary
-                                            @endslot
-                                            @slot('buttonText')
-                                                Pre-Approve
-                                            @endslot
-                                            @slot('status')
-                                                {{\App\Status::preApproved()}}
-                                            @endslot
-
-                                            @foreach($ol->photoLines() as $photoLine)
-                                                <input type="hidden" name="photos[]"
-                                                       value="{{$photoLine->photo_id}}">
+                                        {{-- Indicators for each photo on Carousel --}}
+                                        @slot('indicators')
+                                            @foreach($ol->photoLines() as $index => $photo)
+                                                <li data-target="carousel-{{$ol->id}}"
+                                                    data-slide-to="{{$index}}"
+                                                    class="{{$loop->first ? 'active' : ''}}"></li>
                                             @endforeach
-                                        @endcomponent
-                                    @endif
+                                        @endslot
 
-                                    <strong><span class="text-danger">(dev)</span> OrderLine: #{{$ol->id}}</strong>
-                                </td>
-
-                                {{-- Second Column: Photos --}}
-                                <td class="col-md-9">
-                                    <div class="row photos">
-
+                                        {{-- Carousel Items for each photo --}}
                                         @foreach($ol->photoLines() as $photoLine)
-                                            <div class="col-md-3">
+                                            <div
+                                                class="carousel-item {{$loop->first ? 'active' : ''}}">
                                                 @component('components/photo')
                                                     @slot('orderLineId')
                                                         {{$ol->id}}
@@ -291,11 +235,69 @@
                                                 @endcomponent
                                             </div>
                                         @endforeach
-                                    </div>
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
+                                    @endcomponent
+                                @endcomponent
+
+                                <tr class="row" id="order-line-{{$ol->id}}">
+
+                                    {{-- First Column: OrderLine Info --}}
+                                    <td class="col-md-3">
+
+                                        {{-- Approve/Reject Button for Customers --}}
+                                        @if(auth()->user()->isRole('customer'))
+
+                                            {{-- Pre-Approve TODO Refactor --}}
+                                            @component('components.statusForm')
+                                                @slot('visible')
+                                                @endslot
+                                                @slot('action')
+                                                    {{'OrderLineController@update'}}
+                                                @endslot
+                                                @slot('orderLineId')
+                                                    {{$orderLine->id}}
+                                                @endslot
+                                                @slot('class')
+                                                    primary
+                                                @endslot
+                                                @slot('buttonText')
+                                                    Pre-Approve
+                                                @endslot
+                                                @slot('status')
+                                                    {{\App\Status::preApproved()}}
+                                                @endslot
+
+                                                @foreach($ol->photoLines() as $photoLine)
+                                                    <input type="hidden" name="photos[]"
+                                                           value="{{$photoLine->photo_id}}">
+                                                @endforeach
+                                            @endcomponent
+                                        @endif
+
+                                        <strong><span class="text-danger">(dev)</span> OrderLine: #{{$ol->id}}</strong>
+                                    </td>
+
+                                    {{-- Second Column: Photos --}}
+                                    <td class="col-md-9">
+                                        <div class="row photos">
+
+                                            @foreach($ol->photoLines() as $photoLine)
+                                                <div class="col-md-3">
+                                                    @component('components/photo')
+                                                        @slot('orderLineId')
+                                                            {{$ol->id}}
+                                                        @endslot
+                                                        @slot('path')
+                                                            {{$photoLine->photo()->path}}
+                                                        @endslot
+                                                    @endcomponent
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    @endif
                 @endforeach
             @endcomponent
         @endcomponent

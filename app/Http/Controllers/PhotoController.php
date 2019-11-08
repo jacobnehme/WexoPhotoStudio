@@ -40,6 +40,13 @@ class PhotoController extends Controller
     {
         $orderLine = OrderLine::where('id', $request['orderLine_id'])->get()->first();
 
+        //Todo Delete photolines if when reshot
+//        if ($orderLine->isStatus('rejected')){
+//            foreach ($orderLine->photoLines() as $photoLine){
+//                $photoLine->delete();
+//            }
+//        }
+
         //Upload photo
         $fileName = $request->file('photo')->store('', 'images');
 
