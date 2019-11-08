@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\OrderLineStatusUpdated;
 use App\OrderLine;
+use App\PhotoLine;
 use App\Status;
 use Illuminate\Http\Request;
 
@@ -71,15 +72,34 @@ class OrderLineController extends Controller
      */
     public function update(Request $request, OrderLine $orderLine)
     {
+        //Persist PhotoLines
+        if($request['photos']){
+
+            foreach ($orderLine->photoLines() as $photoLine){
+                $photoLine->delete();
+            }
+
+            foreach ($request['photos'] as $photo){
+                PhotoLine::create([
+                    'order_line_id' => $orderLine->id,
+                    'photo_id' => $photo,
+                ]);
+            }
+        }
+
+        //Update Status
         switch ($request['status_id']) {
-            case Status::approved():
-                $orderLine->approve();
+            case Status::pending():
+                $orderLine->pending();
                 break;
             case Status::rejected():
                 $orderLine->reject();
                 break;
-            case Status::pending():
-                $orderLine->pending();
+            case Status::approved():
+                $orderLine->approve();
+                break;
+            case Status::preApproved():
+                $orderLine->preApprove();
                 break;
         }
 

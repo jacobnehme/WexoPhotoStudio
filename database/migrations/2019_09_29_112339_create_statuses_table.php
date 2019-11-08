@@ -29,6 +29,9 @@ class CreateStatusesTable extends Migration
         Status::create([
             'title' => 'approved',
         ]);
+        Status::create([
+            'title' => 'pre-approved',
+        ]);
     }
 
     /**

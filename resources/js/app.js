@@ -37,7 +37,7 @@ Echo.channel(`orders`)
         console.log(e['orderLine']['id']);
         console.log(e['orderLine']['status_id']);
 
-        let label = $('#order-line-' + e['orderLine']['id'] + ' .status');
+        let label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
         switch (e['orderLine']['status_id']) {
             case 1:
                 label.removeClass('btn-warning').addClass('btn-success').text('Approved...');
@@ -47,6 +47,9 @@ Echo.channel(`orders`)
                 break;
             case 3:
                 label.removeClass('btn-danger').addClass('btn-success').text('Approved...');
+                break;
+            case 4:
+                label.removeClass('btn-warning').addClass('btn-primary').text('Pre-approved...');
                 break;
         }
     });
@@ -66,3 +69,4 @@ Echo.channel(`orders`)
         );
         $('#order-line-' + e['orderLine']['id'] + ' .status-form').show();
     });
+

@@ -38,4 +38,9 @@ class Product extends Model
     {
         return $this->hasMany(OrderLine::class)->get();
     }
+
+    //Get OrderLines with conditions
+    public function preApproval(){
+        //
+    }
 }

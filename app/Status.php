@@ -30,4 +30,8 @@ class Status extends Model
     public static function approved(){
         return Status::where('title', 'approved')->first()->id;
     }
+
+    public static function preApproved(){
+        return Status::where('title', 'pre-approved')->first()->id;
+    }
 }

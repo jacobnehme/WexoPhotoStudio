@@ -21,11 +21,14 @@ class OrderPolicy
     public function view(User $user, Order $order)
     {
         switch ($user->role_id) {
-            case Role::customer():
-                return $user->customer()->id == $order->customer_id;
+            case Role::admin():
+                return $user->isRole('admin');
                 break;
             case Role::photographer():
                 return $user->photographer()->id == $order->photographer_id;
+                break;
+            case Role::customer():
+                return $user->customer()->id == $order->customer_id;
                 break;
         }
     }

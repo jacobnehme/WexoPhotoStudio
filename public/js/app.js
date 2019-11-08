@@ -59058,7 +59058,7 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
   console.log(e['orderLine']);
   console.log(e['orderLine']['id']);
   console.log(e['orderLine']['status_id']);
-  var label = $('#order-line-' + e['orderLine']['id'] + ' .status');
+  var label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
 
   switch (e['orderLine']['status_id']) {
     case 1:
@@ -59071,6 +59071,10 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
 
     case 3:
       label.removeClass('btn-danger').addClass('btn-success').text('Approved...');
+      break;
+
+    case 4:
+      label.removeClass('btn-warning').addClass('btn-primary').text('Pre-approved...');
       break;
   }
 });

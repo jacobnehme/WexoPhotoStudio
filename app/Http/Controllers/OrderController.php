@@ -31,6 +31,9 @@ class OrderController extends Controller
         switch (auth()->user()->role_id) {
             case Role::admin():
                 $orders = Order::all();
+                return view('orders/index', [
+                    'orders' => $orders,
+                ]);
                 break;
             case Role::photographer():
                 $orders = Order::where('photographer_id', auth()->user()->photographer()->id)->get();
