@@ -19,9 +19,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-//
-Route::get('orders/all', 'OrderController@all');
-
 // Resources
 Route::resource('orders', 'OrderController');
 Route::resource('orderLines', 'OrderLineController');

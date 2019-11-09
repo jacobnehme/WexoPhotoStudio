@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderLineStatusUpdated;
 use App\Events\PhotoUploaded;
 use App\OrderLine;
 use App\Photo;
@@ -33,45 +34,49 @@ class PhotoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $orderLine = OrderLine::where('id', $request['orderLine_id'])->get()->first();
 
-        //Todo Delete photolines if when reshot
-//        if ($orderLine->isStatus('rejected')){
-//            foreach ($orderLine->photoLines() as $photoLine){
-//                $photoLine->delete();
-//            }
-//        }
+        if ($orderLine->isStatus('rejected')) {
+            foreach ($orderLine->photoLines() as $photoLine) {
+                $photoLine->delete();
+            }
+        }
 
-        //Upload photo
-        $fileName = $request->file('photo')->store('', 'images');
+        $files = $request->allFiles();
+        for($i = 0; $i < count($files['photos']); $i++){
 
-        // Persist Photo
-        $Photo = Photo::create([
-            'photographer_id' => $orderLine->order()->photographer()->id,
-            'product_id' => $orderLine->product()->id,
-            'path' => $fileName,
-        ]);
+            //Upload photo
+            $fileName = $files['photos'][$i]->store('', 'images');
 
-        //Persist photoLine
-        PhotoLine::create([
-            'order_line_id' => (int) $request['orderLine_id'],
-            'photo_id' => $Photo->id,
-        ]);
+            // Persist Photo
+            $p = Photo::create([
+                'photographer_id' => $orderLine->order()->photographer()->id,
+                'product_id' => $orderLine->product()->id,
+                'path' => $fileName,
+            ]);
+
+            //Persist photoLine
+            PhotoLine::create([
+                'order_line_id' => (int) $request['orderLine_id'],
+                'photo_id' => $p->id,
+            ]);
+
+            PhotoUploaded::dispatch($orderLine, $fileName);
+        }
 
         $orderLine->active();
-
-        PhotoUploaded::dispatch($orderLine, $fileName);
+        OrderLineStatusUpdated::dispatch($orderLine);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Photo  $photo
+     * @param \App\Photo $photo
      * @return \Illuminate\Http\Response
      */
     public function show(Photo $photo)
@@ -82,7 +87,7 @@ class PhotoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Photo  $photo
+     * @param \App\Photo $photo
      * @return \Illuminate\Http\Response
      */
     public function edit(Photo $photo)
@@ -93,8 +98,8 @@ class PhotoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Photo  $photo
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Photo $photo
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Photo $photo)
@@ -105,7 +110,7 @@ class PhotoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Photo  $photo
+     * @param \App\Photo $photo
      * @return \Illuminate\Http\Response
      */
     public function destroy(Photo $photo)

@@ -44,7 +44,7 @@
                         </td>
                         <td class="col-md-3">
                             <a href="{{ action('OrderController@show', $order->id)}}">Details</a>
-                            @if(auth()->user()->isRole('admin'))
+                            @if(auth()->user()->isRole('admin') and $order->confirmed)
                                 <form action="{{ action('OrderController@update', $order->id)}}"
                                       method="POST">
                                     @method('PATCH')

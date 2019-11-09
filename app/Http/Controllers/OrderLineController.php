@@ -92,6 +92,9 @@ class OrderLineController extends Controller
             case Status::pending():
                 $orderLine->pending();
                 break;
+            case Status::active():
+                $orderLine->active();
+                break;
             case Status::rejected():
                 $orderLine->reject();
                 break;

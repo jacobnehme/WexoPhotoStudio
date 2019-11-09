@@ -182,7 +182,14 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $order->photographer_id = $request['photographer_id'];
+        //TODO Refactor quick solution
+        if($request['photographer_id']){
+            $order->photographer_id = $request['photographer_id'];
+        }
+        else{
+            $order->confirmed = true;
+        }
+
         $order->update();
 
         return back();

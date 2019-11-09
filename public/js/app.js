@@ -59053,6 +59053,10 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 
 var app = new Vue({
   el: '#app'
+}); //Toggle Button
+
+$('.order-line .toggle').on('click', function () {
+  $('#order-line-' + $(this).attr('data-id') + ' .content').toggle();
 });
 Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
   console.log(e['orderLine']);
@@ -59062,23 +59066,25 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
 
   switch (e['orderLine']['status_id']) {
     case 1:
-      label.removeClass('btn-danger').addClass('btn-warning').text('Pending...');
+      label.toggleClass('btn-danger').toggleClass('btn-warning').text('Pending...');
       break;
 
     case 2:
-      label.removeClass('btn-warning').addClass('btn-primary').text('Active...');
+      label.toggleClass('btn-warning').toggleClass('btn-primary').text('Active...');
+      $('#order-line-' + e['orderLine']['id'] + ' .hide').show();
       break;
 
     case 3:
-      label.removeClass('btn-primary').addClass('btn-danger').text('Rejected...');
+      label.toggleClass('btn-primary').toggleClass('btn-danger').text('Rejected...');
       break;
 
     case 4:
-      label.removeClass('btn-primary').addClass('btn-success').text('Approved...');
+      label.toggleClass('btn-primary').toggleClass('btn-success').text('Approved...');
+      $('#order-line-' + e['orderLine']['id'] + ' .content').hide();
       break;
 
     case 5:
-      label.removeClass('btn-primary').addClass('btn-success').text('Pre-approved...');
+      label.toggleClass('btn-primary').toggleClass('btn-success').text('Pre-approved...');
       break;
   }
 });
@@ -59088,11 +59094,6 @@ Echo.channel("orders").listen('PhotoUploaded', function (e) {
   console.log(e['path']);
   var photos = $('#order-line-' + e['orderLine']['id'] + ' .photos');
   photos.html(photos.html() + '<div class="col-md-3">' + '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine']['id'] + '">' + '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['path'] + '">' + '</div>' + '</div>');
-  $('#order-line-' + e['orderLine']['id'] + ' .status-label').text('Active...');
-  $('#order-line-' + e['orderLine']['id'] + ' .hide').show();
-});
-$('.order-line .toggle').on('click', function () {
-  $('#order-line-' + $(this).attr('data-id') + ' .content').toggle();
 });
 
 /***/ }),

@@ -31,6 +31,11 @@ const app = new Vue({
     el: '#app'
 });
 
+//Toggle Button
+$('.order-line .toggle').on('click', function () {
+    $('#order-line-' + $(this).attr('data-id') + ' .content').toggle();
+});
+
 Echo.channel(`orders`)
     .listen('OrderLineStatusUpdated', (e) => {
         console.log(e['orderLine']);
@@ -40,19 +45,21 @@ Echo.channel(`orders`)
         let label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
         switch (e['orderLine']['status_id']) {
             case 1:
-                label.removeClass('btn-danger').addClass('btn-warning').text('Pending...');
+                label.toggleClass('btn-danger').toggleClass('btn-warning').text('Pending...');
                 break;
             case 2:
-                label.removeClass('btn-warning').addClass('btn-primary').text('Active...');
+                label.toggleClass('btn-warning').toggleClass('btn-primary').text('Active...');
+                $('#order-line-' + e['orderLine']['id'] + ' .hide').show();
                 break;
             case 3:
-                label.removeClass('btn-primary').addClass('btn-danger').text('Rejected...');
+                label.toggleClass('btn-primary').toggleClass('btn-danger').text('Rejected...');
                 break;
             case 4:
-                label.removeClass('btn-primary').addClass('btn-success').text('Approved...');
+                label.toggleClass('btn-primary').toggleClass('btn-success').text('Approved...');
+                $('#order-line-' + e['orderLine']['id'] + ' .content').hide();
                 break;
             case 5:
-                label.removeClass('btn-primary').addClass('btn-success').text('Pre-approved...');
+                label.toggleClass('btn-primary').toggleClass('btn-success').text('Pre-approved...');
                 break;
         }
     });
@@ -70,10 +77,4 @@ Echo.channel(`orders`)
             '</div>' +
             '</div>'
         );
-        $('#order-line-' + e['orderLine']['id'] + ' .status-label').text('Active...');
-        $('#order-line-' + e['orderLine']['id'] + ' .hide').show();
     });
-
-$('.order-line .toggle').on('click', function () {
-    $('#order-line-' + $(this).attr('data-id') + ' .content').toggle();
-});

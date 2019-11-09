@@ -14,6 +14,7 @@ class Order extends Model
     protected $fillable = [
         'customer_id',
         'photographer_id',
+        'confirmed',
     ];
 
     //Relations
