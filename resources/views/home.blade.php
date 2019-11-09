@@ -5,7 +5,7 @@
 
         {{-- Width of content (1-12) --}}
         @slot('col')
-            9
+            col-md-12 col-lg-9
         @endslot
 
         {{-- Card --}}
