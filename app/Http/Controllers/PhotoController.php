@@ -63,6 +63,8 @@ class PhotoController extends Controller
             'photo_id' => $Photo->id,
         ]);
 
+        $orderLine->active();
+
         PhotoUploaded::dispatch($orderLine, $fileName);
     }
 

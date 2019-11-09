@@ -69,6 +69,11 @@ class OrderLine extends Model
         $this->update(['status_id' => Status::pending()]);
     }
 
+    public function active()
+    {
+        $this->update(['status_id' => Status::active()]);
+    }
+
     public function reject()
     {
         $this->update(['status_id' => Status::rejected()]);

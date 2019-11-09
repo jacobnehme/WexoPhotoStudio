@@ -1,5 +1,4 @@
 <form class="status-form"
-      style="{{$visible}}"
       action="{{ action($action, $orderLineId)}}"
       method="POST">
     @method('PATCH')

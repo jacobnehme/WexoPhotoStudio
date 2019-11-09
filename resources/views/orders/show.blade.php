@@ -45,6 +45,9 @@
                                             @case(\App\Status::pending())
                                             warning
                                             @break
+                                            @case(\App\Status::active())
+                                            primary
+                                            @break
                                             @case(\App\Status::rejected())
                                             danger
                                             @break
@@ -52,7 +55,7 @@
                                             success
                                             @break
                                             @case(\App\Status::preApproved())
-                                            primary
+                                            success
                                             @break
                                         @endswitch
                                     @endslot
@@ -72,12 +75,16 @@
                             <div class="col-md-3"><strong>OrderLine: </strong>#{{$orderLine->id}}</div>
                             {{--                            @endif--}}
 
+
                             <div class="col-md-1">
-                                <button class="toggle btn btn-primary" data-id="{{$orderLine->id}}">---</button>
+                                <button class="toggle btn btn-primary {{!$orderLine->isStatus('active') ? 'hide' : ''}}"
+                                        data-id="{{$orderLine->id}}">
+                                    ---
+                                </button>
                             </div>
                         </div>
 
-                        <div class="content">
+                        <div class="content {{!$orderLine->isStatus('active') ? 'hide' : ''}}">
 
                             <div class="row">
 
@@ -101,16 +108,11 @@
                                 {{-- Second Column: Buttons --}}
                                 <div class="buttons">
 
-                                    {{-- Approve/Reject Button for Customers TODO and $orderLine->isStatus('pending' --}}
-                                    @if(auth()->user()->isRole('customer') and $orderLine->isStatus('pending'))
+                                    {{-- Approve/Reject Button for Customers --}}
+                                    @if(auth()->user()->isRole('customer'))
 
                                         {{-- Approve/Reject --}}
                                         @component('components.statusForm')
-                                            @slot('visible')
-                                                @if(!$orderLine->photoLines()->count() > 0)
-                                                    display: none;
-                                                @endif
-                                            @endslot
                                             @slot('action')
                                                 {{'OrderLineController@update'}}
                                             @endslot
@@ -119,6 +121,7 @@
                                             @endslot
                                             @slot('class')
                                                 success
+                                                {{!$orderLine->isStatus('active') ? 'hide' : ''}}
                                             @endslot
                                             @slot('buttonText')
                                                 Approve
@@ -129,11 +132,6 @@
                                         @endcomponent
 
                                         @component('components.statusForm')
-                                            @slot('visible')
-                                                @if(!$orderLine->photoLines()->count() > 0)
-                                                    display: none;
-                                                @endif
-                                            @endslot
                                             @slot('action')
                                                 {{'OrderLineController@update'}}
                                             @endslot
@@ -142,6 +140,7 @@
                                             @endslot
                                             @slot('class')
                                                 danger
+                                                {{!$orderLine->isStatus('active') ? 'hide' : ''}}
                                             @endslot
                                             @slot('buttonText')
                                                 Reject
@@ -154,43 +153,45 @@
                                 </div>
 
                             </div>
+                        </div>
 
-                            {{-- Rows for pre-approval --}}
-                            <div class="pre-approval">
+                        {{-- Rows for pre-approval --}}
+                        <div class="pre-approval">
 
-                                @if(auth()->user()->isRole('customer'))
-                                    @foreach($orderLine->product()->orderLines() as $ol)
+                            @if(auth()->user()->isRole('customer'))
+                                @foreach($orderLine->product()->orderLines() as $ol)
 
-                                        {{-- Long If TODO Refactor --}}
-                                        @if(
-                                        //Show if OrderLine is not approved
-                                        !$orderLine->isStatus('approved') and
-                                        //Only show OrderLines that have been approved
-                                        $ol->isStatus('approved') and
-                                        //Do not show this OrderLine for pre-approval
-                                        $ol->id != $orderLine->id and
-                                        //Do not show duplicate OrderLines*
-                                        !$orderLine->photoLines()->contains('photo_id', $ol->photoLines()->first()->photo_id)
-                                        )
+                                    {{-- Long If TODO Refactor --}}
+                                    @if(
+                                    //Show if OrderLine is not approved
+                                    !$orderLine->isStatus('approved') and
+                                    //Only show OrderLines that have been approved
+                                    $ol->isStatus('approved') and
+                                    //Do not show this OrderLine for pre-approval
+                                    $ol->id != $orderLine->id and
+                                    //Do not show duplicate OrderLines*
+                                    !$orderLine->photoLines()->contains('photo_id', $ol->photoLines()->first()->photo_id)
+                                    )
 
-                                            <div id="order-line-{{$ol->id}}" class="row">
+                                        <div id="order-line-{{$ol->id}}" class="row">
 
+                                            <div class="content">
                                                 {{-- First Column: Photos --}}
-                                                    <div class="row photos">
+                                                <div class="row photos">
 
-                                                        @foreach($ol->photoLines() as $photoLine)
-                                                            <div class="col-md-3">
-                                                                @component('components/photo')
-                                                                    @slot('orderLineId')
-                                                                        {{$ol->id}}
-                                                                    @endslot
-                                                                    @slot('path')
-                                                                        {{$photoLine->photo()->path}}
-                                                                    @endslot
-                                                                @endcomponent
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
+                                                    @foreach($ol->photoLines() as $photoLine)
+                                                        <div class="col-md-3">
+                                                            @component('components/photo')
+                                                                @slot('orderLineId')
+                                                                    {{$ol->id}}
+                                                                @endslot
+                                                                @slot('path')
+                                                                    {{$photoLine->photo()->path}}
+                                                                @endslot
+                                                            @endcomponent
+                                                        </div>
+                                                    @endforeach
+                                                </div>
 
                                                 {{-- Second Column: Buttons --}}
                                                 <div class="buttons">
@@ -209,7 +210,7 @@
                                                                 {{$orderLine->id}}
                                                             @endslot
                                                             @slot('class')
-                                                                primary
+                                                                success
                                                             @endslot
                                                             @slot('buttonText')
                                                                 Pre-Approve
@@ -224,56 +225,60 @@
                                                             @endforeach
                                                         @endcomponent
                                                     @endif
+
+                                                    <div class="status-form">
+                                                        <button class="toggle status-form btn btn-danger"
+                                                                data-id="{{$ol->id}}">Reject
+                                                        </button>
+                                                    </div>
                                                 </div>
-
                                             </div>
+                                        </div>
 
-                                            {{-- Modals (Contains Carousel) --}}
-                                            @component('components.modal')
+                                        {{-- Modals (Contains Carousel) --}}
+                                        @component('components.modal')
+                                            @slot('id')
+                                                {{$ol->id}}
+                                            @endslot
+                                            @slot('title')
+                                                {{$ol->product()->id}}
+                                            @endslot
+
+                                            {{-- Carousel --}}
+                                            @component('components.carousel')
+
                                                 @slot('id')
                                                     {{$ol->id}}
                                                 @endslot
-                                                @slot('title')
-                                                    {{$ol->product()->id}}
+
+                                                {{-- Indicators for each photo on Carousel --}}
+                                                @slot('indicators')
+                                                    @foreach($ol->photoLines() as $index => $photo)
+                                                        <li data-target="carousel-{{$ol->id}}"
+                                                            data-slide-to="{{$index}}"
+                                                            class="{{$loop->first ? 'active' : ''}}"></li>
+                                                    @endforeach
                                                 @endslot
 
-                                                {{-- Carousel --}}
-                                                @component('components.carousel')
-
-                                                    @slot('id')
-                                                        {{$ol->id}}
-                                                    @endslot
-
-                                                    {{-- Indicators for each photo on Carousel --}}
-                                                    @slot('indicators')
-                                                        @foreach($ol->photoLines() as $index => $photo)
-                                                            <li data-target="carousel-{{$ol->id}}"
-                                                                data-slide-to="{{$index}}"
-                                                                class="{{$loop->first ? 'active' : ''}}"></li>
-                                                        @endforeach
-                                                    @endslot
-
-                                                    {{-- Carousel Items for each photo --}}
-                                                    @foreach($ol->photoLines() as $photoLine)
-                                                        <div
-                                                            class="carousel-item {{$loop->first ? 'active' : ''}}">
-                                                            @component('components/photo')
-                                                                @slot('orderLineId')
-                                                                    {{$ol->id}}
-                                                                @endslot
-                                                                @slot('path')
-                                                                    {{$photoLine->photo()->path}}
-                                                                @endslot
-                                                            @endcomponent
-                                                        </div>
-                                                    @endforeach
-                                                @endcomponent
+                                                {{-- Carousel Items for each photo --}}
+                                                @foreach($ol->photoLines() as $photoLine)
+                                                    <div
+                                                        class="carousel-item {{$loop->first ? 'active' : ''}}">
+                                                        @component('components/photo')
+                                                            @slot('orderLineId')
+                                                                {{$ol->id}}
+                                                            @endslot
+                                                            @slot('path')
+                                                                {{$photoLine->photo()->path}}
+                                                            @endslot
+                                                        @endcomponent
+                                                    </div>
+                                                @endforeach
                                             @endcomponent
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </div>
-
+                                        @endcomponent
+                                    @endif
+                                @endforeach
+                            @endif
                         </div>
 
                         {{-- Modals (Contains Carousel) --}}

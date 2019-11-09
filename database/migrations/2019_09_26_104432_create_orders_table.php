@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('customer_id');
             $table->unsignedInteger('photographer_id')->nullable()->default(null);
+            $table->boolean('confirmed')->default('false');
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('customers');

@@ -23,6 +23,10 @@ class Status extends Model
         return Status::where('title', 'pending')->first()->id;
     }
 
+    public static function active(){
+        return Status::where('title', 'active')->first()->id;
+    }
+
     public static function rejected(){
         return Status::where('title', 'rejected')->first()->id;
     }

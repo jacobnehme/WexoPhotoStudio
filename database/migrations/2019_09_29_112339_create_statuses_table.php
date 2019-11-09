@@ -24,6 +24,9 @@ class CreateStatusesTable extends Migration
             'title' => 'pending',
         ]);
         Status::create([
+            'title' => 'active',
+        ]);
+        Status::create([
             'title' => 'rejected',
         ]);
         Status::create([
