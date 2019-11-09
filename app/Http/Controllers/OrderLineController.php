@@ -72,7 +72,7 @@ class OrderLineController extends Controller
      */
     public function update(Request $request, OrderLine $orderLine)
     {
-        //Persist PhotoLines
+        //Persist PhotoLines if pre-approving
         if($request['photos']){
 
             foreach ($orderLine->photoLines() as $photoLine){

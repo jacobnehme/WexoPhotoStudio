@@ -40,7 +40,7 @@ Echo.channel(`orders`)
         let label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
         switch (e['orderLine']['status_id']) {
             case 1:
-                label.removeClass('btn-warning').addClass('btn-success').text('Approved...');
+                label.removeClass('btn-warning').addClass('btn-success').text('Pending...');
                 break;
             case 2:
                 label.removeClass('btn-success').addClass('btn-danger').text('Rejected...');
@@ -70,3 +70,6 @@ Echo.channel(`orders`)
         $('#order-line-' + e['orderLine']['id'] + ' .status-form').show();
     });
 
+$('.order-line .toggle').on('click', function () {
+    $('#order-line-' + $(this).attr('data-id') + ' .content').toggle();
+});

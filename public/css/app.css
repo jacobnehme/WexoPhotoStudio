@@ -10645,7 +10645,7 @@ a.text-dark:focus {
 }
 
 table thead tr {
-  border-bottom: 2px solid #F7F7F7;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 table tbody tr {
@@ -10653,24 +10653,46 @@ table tbody tr {
 }
 
 table tbody tr:nth-of-type(even) {
-  background: #F7F7F7;
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .photo {
   cursor: pointer;
-  margin-bottom: 5px;
 }
 
 .status-label {
   width: 100%;
+  margin: 0;
 }
 
-.status-form {
-  margin-bottom: 10px;
+.table .head {
+  padding-bottom: 15px;
 }
 
-.status-form .btn {
-  cursor: pointer;
+.table .order-line {
+  margin: 5px -15px 15px -15px;
+  padding: 0 15px;
+}
+
+.table .order-line .row {
+  padding: 5px 0;
+}
+
+.table .order-line .row.details {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.table .order-line .content {
+  display: none;
+}
+
+.table .order-line .buttons {
   width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.table .order-line .buttons .status-form {
+  margin: 0 5px;
 }
 

@@ -12,33 +12,62 @@
 // Style
 table {
     thead tr {
-        border-bottom: 2px solid #F7F7F7;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     }
 
     tbody tr {
         padding: 10px 0;
 
         &:nth-of-type(even) {
-            background: #F7F7F7;
+            background: rgba(0, 0, 0, 0.03);
         }
     }
 }
 
 .photo {
     cursor: pointer;
-    margin-bottom: 5px;
 }
 
 .status-label{
     width: 100%;
+    margin: 0;
 }
 
-.status-form {
-    .btn {
-        cursor: pointer;
-        width: 100%;
+//Custom Table on /orders/show
+.table{
+
+    .head{
+        padding-bottom: 15px;
     }
 
-    margin-bottom: 10px;
-}
+    .order-line{
+        margin: 5px -15px 15px -15px;
+        padding: 0 15px;
 
+        &:nth-of-type(even){
+            //background: rgba(0, 0, 0, 0.03);
+        }
+
+        .row{
+            padding: 5px 0;
+
+            &.details{
+                border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            }
+        }
+
+        .content{
+            display: none;
+        }
+
+        .buttons{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+            .status-form{
+                margin: 0 5px;
+            }
+        }
+    }
+}

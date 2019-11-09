@@ -59062,7 +59062,7 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
 
   switch (e['orderLine']['status_id']) {
     case 1:
-      label.removeClass('btn-warning').addClass('btn-success').text('Approved...');
+      label.removeClass('btn-warning').addClass('btn-success').text('Pending...');
       break;
 
     case 2:
@@ -59085,6 +59085,9 @@ Echo.channel("orders").listen('PhotoUploaded', function (e) {
   var photos = $('#order-line-' + e['orderLine']['id'] + ' .photos');
   photos.html(photos.html() + '<div class="col-md-3">' + '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine']['id'] + '">' + '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['path'] + '">' + '</div>' + '</div>');
   $('#order-line-' + e['orderLine']['id'] + ' .status-form').show();
+});
+$('.order-line .toggle').on('click', function () {
+  $('#order-line-' + $(this).attr('data-id') + ' .content').toggle();
 });
 
 /***/ }),
