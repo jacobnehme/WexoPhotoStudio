@@ -54,14 +54,16 @@ Echo.channel(`orders`)
                 $('#order-line-' + e['orderLine']['id'] + ' .hide').show();
                 break;
             case 3:
-                label.toggleClass('btn-primary').toggleClass('btn-danger').text('Rejected...');
+                label.removeClass('btn-primary').addClass('btn-danger').text('Rejected...');
                 break;
             case 4:
-                label.toggleClass('btn-primary').toggleClass('btn-success').text('Approved...');
+                label.removeClass('btn-primary').addClass('btn-success').text('Approved...');
                 $('#order-line-' + e['orderLine']['id'] + ' .content').hide();
                 break;
             case 5:
-                label.toggleClass('btn-primary').toggleClass('btn-success').text('Pre-approved...');
+                label.removeClass(function (index, className) {
+                    return (className.match(/(^|\s)btn-\S+/g) || []).join(' ');
+                }).addClass('btn-success').text('Pre-approved...');
                 $('#order-line-' + e['orderLine']['id'] + ' .content').hide();
                 break;
         }

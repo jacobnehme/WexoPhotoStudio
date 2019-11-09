@@ -10644,6 +10644,18 @@ a.text-dark:focus {
   }
 }
 
+.main {
+  padding-top: 75px;
+}
+
+.navbar {
+  position: fixed;
+  z-index: 10;
+  background: white;
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
 table thead tr {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
@@ -10705,6 +10717,15 @@ table tbody tr:nth-of-type(even) {
 }
 
 .table .order-line .buttons .status-form .btn {
+  min-width: 200px;
+}
+
+.confirm-form {
+  display: flex;
+  justify-content: center;
+}
+
+.confirm-form .btn {
   min-width: 200px;
 }
 

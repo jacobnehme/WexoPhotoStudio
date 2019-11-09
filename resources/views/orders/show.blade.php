@@ -5,7 +5,7 @@
 
         {{-- Width of content (1-12) --}}
         @slot('col')
-            9
+            col-md-12 col-lg-9
         @endslot
 
         {{-- Card --}}
@@ -71,7 +71,8 @@
                             </div>
 
                             <div class="col-md-3">
-                                <span class="detail"><strong>Barcode: </strong>#{{$orderLine->product()->barcode}}</span>
+                                <span
+                                    class="detail"><strong>Barcode: </strong>#{{$orderLine->product()->barcode}}</span>
                             </div>
                             <div class="col-md-2">
                                 <span class="detail"><strong>OrderLine: </strong>#{{$orderLine->id}}</span>
@@ -329,9 +330,10 @@
                 @endforeach
             @endcomponent
 
-            @if(!$order->confirmed)
+            @if(!$order->confirmed and auth()->user()->isRole('customer'))
                 <form action="{{action('OrderController@update', $order->id)}}"
-                      method="POST">
+                      method="POST"
+                      class="confirm-form">
                     @method('PATCH')
                     @csrf
 
@@ -339,5 +341,7 @@
                 </form>
             @endif
         @endcomponent
+
+{{--        <div class="status-bar">Hello</div>--}}
     @endcomponent
 @endcomponent
