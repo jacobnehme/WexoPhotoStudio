@@ -38,20 +38,17 @@ $('.order-line .toggle').on('click', function () {
 
 Echo.channel(`orders`)
     .listen('OrderLineStatusUpdated', (e) => {
-        console.log(e['orderLine']);
-        console.log(e['orderLine']['id']);
-        console.log(e['orderLine']['status_id']);
 
         let label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
         switch (e['orderLine']['status_id']) {
             case 1:
-                label.removeClass (function (index, className) {
-                    return (className.match (/(^|\s)btn-\S+/g) || []).join(' ');
+                label.removeClass(function (index, className) {
+                    return (className.match(/(^|\s)btn-\S+/g) || []).join(' ');
                 }).addClass('btn-warning').text('Pending...');
                 break;
             case 2:
-                label.removeClass (function (index, className) {
-                    return (className.match (/(^|\s)btn-\S+/g) || []).join(' ');
+                label.removeClass(function (index, className) {
+                    return (className.match(/(^|\s)btn-\S+/g) || []).join(' ');
                 }).addClass('btn-primary').text('Active...');
 
                 $('#order-line-' + e['orderLine']['id'] + ' .hide').show();
@@ -72,18 +69,34 @@ Echo.channel(`orders`)
 
 Echo.channel(`orders`)
     .listen('PhotoUploaded', (e) => {
-        console.log('Photo Uploaded');
-        console.log(e['orderLine']['id']);
 
         let photosHTML = '';
-        for (let i = 0; i < e['fileNames'].length; i++){
+        let indicatorsHTML = '';
+        let modalsHTML = '';
+        for (let i = 0; i < e['fileNames'].length; i++) {
             photosHTML +=
                 '<div class="col-md-3">' +
                 '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine']['id'] + '">' +
                 '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['fileNames'][i] + '">' +
                 '</div>' +
                 '</div>';
+            let active;
+            if (i === 0){
+                active = 'active';
+            }
+            indicatorsHTML +=
+                '<li data-target="carousel-' + e['orderLine']['id'] + '" ' +
+                'data-slide-to="' + i + '" ' +
+                'class="' + active + '"></li>';
+            modalsHTML +=
+                '<div class="carousel-item ' + active + '">' +
+                '<div class="photo">' +
+                '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['fileNames'][i] + '">' +
+                '</div>' +
+                '</div>';
         }
 
         $('#order-line-' + e['orderLine']['id'] + ' .photos').html(photosHTML);
+        $('#order-line-' + e['orderLine']['id'] + ' .carousel-indicators').html(indicatorsHTML);
+        $('#order-line-' + e['orderLine']['id'] + ' .carousel-inner').html(modalsHTML);
     });

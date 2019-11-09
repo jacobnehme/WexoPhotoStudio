@@ -80,7 +80,7 @@
 
                             <div class="col-md-1">
                                 <button
-                                    class="toggle btn btn-light {{$orderLine->isStatus('pending') ? 'hide' : 'show'}}"
+                                    class="toggle btn btn-dark {{$orderLine->isStatus('pending') ? 'hide' : 'show'}}"
                                     data-id="{{$orderLine->id}}">
                                     ---
                                 </button>

@@ -59059,9 +59059,6 @@ $('.order-line .toggle').on('click', function () {
   $('#order-line-' + $(this).attr('data-id') + ' > .content').toggle();
 });
 Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
-  console.log(e['orderLine']);
-  console.log(e['orderLine']['id']);
-  console.log(e['orderLine']['status_id']);
   var label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
 
   switch (e['orderLine']['status_id']) {
@@ -59094,15 +59091,25 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
   }
 });
 Echo.channel("orders").listen('PhotoUploaded', function (e) {
-  console.log('Photo Uploaded');
-  console.log(e['orderLine']['id']);
   var photosHTML = '';
+  var indicatorsHTML = '';
+  var modalsHTML = '';
 
   for (var i = 0; i < e['fileNames'].length; i++) {
     photosHTML += '<div class="col-md-3">' + '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine']['id'] + '">' + '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['fileNames'][i] + '">' + '</div>' + '</div>';
+    var active = void 0;
+
+    if (i === 0) {
+      active = 'active';
+    }
+
+    indicatorsHTML += '<li data-target="carousel-' + e['orderLine']['id'] + '" ' + 'data-slide-to="' + i + '" ' + 'class="' + active + '"></li>';
+    modalsHTML += '<div class="carousel-item ' + active + '">' + '<div class="photo">' + '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['fileNames'][i] + '">' + '</div>' + '</div>';
   }
 
   $('#order-line-' + e['orderLine']['id'] + ' .photos').html(photosHTML);
+  $('#order-line-' + e['orderLine']['id'] + ' .carousel-indicators').html(indicatorsHTML);
+  $('#order-line-' + e['orderLine']['id'] + ' .carousel-inner').html(modalsHTML);
 });
 
 /***/ }),
