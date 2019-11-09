@@ -41,14 +41,13 @@ class PhotoController extends Controller
     {
         $orderLine = OrderLine::where('id', $request['orderLine_id'])->get()->first();
 
-        if ($orderLine->isStatus('rejected')) {
-            foreach ($orderLine->photoLines() as $photoLine) {
-                $photoLine->delete();
-            }
+        foreach ($orderLine->photoLines() as $photoLine) {
+            $photoLine->delete();
         }
 
         $files = $request->allFiles();
-        for($i = 0; $i < count($files['photos']); $i++){
+        $fileNames = [];
+        for ($i = 0; $i < count($files['photos']); $i++) {
 
             //Upload photo
             $fileName = $files['photos'][$i]->store('', 'images');
@@ -62,12 +61,14 @@ class PhotoController extends Controller
 
             //Persist photoLine
             PhotoLine::create([
-                'order_line_id' => (int) $request['orderLine_id'],
+                'order_line_id' => (int)$request['orderLine_id'],
                 'photo_id' => $p->id,
             ]);
 
-            PhotoUploaded::dispatch($orderLine, $fileName);
+            $fileNames[] = $fileName;
         }
+
+        PhotoUploaded::dispatch($orderLine, $fileNames);
 
         $orderLine->active();
         OrderLineStatusUpdated::dispatch($orderLine);

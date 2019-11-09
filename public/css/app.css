@@ -10674,6 +10674,10 @@ table tbody tr:nth-of-type(even) {
   padding: 0 15px;
 }
 
+.table .order-line:nth-of-type(even) {
+  background: rgba(0, 0, 0, 0.03);
+}
+
 .table .order-line .row {
   padding: 5px 0;
 }

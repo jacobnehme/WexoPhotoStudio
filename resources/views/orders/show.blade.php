@@ -175,7 +175,7 @@
                                         !$orderLine->photoLines()->contains('photo_id', $ol->photoLines()->first()->photo_id)
                                         )
 
-                                            <div id="order-line-{{$ol->id}}" class="row">
+                                            <div id="order-line-{{$ol->id}}">
 
                                                 <div class="content">
                                                     {{-- First Column: Photos --}}

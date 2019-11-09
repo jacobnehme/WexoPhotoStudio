@@ -33,7 +33,7 @@ const app = new Vue({
 
 //Toggle Button
 $('.order-line .toggle').on('click', function () {
-    $('#order-line-' + $(this).attr('data-id') + ' .content').toggle();
+    $('#order-line-' + $(this).attr('data-id') + ' > .content').toggle();
 });
 
 Echo.channel(`orders`)
@@ -45,10 +45,15 @@ Echo.channel(`orders`)
         let label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
         switch (e['orderLine']['status_id']) {
             case 1:
-                label.toggleClass('btn-danger').toggleClass('btn-warning').text('Pending...');
+                label.removeClass (function (index, className) {
+                    return (className.match (/(^|\s)btn-\S+/g) || []).join(' ');
+                }).addClass('btn-warning').text('Pending...');
                 break;
             case 2:
-                label.toggleClass('btn-warning').toggleClass('btn-primary').text('Active...');
+                label.removeClass (function (index, className) {
+                    return (className.match (/(^|\s)btn-\S+/g) || []).join(' ');
+                }).addClass('btn-primary').text('Active...');
+
                 $('#order-line-' + e['orderLine']['id'] + ' .hide').show();
                 break;
             case 3:
@@ -60,6 +65,7 @@ Echo.channel(`orders`)
                 break;
             case 5:
                 label.toggleClass('btn-primary').toggleClass('btn-success').text('Pre-approved...');
+                $('#order-line-' + e['orderLine']['id'] + ' .content').hide();
                 break;
         }
     });
@@ -68,13 +74,16 @@ Echo.channel(`orders`)
     .listen('PhotoUploaded', (e) => {
         console.log('Photo Uploaded');
         console.log(e['orderLine']['id']);
-        console.log(e['path']);
-        let photos = $('#order-line-' + e['orderLine']['id'] + ' .photos');
-        photos.html(photos.html() +
-            '<div class="col-md-3">' +
-            '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine']['id'] + '">' +
-            '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['path'] + '">' +
-            '</div>' +
-            '</div>'
-        );
+
+        let photosHTML = '';
+        for (let i = 0; i < e['fileNames'].length; i++){
+            photosHTML +=
+                '<div class="col-md-3">' +
+                '<div class="photo" data-toggle="modal" data-target="#modal-' + e['orderLine']['id'] + '">' +
+                '<img class="img img-fluid" src="http://127.0.0.1:8000/images/' + e['fileNames'][i] + '">' +
+                '</div>' +
+                '</div>';
+        }
+
+        $('#order-line-' + e['orderLine']['id'] + ' .photos').html(photosHTML);
     });

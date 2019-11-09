@@ -45,7 +45,7 @@ table {
         padding: 0 15px;
 
         &:nth-of-type(even){
-            //background: rgba(0, 0, 0, 0.03);
+            background: rgba(0, 0, 0, 0.03);
         }
 
         .row{
@@ -76,6 +76,9 @@ table {
                     min-width: 200px;
                 }
             }
+        }
+
+        .pre-approval{
         }
     }
 }
