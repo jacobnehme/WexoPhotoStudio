@@ -20,6 +20,15 @@ class OrderController extends Controller
         $this->middleware('auth');
     }
 
+//    public function showAsync(Order $order)
+//    {
+//        $view = view('orders/show', [
+//            'order' => $order
+//        ])->render();
+//
+//        return response()->json(['html' => $view]);
+//    }
+
     /**
      * Display a listing of the resource.
      *
@@ -48,8 +57,7 @@ class OrderController extends Controller
             return view('orders/index', [
                 'orders' => $orders,
             ]);
-        }
-        else{
+        } else {
             return redirect('/orders/' . $orders->first()->id);
         }
     }
@@ -75,7 +83,7 @@ class OrderController extends Controller
         //TODO transaction, encapsulation, clean up and more...
         DB::beginTransaction();
 
-        try{
+        try {
             //Validation
             $validated = $request->validate([
                 'products' => 'required|mimes:txt'
@@ -139,8 +147,7 @@ class OrderController extends Controller
             DB::commit();
 
             return redirect('/orders/' . $order->id);
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollback();
             return back();
         }
@@ -183,10 +190,9 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         //TODO Refactor quick solution
-        if($request['photographer_id']){
+        if ($request['photographer_id']) {
             $order->photographer_id = $request['photographer_id'];
-        }
-        else{
+        } else {
             $order->confirmed = true;
         }
 

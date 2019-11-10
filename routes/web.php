@@ -19,6 +19,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
+//Route::get('/orders/showAsync/{id}', 'OrderController@showAsync');
+
 // Resources
 Route::resource('orders', 'OrderController');
 Route::resource('orderLines', 'OrderLineController');

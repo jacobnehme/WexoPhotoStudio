@@ -17,7 +17,7 @@
 .navbar{
     position: fixed;
     z-index: 10;
-    background: white;
+    background: rgba(255, 255, 255, 0.97);
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
@@ -57,13 +57,14 @@ table {
         padding: 0 15px;
 
         &:nth-of-type(even){
-            background: rgba(0, 0, 0, 0.03);
+            //background: rgba(0, 0, 0, 0.03);
         }
 
         .row{
             padding: 5px 0;
 
             &.details{
+                border-top: 1px solid rgba(0, 0, 0, 0.125);
                 border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 
                 .detail{

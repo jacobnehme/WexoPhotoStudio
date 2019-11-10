@@ -5,8 +5,10 @@
     @Csrf
     <input type="hidden" name="status_id" value="{{$status}}">
     {{$slot}}
-    <button type="submit"
-            class="btn btn-{{$class}}">
+    <button type="button"
+            class="btn btn-{{$class}}"
+            data-id="{{$orderLineId}}"
+            data-status="{{$status}}">
         {{$buttonText}}
     </button>
 </form>

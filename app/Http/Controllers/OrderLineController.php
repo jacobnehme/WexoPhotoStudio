@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderLineStatusUpdated;
+use App\Events\PhotoUploaded;
 use App\OrderLine;
 use App\PhotoLine;
 use App\Status;
@@ -103,6 +104,11 @@ class OrderLineController extends Controller
                 break;
             case Status::preApproved():
                 $orderLine->preApprove();
+                $fileNames = [];
+                foreach ($orderLine->photoLines() as $photoLine){
+                    $fileNames[] = $photoLine->photo()->path;
+                }
+                PhotoUploaded::dispatch($orderLine, $fileNames);
                 break;
         }
 

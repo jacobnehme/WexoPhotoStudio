@@ -10651,7 +10651,7 @@ a.text-dark:focus {
 .navbar {
   position: fixed;
   z-index: 10;
-  background: white;
+  background: rgba(255, 255, 255, 0.97);
   width: 100%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
@@ -10686,15 +10686,12 @@ table tbody tr:nth-of-type(even) {
   padding: 0 15px;
 }
 
-.table .order-line:nth-of-type(even) {
-  background: rgba(0, 0, 0, 0.03);
-}
-
 .table .order-line .row {
   padding: 5px 0;
 }
 
 .table .order-line .row.details {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 

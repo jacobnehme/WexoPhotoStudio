@@ -41,6 +41,7 @@ class PhotoController extends Controller
     {
         $orderLine = OrderLine::where('id', $request['orderLine_id'])->get()->first();
 
+        //TODO Check if photolines needs to be replaced
         foreach ($orderLine->photoLines() as $photoLine) {
             $photoLine->delete();
         }

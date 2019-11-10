@@ -21,10 +21,10 @@
 
                 {{-- Table Header --}}
                 @slot('head')
-                    <div class="col-md-3"><strong>Customer: </strong> <br>
+                    <div class="col-sm-3"><strong>Customer: </strong> <br>
                         {{$order->customer()->user()->email}}
                     </div>
-                    <div class="col-md-3"><strong>Photographer: </strong> <br>
+                    <div class="col-sm-3"><strong>Photographer: </strong> <br>
                         {{$order->photographer_id != null ? $order->photographer()->user()->email : 'Pending...'}}
                     </div>
                 @endslot
@@ -38,7 +38,7 @@
                         <div class="row details">
 
                             {{-- Status of the OrderLine --}}
-                            <div class="col-md-3">
+                            <div class="col-sm-3">
                                 @component('components.statusLabel')
                                     @slot('class')
                                         @switch($orderLine->status_id)
@@ -66,24 +66,24 @@
                             </div>
 
                             {{-- Product Title --}}
-                            <div class="col-md-3">
+                            <div class="col-sm-3">
                                 <span class="detail"><strong>Title: </strong>{{$orderLine->product()->title}}</span>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-sm-3">
                                 <span
                                     class="detail"><strong>Barcode: </strong>#{{$orderLine->product()->barcode}}</span>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-sm-2">
                                 <span class="detail"><strong>OrderLine: </strong>#{{$orderLine->id}}</span>
                             </div>
 
 
-                            <div class="col-md-1">
+                            <div class="col-sm-1">
                                 <button
                                     class="toggle btn btn-dark {{$orderLine->isStatus('pending') ? 'hide' : 'show'}}"
                                     data-id="{{$orderLine->id}}">
-                                    ---
+                                    -
                                 </button>
                             </div>
                         </div>
@@ -230,7 +230,7 @@
                                                         @endif
 
                                                         <div class="status-form">
-                                                            <button class="toggle status-form btn btn-danger"
+                                                            <button class="toggle btn btn-danger"
                                                                     data-id="{{$ol->id}}">Reject
                                                             </button>
                                                         </div>
