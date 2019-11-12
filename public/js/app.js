@@ -59053,12 +59053,14 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 
 var app = new Vue({
   el: '#app'
-}); //Toggle Button
+}); //Content Toggle Button
 
 $('.order-line .toggle').on('click', function () {
   $('#order-line-' + $(this).attr('data-id') + ' > .content').toggle();
-});
+}); //Async Status Update
+
 $('.order-line form.status-form button').on('click', function () {
+  //If pre-approving
   var p = $(this).siblings('input[name="photos[]"]');
   var photos = [];
 
@@ -59079,7 +59081,8 @@ $('.order-line form.status-form button').on('click', function () {
       console.log(data);
     }
   });
-});
+}); //Listen for OrderLineStatusUpdated Event
+
 Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
   // $.ajax(
   //     {
@@ -59090,13 +59093,15 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
   //         console.log(data.html.querySelector('#order-line-' + e['orderLine']['id']));
   //     }
   // );
+  //
   var label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
   var content = $('#order-line-' + e['orderLine']['id'] + ' .content');
   var buttons = $('#order-line-' + e['orderLine']['id'] + ' .status-form');
-  var toggle = $('#order-line-' + e['orderLine']['id'] + ' .toggle');
+  var toggle = $('#order-line-' + e['orderLine']['id'] + ' .toggle'); //Update View async
+
   label.removeClass(function (index, className) {
     return (className.match(/(^|\s)btn-\S+/g) || []).join(' ');
-  });
+  }); //Status specific changes
 
   switch (e['orderLine']['status_id']) {
     case 1:
@@ -59136,11 +59141,12 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
   //     '</p><br>'
   // );
 
-});
+}); //Listen for PhotoUploaded Event //TODO Could listen on the same channel
+
 Echo.channel("orders").listen('PhotoUploaded', function (e) {
   var photosHTML = '';
   var indicatorsHTML = '';
-  var modalsHTML = '';
+  var modalsHTML = ''; //Update View async TODO refactor to use easier methods
 
   for (var i = 0; i < e['fileNames'].length; i++) {
     var active = void 0;

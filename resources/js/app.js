@@ -31,13 +31,15 @@ const app = new Vue({
     el: '#app'
 });
 
-//Toggle Button
+//Content Toggle Button
 $('.order-line .toggle').on('click', function () {
     $('#order-line-' + $(this).attr('data-id') + ' > .content').toggle();
 });
 
+//Async Status Update
 $('.order-line form.status-form button').on('click', function () {
 
+    //If pre-approving
     let p = $(this).siblings('input[name="photos[]"]');
     let photos = [];
     for (let i = 0; i < p.length; i++) {
@@ -59,6 +61,7 @@ $('.order-line form.status-form button').on('click', function () {
     });
 });
 
+//Listen for OrderLineStatusUpdated Event
 Echo.channel(`orders`)
     .listen('OrderLineStatusUpdated', (e) => {
 
@@ -72,15 +75,18 @@ Echo.channel(`orders`)
         //     }
         // );
 
+        //
         let label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
         let content = $('#order-line-' + e['orderLine']['id'] + ' .content');
         let buttons = $('#order-line-' + e['orderLine']['id'] + ' .status-form');
         let toggle = $('#order-line-' + e['orderLine']['id'] + ' .toggle');
 
+        //Update View async
         label.removeClass(function (index, className) {
             return (className.match(/(^|\s)btn-\S+/g) || []).join(' ');
         });
 
+        //Status specific changes
         switch (e['orderLine']['status_id']) {
             case 1:
                 label.addClass('btn-warning').text('Pending...');
@@ -118,12 +124,15 @@ Echo.channel(`orders`)
         // );
     });
 
+//Listen for PhotoUploaded Event //TODO Could listen on the same channel
 Echo.channel(`orders`)
     .listen('PhotoUploaded', (e) => {
 
         let photosHTML = '';
         let indicatorsHTML = '';
         let modalsHTML = '';
+
+        //Update View async TODO refactor to use easier methods
         for (let i = 0; i < e['fileNames'].length; i++) {
             let active;
             if (i === 0) {
