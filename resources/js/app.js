@@ -76,6 +76,7 @@ Echo.channel(`orders`)
         // );
 
         //
+        let orderLine = $('#order-line-' + e['orderLine']['id']);
         let label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
         let content = $('#order-line-' + e['orderLine']['id'] + ' .content');
         let buttons = $('#order-line-' + e['orderLine']['id'] + ' .status-form');
@@ -94,6 +95,7 @@ Echo.channel(`orders`)
                 break;
             case 2:
                 label.addClass('btn-primary').text('Active...');
+                //orderLine.remove().prependTo('#order-lines');
                 $('#order-line-' + e['orderLine']['id'] + ' .hide').show();
                 buttons.show();
                 break;

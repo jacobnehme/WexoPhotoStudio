@@ -53,12 +53,12 @@ class OrderController extends Controller
         }
 
         //Shortcut of User only has 1 Order
-        if ($orders->count() > 1 or $orders->count() == null) {
+        if ($orders->count() == 1) {
+            return redirect('/orders/' . $orders->first()->id);
+        } else {
             return view('orders/index', [
                 'orders' => $orders,
             ]);
-        } else {
-            return redirect('/orders/' . $orders->first()->id);
         }
     }
 

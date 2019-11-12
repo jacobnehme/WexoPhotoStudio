@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function __construct()
     {
-        //
+        $this->authorize('view', Product::class);
     }
 
     /**
@@ -36,8 +36,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Product::class);
-
         return view('products/create');
     }
 

@@ -59094,6 +59094,7 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
   //     }
   // );
   //
+  var orderLine = $('#order-line-' + e['orderLine']['id']);
   var label = $('#order-line-' + e['orderLine']['id'] + ' .status-label');
   var content = $('#order-line-' + e['orderLine']['id'] + ' .content');
   var buttons = $('#order-line-' + e['orderLine']['id'] + ' .status-form');
@@ -59110,7 +59111,8 @@ Echo.channel("orders").listen('OrderLineStatusUpdated', function (e) {
       break;
 
     case 2:
-      label.addClass('btn-primary').text('Active...');
+      label.addClass('btn-primary').text('Active...'); //orderLine.remove().prependTo('#order-lines');
+
       $('#order-line-' + e['orderLine']['id'] + ' .hide').show();
       buttons.show();
       break;

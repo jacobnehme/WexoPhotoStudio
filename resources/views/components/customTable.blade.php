@@ -2,5 +2,7 @@
     <div class="row head">
         {{$head}}
     </div>
-    {{$slot}}
+    <div id="order-lines">
+        {{$slot}}
+    </div>
 </div>

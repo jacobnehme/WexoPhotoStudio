@@ -33,7 +33,7 @@ class Order extends Model
         return $this->hasMany(Customer::class);
     }
 
-    //Object
+    //Objects
     public function orderLines()
     {
         return $this->hasMany(OrderLine::class)->get();
@@ -47,5 +47,31 @@ class Order extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class)->get()->first();
+    }
+
+    //Methods
+    public function total(){
+        $total = 0;
+        foreach ($this->orderLines() as $orderLine){
+            if ($orderLine->isStatus('approved')){
+                $total += 100;
+            }
+            if ($orderLine->isStatus('pre-approved')){
+                $total += 50;
+            }
+        }
+
+        return $total;
+    }
+
+    public function approvedCount(){
+        $count = 0;
+        foreach ($this->orderLines() as $orderLine){
+            if ($orderLine->isStatus('approved') or $orderLine->isStatus('pre-approved')){
+                $count++;
+            }
+        }
+
+        return $count;
     }
 }

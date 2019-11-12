@@ -19,7 +19,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product)
     {
-        //
+        return $user->isRole('admin');
     }
 
     /**
@@ -30,9 +30,7 @@ class ProductPolicy
      */
     public function create(User $user)
     {
-        //TODO implement admin?
-        //return $user->role == 'admin';
-        return true;
+        return $user->isRole('admin');
     }
 
     /**

@@ -73,6 +73,8 @@ class PhotoController extends Controller
 
         $orderLine->active();
         OrderLineStatusUpdated::dispatch($orderLine);
+
+        return $orderLine->order()->id;
     }
 
     /**

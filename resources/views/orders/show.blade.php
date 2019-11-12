@@ -21,12 +21,25 @@
 
                 {{-- Table Header --}}
                 @slot('head')
-                    <div class="col-sm-3"><strong>Customer: </strong> <br>
-                        {{$order->customer()->user()->email}}
+                    <div class="col-sm-3"><strong>Status: </strong> <br>
+                        {{$order->approvedcount()}} / {{$order->orderLines()->count()}}
                     </div>
-                    <div class="col-sm-3"><strong>Photographer: </strong> <br>
-                        {{$order->photographer_id != null ? $order->photographer()->user()->email : 'Pending...'}}
+                    <div class="col-sm-3"><strong>Total: </strong> <br>
+                        kr. {{$order->total()}}
                     </div>
+
+                    @switch(auth()->user()->role_id)
+                        @case(\App\Role::photographer())
+                        <div class="col-sm-3"><strong>Customer: </strong> <br>
+                            {{$order->customer()->user()->email}}
+                        </div>
+                        @break
+                        @case(\App\Role::customer())
+                        <div class="col-sm-3"><strong>Photographer: </strong> <br>
+                            {{$order->photographer_id != null ? $order->photographer()->user()->email : 'Pending...'}}
+                        </div>
+                        @break
+                    @endswitch
                 @endslot
 
                 {{-- Modal and row for each OrderLine --}}
@@ -77,7 +90,6 @@
                             <div class="col-sm-2">
                                 <span class="detail"><strong>OrderLine: </strong>#{{$orderLine->id}}</span>
                             </div>
-
 
                             <div class="col-sm-1">
                                 <button
@@ -342,6 +354,6 @@
             @endif
         @endcomponent
 
-{{--        <div class="status-bar">Hello</div>--}}
+        {{--        <div class="status-bar">Hello</div>--}}
     @endcomponent
 @endcomponent

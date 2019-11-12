@@ -22,8 +22,8 @@
                 {{-- Table Header --}}
                 @slot('head')
                     <th class="col-md-2">Order ID</th>
-                    <th class="col-md-2">Quantity</th>
                     <th class="col-md-2">Status</th>
+                    <th class="col-md-2">Total</th>
                     <th class="col-md-3">Created</th>
                     <th class="col-md-3">Options</th>
                 @endslot
@@ -34,10 +34,10 @@
                             #{{$order->id}}
                         </td>
                         <td class="col-md-2">
-                            {{$order->orderLines()->count()}}
+                            {{$order->approvedcount()}} / {{$order->orderLines()->count()}}
                         </td>
                         <td class="col-md-2">
-                            N/A
+                            kr. {{$order->total()}}
                         </td>
                         <td class="col-md-3">
                             {{date('j F, Y', strtotime($order->created_at))}}
