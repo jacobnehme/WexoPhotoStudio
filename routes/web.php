@@ -29,3 +29,7 @@ Route::resource('photos', 'PhotoController');
 Route::resource('photoLines', 'PhotoLineController');
 Route::resource('customers', 'CustomerController');
 Route::resource('photographers', 'PhotographerController');
+
+Route::get('/info', function (){
+    phpinfo();
+});

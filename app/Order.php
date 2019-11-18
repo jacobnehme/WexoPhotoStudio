@@ -50,27 +50,44 @@ class Order extends Model
     }
 
     //Methods
-    public function total(){
+    public function total()
+    {
         $total = 0;
-        foreach ($this->orderLines() as $orderLine){
-            if ($orderLine->isStatus('approved')){
-                $total += 100;
-            }
-            if ($orderLine->isStatus('pre-approved')){
-                $total += 50;
-            }
-        }
+
+//        foreach ($this->orderLines() as $orderLine) {
+//            switch ($orderLine->status_id) {
+//                case Status::approved():
+//                    $total += 100;
+//                    break;
+//                case Status::preApproved():
+//                    $total += 50;
+//                    break;
+//            }
+//        }
+
+        $count = $this->orderLines()->count();
+        //$approved = $this->orderLines()->where('status_id', Status::approved())->count();
+        $preApproved = $this->orderLines()->where('status_id', Status::preApproved())->count();
+
+        //$total = ($approved * 100) + ($preApproved * 50);
+        $total = ($count * 100) - ($preApproved * 50);
 
         return $total;
     }
 
-    public function approvedCount(){
-        $count = 0;
-        foreach ($this->orderLines() as $orderLine){
-            if ($orderLine->isStatus('approved') or $orderLine->isStatus('pre-approved')){
-                $count++;
-            }
-        }
+    public function approvedCount()
+    {
+//        $count = 0;
+//        foreach ($this->orderLines() as $orderLine) {
+//            if ($orderLine->isStatus('approved') or $orderLine->isStatus('pre-approved')) {
+//                $count++;
+//            }
+//        }
+
+        $approved = $this->orderLines()->where('status_id', Status::approved())->count();
+        $preApproved = $this->orderLines()->where('status_id', Status::preApproved())->count();
+
+        $count = $approved + $preApproved;
 
         return $count;
     }
