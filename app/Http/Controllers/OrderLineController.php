@@ -73,6 +73,10 @@ class OrderLineController extends Controller
      */
     public function update(Request $request, OrderLine $orderLine)
     {
+      /*  if (!$orderLine->isStatus('active') or !$orderLine->isStatus('pending')){
+            return 'Hacker!';
+        }*/
+
         //Persist PhotoLines if pre-approving
         if($request['photos']){
 

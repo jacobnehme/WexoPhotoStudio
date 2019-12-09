@@ -13,7 +13,7 @@
 
             {{-- Card Header --}}
             @slot('cardHeader')
-                Create Order
+                Order
             @endslot
 
             <form method="POST" action="{{ action('OrderController@store')}}" enctype="multipart/form-data">
@@ -23,7 +23,8 @@
                     <label for="products" class="col-md-4 col-form-label text-md-right">Products</label>
 
                     <div class="col-md-6">
-                        <input id="products" type="file" class="form-control{{ $errors->has('products') ? ' is-invalid' : '' }}"
+                        <input id="products" type="file"
+                               class="form-control{{ $errors->has('products') ? ' is-invalid' : '' }}"
                                name="products" value="{{ old('products') }}"
                                style="padding: 0; height: auto" required>
 

@@ -183,12 +183,12 @@
                                         //Only show OrderLines that have been approved
                                         $ol->isStatus('approved') and
                                         //Do not show this OrderLine for pre-approval
-                                        $ol->id != $orderLine->id and
+                                        $ol->id != $orderLine->id and //TODO maybe remove?
                                         //Do not show duplicate OrderLines*
                                         !$orderLine->photoLines()->contains('photo_id', $ol->photoLines()->first()->photo_id)
                                         )
 
-                                            {{--<span class="btn bg-warning">Save 50% on Pre-approval...</span>--}}
+{{--                                            <span class="btn bg-warning">Save 50% on Pre-approval...</span>--}}
 
                                             <div id="order-line-{{$ol->id}}">
                                                 <div class="content">
@@ -354,7 +354,5 @@
                 </form>
             @endif
         @endcomponent
-
-        {{--        <div class="status-bar">Hello</div>--}}
     @endcomponent
 @endcomponent

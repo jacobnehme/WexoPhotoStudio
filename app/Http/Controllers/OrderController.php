@@ -80,7 +80,6 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //TODO transaction, encapsulation, clean up and more...
         DB::beginTransaction();
 
         try {
@@ -115,32 +114,32 @@ class OrderController extends Controller
             $orderLines = array();
 
             //Persist Products
-            foreach ($products as $p) {
+            foreach ($products as $product) {
 
                 //If not exists persist product
-                $existingProduct = Product::where('barcode', $p['barcode'])->first();
+                $existingProduct = Product::where('barcode', $product['barcode'])->first();
                 if ($existingProduct == null) {
-                    $product = Product::create([
-                        'barcode' => $p['barcode'],
-                        'title' => $p['title'],
-                        'description' => $p['description'],
+                    $p = Product::create([
+                        'barcode' => $product['barcode'],
+                        'title' => $product['title'],
+                        'description' => $product['description'],
                     ]);
                 } else {
-                    $product = $existingProduct;
+                    $p = $existingProduct;
                 }
 
-                $product['id'] = $product->id;
-                $orderLines[] = $product;
+                $product['id'] = $p->id;
+                $orderLines[] = $p;
             }
 
             //Persist Order
             $order = Order::create($validated);
 
             //Persist OrderLines
-            foreach ($orderLines as $product) {
+            foreach ($orderLines as $orderLine) {
                 OrderLine::create([
                     'order_id' => $order->id,
-                    'product_id' => $product['id'],
+                    'product_id' => $orderLine['id'],
                 ]);
             }
 
@@ -165,8 +164,8 @@ class OrderController extends Controller
         $this->authorize('view', $order);
 
         return view('orders/show', [
-            'order' => $order
-        ]);
+        'order' => $order
+    ]);
     }
 
     /**
@@ -194,6 +193,7 @@ class OrderController extends Controller
             $order->photographer_id = $request['photographer_id'];
         } else {
             $order->confirmed = true;
+            //TODO redirect('customers/edit');
         }
 
         $order->update();

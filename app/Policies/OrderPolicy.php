@@ -22,7 +22,7 @@ class OrderPolicy
     {
         switch ($user->role_id) {
             case Role::admin():
-                return $user->isRole('admin');
+                return true;
                 break;
             case Role::photographer():
                 return $user->photographer()->id == $order->photographer_id;
