@@ -59171,6 +59171,24 @@ Echo.channel("orders").listen('PhotoUploaded', function (e) {
   //     '</p><br>'
   // );
 });
+$('#add-product-btn').on('click', function () {
+  var table = $('#add-product-form table tbody');
+  var count = table.children().length + 1;
+  var row = $('#add-product-row').clone(); //let btn = $('.remove-product-btn').first().clone();
+
+  var btn = '<button class="btn btn-danger remove-product-btn"' + 'onclick="$(this).parents(' + "\'tr.row\'" + ').remove();" type="button"' + 'style="width: 60%;">' + 'Remove Product' + '</button>';
+  row.children().eq(0).find('input').attr('name', count + '[barcode]');
+  row.children().eq(1).find('input').attr('name', count + '[title]');
+  row.children().eq(2).find('input').attr('name', count + '[description]');
+  row.children().eq(3).find('button').replaceWith(btn);
+  table.append(row);
+
+  for (var i = 0; i < row.children().length; i++) {
+    $('#add-product-row').children().eq(i).find('input').html('');
+  }
+}); // $('.remove-product-btn').on('click', function () {
+//     $(this).parents('tr.row').remove();
+// });
 
 /***/ }),
 

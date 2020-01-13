@@ -30,6 +30,14 @@ Route::resource('photoLines', 'PhotoLineController');
 Route::resource('customers', 'CustomerController');
 Route::resource('photographers', 'PhotographerController');
 
+//For demo
+Route::post('/orders/confirm', 'OrderController@confirm');
+Route::get('order', function(){
+    return view('orders/confirm', [
+        'products' => array(),
+    ]);
+});
+
 Route::get('/info', function (){
     phpinfo();
 });

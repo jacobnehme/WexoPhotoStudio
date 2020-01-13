@@ -47,7 +47,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -61,38 +61,40 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \App\User
      */
     protected function create(array $data)
     {
         DB::beginTransaction();
 
-        try{
+        try {
             $user = User::create([
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'role_id' => $data['role'],
+                'role_id' => Role::customer(),
+            ]);
+            Customer::create([
+                'user_id' => $user->id,
             ]);
 
-            switch ($user->role_id) {
-                case Role::customer():
-                    $customer = Customer::create([
-                        'user_id' => $user->id,
-                    ]);
-                    break;
-                case Role::photographer():
-                    $photographer = Photographer::create([
-                        'user_id' => $user->id,
-                    ]);
-                    break;
-            }
+//            switch ($user->role_id) {
+//                case Role::customer():
+//                    $customer = Customer::create([
+//                        'user_id' => $user->id,
+//                    ]);
+//                    break;
+//                case Role::photographer():
+//                    $photographer = Photographer::create([
+//                        'user_id' => $user->id,
+//                    ]);
+//                    break;
+//            }
 
             DB::commit();
 
             return $user;
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollback();
             return back();
         }

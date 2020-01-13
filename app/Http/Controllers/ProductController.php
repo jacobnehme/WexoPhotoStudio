@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function __construct()
     {
-        $this->authorize('view', Product::class);
+        $this->middleware('auth');
     }
 
     /**

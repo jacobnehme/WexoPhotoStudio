@@ -80,76 +80,76 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        DB::beginTransaction();
+//        DB::beginTransaction();
+//
+//        try {
 
-        try {
-            //Validation
-            $validated = $request->validate([
-                'products' => 'required|mimes:txt'
-            ]);
-            $validated['customer_id'] = auth()->user()->customer()->id;
+        $products = $request->request->all();
+        array_shift($products);
 
-            //Upload file
-            $fileName = $request->file('products')->store('products');
+        //Prepare array
+        $orderLines = array();
 
-            //Prepare array
-            $products = array();
+        //Persist Products
+        foreach ($products as $product) {
 
-            //Read CSV to array
-            $filePath = storage_path('/app/' . $fileName);
-            $file = fopen($filePath, "r");
-            while (($data = fgetcsv($file, 200, ";")) !== FALSE) {
-                $products[] = [
-                    'barcode' => $data[0],
-                    'title' => $data[1],
-                    'description' => $data[2],
-                ];
-            }
-            fclose($file);
-
-            //Delete file after use
-            Storage::delete($fileName);
-
-            //Prepare array
-            $orderLines = array();
-
-            //Persist Products
-            foreach ($products as $product) {
-
-                //If not exists persist product
-                $existingProduct = Product::where('barcode', $product['barcode'])->first();
-                if ($existingProduct == null) {
-                    $p = Product::create([
-                        'barcode' => $product['barcode'],
-                        'title' => $product['title'],
-                        'description' => $product['description'],
-                    ]);
-                } else {
-                    $p = $existingProduct;
-                }
-
-                $product['id'] = $p->id;
-                $orderLines[] = $p;
-            }
-
-            //Persist Order
-            $order = Order::create($validated);
-
-            //Persist OrderLines
-            foreach ($orderLines as $orderLine) {
-                OrderLine::create([
-                    'order_id' => $order->id,
-                    'product_id' => $orderLine['id'],
+            //If not exists persist product
+            $existingProduct = Product::where('barcode', $product['barcode'])->first();
+            if ($existingProduct == null) {
+                $p = Product::create([
+                    'barcode' => $product['barcode'],
+                    'title' => $product['title'],
+                    'description' => $product['description'],
                 ]);
+            } else {
+                $p = $existingProduct;
             }
+
+            $product['id'] = $p->id;
+            $orderLines[] = $p;
+        }
+
+
+//        for ($i = 1; $i < count($products); $i++) {
+//
+//            //If not exists persist product
+//            $existingProduct = Product::where('barcode', $products[$i]['barcode'])->first();
+//            if ($existingProduct == null) {
+//                $p = Product::create([
+//                    'barcode' => $products[$i]['barcode'],
+//                    'title' => $products[$i]['title'],
+//                    'description' => $products[$i]['description'],
+//                ]);
+//            } else {
+//                $p = $existingProduct;
+//            }
+//            dd('here');
+//
+//            $orderLines[] = $p;
+//        }
+
+        //Persist Order
+        $order = Order::create(['customer_id' => auth()->user()->customer()->id]);
+
+        //Persist OrderLines
+        foreach ($orderLines as $orderLine) {
+            OrderLine::create([
+                'order_id' => $order->id,
+                'product_id' => $orderLine['id'],
+            ]);
+        }
 
             DB::commit();
 
+        if (auth()->user()->customer()->name_first != null)
             return redirect('/orders/' . $order->id);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return back();
+        else{
+            return redirect('/customers/' . auth()->user()->customer()->id . '/edit');
         }
+//        } catch (\Exception $e) {
+//            DB::rollback();
+//            return back();
+//        }
     }
 
     /**
@@ -164,8 +164,8 @@ class OrderController extends Controller
         $this->authorize('view', $order);
 
         return view('orders/show', [
-        'order' => $order
-    ]);
+            'order' => $order
+        ]);
     }
 
     /**
@@ -209,6 +209,39 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+
+    }
+
+    public function confirm(Request $request)
+    {
+        //Validation
+        $validated = $request->validate([
+            'products' => 'required|mimes:txt'
+        ]);
+
+        //Upload file
+        $fileName = $request->file('products')->store('products');
+
+        //Prepare array
+        $products = array();
+
+        //Read CSV to array
+        $filePath = storage_path('/app/' . $fileName);
+        $file = fopen($filePath, "r");
+        while (($data = fgetcsv($file, 200, ";")) !== FALSE) {
+            $products[] = [
+                'barcode' => $data[0],
+                'title' => $data[1],
+                'description' => $data[2],
+            ];
+        }
+        fclose($file);
+
+        //Delete file after use
+        Storage::delete($fileName);
+
+        return view('orders/confirm', [
+            'products' => $products,
+        ]);
     }
 }

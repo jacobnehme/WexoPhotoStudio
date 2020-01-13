@@ -16,11 +16,11 @@
                 Order
             @endslot
 
-            <form method="POST" action="{{ action('OrderController@store')}}" enctype="multipart/form-data">
+            <form method="POST" action="{{ action('OrderController@confirm')}}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-group row">
-                    <label for="products" class="col-md-4 col-form-label text-md-right">Products</label>
+                    <label for="products" class="col-md-4 col-form-label text-md-right">Upload CSV</label>
 
                     <div class="col-md-6">
                         <input id="products" type="file"
@@ -39,11 +39,14 @@
                 <div class="form-group row mb-0">
                     <div class="col-md-6 offset-md-4">
                         <button type="submit" class="btn btn-primary">
-                            Create
+                            Upload
                         </button>
+                        <a href="/order" class="btn btn-warning">Manual</a>
                     </div>
                 </div>
             </form>
+
+
         @endcomponent
     @endcomponent
 @endcomponent

@@ -108,7 +108,8 @@ class CustomerController extends Controller
             'zip_code_id' => $zipCode->id,
         ]);
 
-        return back();
+        $lastOrder = $customer->orders()->last()->id;
+        return redirect('/orders/' . $lastOrder);
     }
 
     /**

@@ -38,4 +38,8 @@ class Customer extends Model
     public function zipCode(){
         return $this->belongsTo(ZipCode::class)->get()->first();
     }
+
+    public function orders(){
+        return $this->hasMany(Order::class)->get();
+    }
 }

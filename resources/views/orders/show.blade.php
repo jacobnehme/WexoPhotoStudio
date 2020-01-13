@@ -163,6 +163,31 @@
                                             {{ \App\Status::rejected() }}
                                         @endslot
                                     @endcomponent
+                                @else
+                                    <form method="POST" action="{{ action('PhotoController@store')}}"
+                                          enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="orderLine_id"
+                                               value={{ $orderLine->id }}>
+                                        <input type="hidden" name="product_id"
+                                               value={{ $orderLine->product()->id }}>
+                                        <div class="form-group row">
+                                            <label for="photo-{{$orderLine->id}}" class="btn btn-primary">
+                                                Upload to {{$orderLine->product()->title}}
+                                            </label>
+                                            <input type="file"
+                                                   id="photo-{{$orderLine->id}}"
+                                                   class="form-control{{ $errors->has('photo') ? ' is-invalid' : '' }}"
+                                                   name="photo" value="{{ old('photo') }}"
+                                                   onchange="this.form.submit()" placeholder="" required
+                                                   style="display:none;">
+                                            @if ($errors->has('photo'))
+                                                <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $errors->first('photo') }}</strong>
+                                                        </span>
+                                            @endif
+                                        </div>
+                                    </form>
                                 @endif
                             </div>
 
